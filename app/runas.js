@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { elementos } from './Elementos';
+import { elementos } from './elementos';
 
 const Runa = ({ elemento }) => (
   <View style={styles.runa}>
@@ -14,14 +14,19 @@ const Runas = () => {
   const [result, setResult] = useState(null);
 
   const randomComputerChoice = () => {
-    const randomIndex = Math.floor(Math.random() * elementos.length);
-    return elementos[randomIndex];
+    const randomIndex = Math.floor(Math.random() * Object.keys(elementos).length);
+    return elementos[Object.keys(elementos)[randomIndex]];
   };
 
   const playGame = (elemento) => {
     const computer = randomComputerChoice();
     setPlayerChoice(elemento);
     setComputerChoice(computer);
+
+    if (!computer) {
+      setResult('Erro ao selecionar a escolha do computador.');
+      return;
+    }
 
     if (elemento === computer.vence) {
       setResult('Você ganhou!');
@@ -35,7 +40,7 @@ const Runas = () => {
   return (
     <View style={styles.container}>
       <View style={styles.runasContainer}>
-        {elementos.map((elemento, index) => (
+        {Object.keys(elementos).map((elemento, index) => (
           <TouchableOpacity
             key={index}
             style={styles.runa}

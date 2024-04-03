@@ -1,8 +1,7 @@
 import React, { useState, useRef } from 'react';
-import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
 import * as Animatable from 'react-native-animatable';
-import { elementos } from './Elementos';
-import Runas from './Runas';
+import Runas from './runas';
 
 export default function Jogo() {
   const [playerChoice, setPlayerChoice] = useState(null);
