@@ -18,7 +18,7 @@ export const elementos = {
     nome: 'Trovão',
     vence: 'Doton',
     perde: 'Fuuton',
-    corBase: '#3377FF', // Cor de base para o elemento Raiton
+    corBase: '#FFD700', // Cor de base para o elemento Raiton
   },
   Doton: {
     kanji: '土',
@@ -32,6 +32,7 @@ export const elementos = {
     nome: 'Água',
     vence: 'Katon',
     perde: 'Raiton',
-    corBase: '#FFD700', // Cor de base para o elemento Suiton
+    corBase: '#3377FF', // Cor de base para o elemento Suiton
   },
 };
+

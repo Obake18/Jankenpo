@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Animated, Easing } from 'react-native';
 import { elementos } from './elementos';
 
 const Runa = ({ elemento, selecionado }) => {
@@ -15,20 +15,12 @@ const Runas = () => {
   const [playerChoice, setPlayerChoice] = useState(null);
   const [computerChoice, setComputerChoice] = useState(null);
   const [result, setResult] = useState(null);
+  const spinValue = new Animated.Value(0);
 
   const randomComputerChoice = () => {
     const randomIndex = Math.floor(Math.random() * Object.keys(elementos).length);
     return elementos[Object.keys(elementos)[randomIndex]];
   };
-
-  useEffect(() => {
-    // Simulação de escolha da máquina após 2 segundos
-    const timer = setTimeout(() => {
-      setComputerChoice(randomComputerChoice());
-    }, 2000);
-
-    return () => clearTimeout(timer);
-  }, []);
 
   const playGame = (elemento) => {
     const computer = randomComputerChoice();
@@ -47,41 +39,56 @@ const Runas = () => {
     } else {
       setResult('Empate!');
     }
+
+    // Girar a mesa
+    Animated.timing(
+      spinValue,
+      {
+        toValue: 1,
+        duration: 1000,
+        easing: Easing.linear,
+        useNativeDriver: true,
+      }
+    ).start();
   };
+
+  const spin = spinValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['0deg', '360deg'],
+  });
+
+  const radius = 120;
+  const numRunas = Object.keys(elementos).length;
+  const angleIncrement = (2 * Math.PI) / numRunas;
 
   return (
     <View style={styles.container}>
-      <ScrollView horizontal style={styles.machineChoices}>
-        {Object.keys(elementos).map((elemento, index) => (
-          <Runa key={index} elemento={elemento} selecionado={elemento === computerChoice} />
-        ))}
-      </ScrollView>
-
-      <View style={styles.resultContainer}>
-        <Text style={styles.resultText}>{result}</Text>
-      </View>
-
-      <View style={styles.playerChoices}>
-        {Object.keys(elementos).map((elemento, index) => {
-          const angle = (index * (360 / Object.keys(elementos).length)) - 90; // Ângulo para dispor as runas em um círculo
-          const radius = 150; // Raio do círculo
-          const x = radius * Math.cos((angle * Math.PI) / 180); // Coordenada x do centro do círculo
-          const y = radius * Math.sin((angle * Math.PI) / 180); // Coordenada y do centro do círculo
-
-          return (
+      <View style={styles.runasContainer}>
+        <View style={styles.mesa}>
+          <Text style={styles.title}>Computador</Text>
+          <Text style={styles.choice}>{computerChoice ? computerChoice.nome : '-'}</Text>
+        </View>
+        <Animated.View style={[styles.rodaGigante, { transform: [{ rotate: spin }] }]}>
+          {Object.keys(elementos).map((elemento, index) => (
             <TouchableOpacity
               key={index}
               style={[
                 styles.runaContainer,
-                { transform: [{ translateX: x }, { translateY: y }] }
+                {
+                  left: radius * Math.cos(angleIncrement * index + Math.PI / 2) - 50, // -50 para ajustar o centro da runa
+                  top: radius * Math.sin(angleIncrement * index + Math.PI / 2) - 50, // -50 para ajustar o centro da runa
+                },
               ]}
               onPress={() => playGame(elemento)}
               disabled={playerChoice !== null}
             >
               <Runa elemento={elemento} selecionado={elemento === playerChoice} />
             </TouchableOpacity>
-          );
-        })}
+          ))}
+        </Animated.View>
+      </View>
+      <View style={styles.resultContainer}>
+        <Text style={styles.resultText}>{result}</Text>
       </View>
     </View>
   );
@@ -105,19 +112,26 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#fff',
+
   },
-  machineChoices: {
-    height: 100,
+  runasContainer: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center', // Alterado de 'center' para 'flex-start'
+  },
+  rodaGigante: {
+    flexDirection: 'row',
+  },
+  mesa: {
     marginBottom: 20,
   },
-  playerChoices: {
-    flexDirection: 'row',
-    position: 'absolute',
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '100%',
-    height: '100%',
+  title: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  choice: {
+    fontSize: 18,
   },
   runaContainer: {
     position: 'absolute',
@@ -135,8 +149,7 @@ const styles = StyleSheet.create({
     color: '#000',
   },
   resultContainer: {
-    position: 'absolute',
-    bottom: 20,
+    marginTop: 20,
   },
   resultText: {
     fontSize: 24,

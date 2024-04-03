@@ -11,8 +11,8 @@ export default function Jogo() {
   const runasRef = useRef(null);
 
   const playGame = (elemento) => {
-    const computerIndex = Math.floor(Math.random() * elementos.length);
-    const computer = elementos[computerIndex];
+    const computerIndex = Math.floor(Math.random() * Object.keys(elementos).length); // Ajustado para o comprimento do objeto
+    const computer = elementos[Object.keys(elementos)[computerIndex]]; // Ajustado para pegar uma chave aleatória do objeto
 
     setPlayerChoice(elemento);
     setComputerChoice(computer);
@@ -60,18 +60,17 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   mostradorContainer: {
-    flexDirection: 'row',
+    flexDirection: 'column',
     alignItems: 'center',
   },
   rodaGigante: {
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: 20,
+    marginBottom: 20,
   },
   mesa: {
     alignItems: 'center',
     justifyContent: 'center',
-    marginLeft: 20,
   },
   title: {
     fontSize: 20,
