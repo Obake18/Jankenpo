@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Animated, Easing } from 'react-native';
 import { elementos } from './elementos';
@@ -32,9 +33,9 @@ const Runas = () => {
       return;
     }
 
-    if (elemento === computer.vence) {
+    if (elemento === computer.perde) {
       setResult('Você ganhou!');
-    } else if (elemento === computer.perde) {
+    } else if (elemento === computer.vence) {
       setResult('Você perdeu!');
     } else {
       setResult('Empate!');
@@ -63,34 +64,39 @@ const Runas = () => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.runasContainer}>
-        <View style={styles.mesa}>
-          <Text style={styles.title}>Computador</Text>
-          <Text style={styles.choice}>{computerChoice ? computerChoice.nome : '-'}</Text>
-        </View>
-        <Animated.View style={[styles.rodaGigante, { transform: [{ rotate: spin }] }]}>
-          {Object.keys(elementos).map((elemento, index) => (
-            <TouchableOpacity
-              key={index}
-              style={[
-                styles.runaContainer,
-                {
-                  left: radius * Math.cos(angleIncrement * index + Math.PI / 2) - 50, // -50 para ajustar o centro da runa
-                  top: radius * Math.sin(angleIncrement * index + Math.PI / 2) - 50, // -50 para ajustar o centro da runa
-                },
-              ]}
-              onPress={() => playGame(elemento)}
-              disabled={playerChoice !== null}
-            >
-              <Runa elemento={elemento} selecionado={elemento === playerChoice} />
-            </TouchableOpacity>
-          ))}
-        </Animated.View>
-      </View>
-      <View style={styles.resultContainer}>
-        <Text style={styles.resultText}>{result}</Text>
-      </View>
+  <View>
+  <Text style={styles.title}>Computador</Text>
+  <Text style={styles.choice}>{computerChoice ? computerChoice.nome : '-'}</Text>
+  </View>
+  <View style={styles.resultContainer}>
+    <Text style={styles.resultText}>{result}</Text>
+  </View>
+  <View style={styles.runasContainer}>
+    <Animated.View style={[styles.rodaGigante, { transform: [{ rotate: spin }] }]}>
+      {Object.keys(elementos).map((elemento, index) => (
+        <TouchableOpacity
+          key={index}
+          style={[
+            styles.runaContainer,
+            {
+              left: radius * Math.cos(angleIncrement * index + Math.PI / 2) - 50,
+              top: radius * Math.sin(angleIncrement * index + Math.PI / 2) - 50,
+            },
+          ]}
+          onPress={() => playGame(elemento)}
+          disabled={playerChoice !== null}
+        >
+          <Runa elemento={elemento} selecionado={elemento === playerChoice} />
+        </TouchableOpacity>
+      ))}
+    </Animated.View>
+    <View style={styles.mesa}>
+
+
     </View>
+  </View>
+</View>
+
   );
 };
 
@@ -109,23 +115,28 @@ const brightenColor = (color, percent) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
+    display : 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-evenly',
     alignItems: 'center',
+    flex: 1,
+
 
   },
   runasContainer: {
+
     flexDirection: 'column',
-    justifyContent: 'center',
     alignItems: 'center', // Alterado de 'center' para 'flex-start'
   },
   rodaGigante: {
     flexDirection: 'row',
   },
   mesa: {
-    marginBottom: 20,
+    marginBottom: 0,
   },
   title: {
+    top : 0,
+    justifyContent : 'center',
     fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 10,
@@ -146,7 +157,7 @@ const styles = StyleSheet.create({
   },
   kanji: {
     fontSize: 20,
-    color: '#000',
+    color: '#fff',
   },
   resultContainer: {
     marginTop: 20,
