@@ -88,10 +88,18 @@ const Runas = () => {
   return (
     <View style={styles.container}>
       <View>
-        <Text style={styles.title}>Rodada {round}</Text>
+
         <Text style={styles.title}>Computador</Text>
         <Text style={styles.choice}>{computerChoice ? computerChoice.nome : '-'}</Text>
       </View>
+
+          <View>
+          <Text style={styles.title}>Rodada {round}</Text>
+          {result === 'Game Over - Você perdeu 5 vezes consecutivas!' && (
+        <Button title="Recarregar" onPress={reloadGame} />
+      )}
+          </View>
+
       <View style={styles.resultContainer}>
         <Text style={styles.resultText}>{result}</Text>
       </View>
@@ -119,9 +127,7 @@ const Runas = () => {
         </Animated.View>
         <View style={styles.mesa}></View>
       </View>
-      {result === 'Game Over - Você perdeu 5 vezes consecutivas!' && (
-        <Button title="Recarregar" onPress={reloadGame} />
-      )}
+    
     </View>
   );
 };
