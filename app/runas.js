@@ -16,17 +16,16 @@ const Runas = () => {
   const [computerChoice, setComputerChoice] = useState(null);
   const [result, setResult] = useState(null);
   const [round, setRound] = useState(1);
+  const [playerLosses, setPlayerLosses] = useState(0);
   const spinValue = useRef(new Animated.Value(0)).current;
 
   const panResponder = useRef(
     PanResponder.create({
       onStartShouldSetPanResponder: () => true,
       onPanResponderMove: (evt, gestureState) => {
-        // Atualiza o valor de rotação com base no movimento do toque
         spinValue.setValue(gestureState.dx / 100);
       },
       onPanResponderRelease: (evt, gestureState) => {
-        // Aqui você pode adicionar a lógica para selecionar o elemento com base na posição final do toque
       },
     })
   ).current;
@@ -50,20 +49,17 @@ const Runas = () => {
       setResult('Você ganhou!');
     } else if (elemento === computer.vence) {
       setResult('Você perdeu!');
+      setPlayerLosses(playerLosses + 1);
     } else {
       setResult('Empate!');
     }
 
-    // Avança para a próxima rodada ou reinicia o jogo
-    if (round < 5) {
-      setRound(round + 1);
-      setTimeout(() => {
-        setPlayerChoice(null);
-        setComputerChoice(null);
-        setResult(null);
-      }, 1000);
-    } else {
+    if (playerLosses === 5) {
+      setResult('Game Over - Você perdeu 5 vezes consecutivas!');
       setRound(1);
+      setPlayerLosses(0);
+    } else {
+      setRound(round + 1);
       setTimeout(() => {
         setPlayerChoice(null);
         setComputerChoice(null);
@@ -80,6 +76,14 @@ const Runas = () => {
   const radius = 120;
   const numRunas = Object.keys(elementos).length;
   const angleIncrement = (2 * Math.PI) / numRunas;
+
+  const reloadGame = () => {
+    setRound(1);
+    setPlayerLosses(0);
+    setPlayerChoice(null);
+    setComputerChoice(null);
+    setResult(null);
+  };
 
   return (
     <View style={styles.container}>
@@ -113,11 +117,10 @@ const Runas = () => {
             </TouchableOpacity>
           ))}
         </Animated.View>
-        <View style={styles.mesa}>
-        </View>
+        <View style={styles.mesa}></View>
       </View>
-      {round === 5 && (
-        <Button title="Recarregar" onPress={() => setRound(1)} />
+      {result === 'Game Over - Você perdeu 5 vezes consecutivas!' && (
+        <Button title="Recarregar" onPress={reloadGame} />
       )}
     </View>
   );
