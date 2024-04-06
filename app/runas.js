@@ -1,6 +1,5 @@
-
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Animated, Easing } from 'react-native';
+import React, { useState, useRef } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Animated, PanResponder } from 'react-native';
 import { elementos } from './elementos';
 
 const Runa = ({ elemento, selecionado }) => {
@@ -16,7 +15,20 @@ const Runas = () => {
   const [playerChoice, setPlayerChoice] = useState(null);
   const [computerChoice, setComputerChoice] = useState(null);
   const [result, setResult] = useState(null);
-  const spinValue = new Animated.Value(0);
+  const spinValue = useRef(new Animated.Value(0)).current;
+
+  const panResponder = useRef(
+    PanResponder.create({
+      onStartShouldSetPanResponder: () => true,
+      onPanResponderMove: (evt, gestureState) => {
+        // Atualiza o valor de rotação com base no movimento do toque
+        spinValue.setValue(gestureState.dx / 100);
+      },
+      onPanResponderRelease: (evt, gestureState) => {
+        // Aqui você pode adicionar a lógica para selecionar o elemento com base na posição final do toque
+      },
+    })
+  ).current;
 
   const randomComputerChoice = () => {
     const randomIndex = Math.floor(Math.random() * Object.keys(elementos).length);
@@ -40,22 +52,11 @@ const Runas = () => {
     } else {
       setResult('Empate!');
     }
-
-    // Girar a mesa
-    Animated.timing(
-      spinValue,
-      {
-        toValue: 1,
-        duration: 1000,
-        easing: Easing.linear,
-        useNativeDriver: true,
-      }
-    ).start();
   };
 
   const spin = spinValue.interpolate({
-    inputRange: [0, 1],
-    outputRange: ['0deg', '360deg'],
+    inputRange: [0, Object.keys(elementos).length],
+    outputRange: ['0deg', `${360 * Object.keys(elementos).length}deg`],
   });
 
   const radius = 120;
@@ -64,39 +65,39 @@ const Runas = () => {
 
   return (
     <View style={styles.container}>
-  <View>
-  <Text style={styles.title}>Computador</Text>
-  <Text style={styles.choice}>{computerChoice ? computerChoice.nome : '-'}</Text>
-  </View>
-  <View style={styles.resultContainer}>
-    <Text style={styles.resultText}>{result}</Text>
-  </View>
-  <View style={styles.runasContainer}>
-    <Animated.View style={[styles.rodaGigante, { transform: [{ rotate: spin }] }]}>
-      {Object.keys(elementos).map((elemento, index) => (
-        <TouchableOpacity
-          key={index}
-          style={[
-            styles.runaContainer,
-            {
-              left: radius * Math.cos(angleIncrement * index + Math.PI / 2) - 50,
-              top: radius * Math.sin(angleIncrement * index + Math.PI / 2) - 50,
-            },
-          ]}
-          onPress={() => playGame(elemento)}
-          disabled={playerChoice !== null}
+      <View>
+        <Text style={styles.title}>Computador</Text>
+        <Text style={styles.choice}>{computerChoice ? computerChoice.nome : '-'}</Text>
+      </View>
+      <View style={styles.resultContainer}>
+        <Text style={styles.resultText}>{result}</Text>
+      </View>
+      <View style={styles.runasContainer}>
+        <Animated.View
+          {...panResponder.panHandlers}
+          style={[styles.rodaGigante, { transform: [{ rotate: spin }] }]}
         >
-          <Runa elemento={elemento} selecionado={elemento === playerChoice} />
-        </TouchableOpacity>
-      ))}
-    </Animated.View>
-    <View style={styles.mesa}>
-
-
+          {Object.keys(elementos).map((elemento, index) => (
+            <TouchableOpacity
+              key={index}
+              style={[
+                styles.runaContainer,
+                {
+                  left: radius * Math.cos(angleIncrement * index + Math.PI / 2) - 50,
+                  top: radius * Math.sin(angleIncrement * index + Math.PI / 2) - 50,
+                },
+              ]}
+              onPress={() => playGame(elemento)}
+              disabled={playerChoice !== null}
+            >
+              <Runa elemento={elemento} selecionado={elemento === playerChoice} />
+            </TouchableOpacity>
+          ))}
+        </Animated.View>
+        <View style={styles.mesa}>
+        </View>
+      </View>
     </View>
-  </View>
-</View>
-
   );
 };
 
