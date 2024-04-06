@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Animated, Easing } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Animated, PanResponder, Button } from 'react-native';
 import { elementos } from './elementos';
 
 const Runa = ({ elemento, selecionado }) => {
@@ -15,14 +15,28 @@ const Runas = () => {
   const [playerChoice, setPlayerChoice] = useState(null);
   const [computerChoice, setComputerChoice] = useState(null);
   const [result, setResult] = useState(null);
-  const spinValue = useRef(new Animated.Value(0)).current; // Usamos useRef para persistir o valor entre as renderizações
+  const [round, setRound] = useState(1);
+  const spinValue = useRef(new Animated.Value(0)).current;
+
+  const panResponder = useRef(
+    PanResponder.create({
+      onStartShouldSetPanResponder: () => true,
+      onPanResponderMove: (evt, gestureState) => {
+        // Atualiza o valor de rotação com base no movimento do toque
+        spinValue.setValue(gestureState.dx / 100);
+      },
+      onPanResponderRelease: (evt, gestureState) => {
+        // Aqui você pode adicionar a lógica para selecionar o elemento com base na posição final do toque
+      },
+    })
+  ).current;
 
   const randomComputerChoice = () => {
     const randomIndex = Math.floor(Math.random() * Object.keys(elementos).length);
     return elementos[Object.keys(elementos)[randomIndex]];
   };
 
-  const playGame = (elemento, index) => {
+  const playGame = (elemento) => {
     const computer = randomComputerChoice();
     setPlayerChoice(elemento);
     setComputerChoice(computer);
@@ -40,21 +54,27 @@ const Runas = () => {
       setResult('Empate!');
     }
 
-    // Girar a mesa
-    Animated.timing(
-      spinValue,
-      {
-        toValue: index, // Giramos para o índice do elemento selecionado
-        duration: 1000,
-        easing: Easing.linear,
-        useNativeDriver: true,
-      }
-    ).start();
+    // Avança para a próxima rodada ou reinicia o jogo
+    if (round < 5) {
+      setRound(round + 1);
+      setTimeout(() => {
+        setPlayerChoice(null);
+        setComputerChoice(null);
+        setResult(null);
+      }, 1000);
+    } else {
+      setRound(1);
+      setTimeout(() => {
+        setPlayerChoice(null);
+        setComputerChoice(null);
+        setResult(null);
+      }, 1000);
+    }
   };
 
   const spin = spinValue.interpolate({
-    inputRange: [0, Object.keys(elementos).length], // O intervalo de entrada agora corresponde ao número de elementos
-    outputRange: ['0deg', `${360 * Object.keys(elementos).length}deg`], // O intervalo de saída agora corresponde ao número de elementos
+    inputRange: [0, Object.keys(elementos).length],
+    outputRange: ['0deg', `${360 * Object.keys(elementos).length}deg`],
   });
 
   const radius = 120;
@@ -64,6 +84,7 @@ const Runas = () => {
   return (
     <View style={styles.container}>
       <View>
+        <Text style={styles.title}>Rodada {round}</Text>
         <Text style={styles.title}>Computador</Text>
         <Text style={styles.choice}>{computerChoice ? computerChoice.nome : '-'}</Text>
       </View>
@@ -71,7 +92,10 @@ const Runas = () => {
         <Text style={styles.resultText}>{result}</Text>
       </View>
       <View style={styles.runasContainer}>
-        <Animated.View style={[styles.rodaGigante, { transform: [{ rotate: spin }] }]}>
+        <Animated.View
+          {...panResponder.panHandlers}
+          style={[styles.rodaGigante, { transform: [{ rotate: spin }] }]}
+        >
           {Object.keys(elementos).map((elemento, index) => (
             <TouchableOpacity
               key={index}
@@ -82,7 +106,7 @@ const Runas = () => {
                   top: radius * Math.sin(angleIncrement * index + Math.PI / 2) - 50,
                 },
               ]}
-              onPress={() => playGame(elemento, index)} // Passamos o índice para playGame
+              onPress={() => playGame(elemento)}
               disabled={playerChoice !== null}
             >
               <Runa elemento={elemento} selecionado={elemento === playerChoice} />
@@ -92,12 +116,12 @@ const Runas = () => {
         <View style={styles.mesa}>
         </View>
       </View>
+      {round === 5 && (
+        <Button title="Recarregar" onPress={() => setRound(1)} />
+      )}
     </View>
   );
 };
-
-
-  
 
 const brightenColor = (color, percent) => {
   const bigint = parseInt(color.slice(1), 16);
@@ -114,18 +138,15 @@ const brightenColor = (color, percent) => {
 
 const styles = StyleSheet.create({
   container: {
-    display : 'flex',
+    display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-evenly',
     alignItems: 'center',
     flex: 1,
-
-
   },
   runasContainer: {
-
     flexDirection: 'column',
-    alignItems: 'center', // Alterado de 'center' para 'flex-start'
+    alignItems: 'center', 
   },
   rodaGigante: {
     flexDirection: 'row',
@@ -134,8 +155,6 @@ const styles = StyleSheet.create({
     marginBottom: 0,
   },
   title: {
-    top : 0,
-    justifyContent : 'center',
     fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 10,
