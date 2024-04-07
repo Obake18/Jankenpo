@@ -94,15 +94,13 @@ const Runas = () => {
       </View>
 
           <View>
+          <Text style={styles.resultText}>{result}</Text>
           <Text style={styles.title}>Rodada {round}</Text>
           {result === 'Game Over - Você perdeu 5 vezes consecutivas!' && (
         <Button title="Recarregar" onPress={reloadGame} />
       )}
           </View>
 
-      <View style={styles.resultContainer}>
-        <Text style={styles.resultText}>{result}</Text>
-      </View>
       <View style={styles.runasContainer}>
         <Animated.View
           {...panResponder.panHandlers}
