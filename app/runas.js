@@ -19,7 +19,8 @@ const Runas = () => {
   const [computerChoice, setComputerChoice] = useState(null);
   const [result, setResult] = useState(null);
   const [round, setRound] = useState(1);
-  const [playerLosses, setPlayerLosses] = useState(0);
+  const [playerLives, setPlayerLives] = useState(5); // Inicia com 5 vidas
+  const [phase, setPhase] = useState(1); // Inicia na fase 1
   const spinValue = useRef(new Animated.Value(0)).current;
 
   const panResponder = useRef(
@@ -48,28 +49,33 @@ const Runas = () => {
       return;
     }
 
-    if (elemento === computer.perde) {
-      setResult('Você ganhou!');
-    } else if (elemento === computer.vence) {
+    if (elemento === computer.vence) {
       setResult('Você perdeu!');
-      setPlayerLosses(playerLosses + 1);
+      setPlayerLives(playerLives - 1); // Perde uma vida quando perde a partida
+
+      if (playerLives === 1) { // Se o jogador perder todas as vidas
+        setResult('Game Over');
+        navigation.navigate('GameOver');
+        setRound(1);
+        setPlayerLives(5); // Reseta as vidas
+        setPhase(1); // Reseta a fase
+      }
+    } else if (elemento === computer.perde) {
+      setResult('Você ganhou!');
+      if (round % 7 === 0) { // Se o jogador ganhar 7 partidas
+        setPhase(phase + 1); // Avança para a próxima fase
+      }
     } else {
       setResult('Empate!');
     }
 
-    if (playerLosses === 5) {
-      setResult('Game Over');
-      navigation.navigate('GameOver');
-      setRound(1);
-      setPlayerLosses(0);
-    } else {
-      setRound(round + 1);
-      setTimeout(() => {
-        setPlayerChoice(null);
-        setComputerChoice(null);
-        setResult(null);
-      }, 1000);
-    }
+    setRound(round + 1);
+    setTimeout(() => {
+      setPlayerChoice(null);
+      setComputerChoice(null);
+      setResult(null);
+    }, 1000);
+
   };
 
   const spin = spinValue.interpolate({
@@ -83,27 +89,30 @@ const Runas = () => {
 
   const reloadGame = () => {
     setRound(1);
-    setPlayerLosses(0);
+    setPlayerLives(5); // Reseta as vidas do jogador para 5
+    setPhase(1); // Reseta a fase para 1
     setPlayerChoice(null);
     setComputerChoice(null);
     setResult(null);
   };
 
+
   return (
     <View style={styles.container}>
       <View>
-
         <Text style={styles.title}>Computador</Text>
         <Text style={styles.choice}>{computerChoice ? computerChoice.nome : '-'}</Text>
       </View>
+      <View>
+      <Text style={styles.title}>Rodada {round}</Text>
+      </View>
+      <View>
+        <Text style={styles.resultText}>{result}</Text>
 
-          <View>
-          <Text style={styles.resultText}>{result}</Text>
-          <Text style={styles.title}>Rodada {round}</Text>
-          {result === 'Game Over - Você perdeu 5 vezes consecutivas!' && (
-        <Button title="Recarregar" onPress={reloadGame} />
-      )}
-          </View>
+        <Text style={styles.title}>Vidas: {playerLives}</Text> 
+        <Text style={styles.title}>Fase: {phase}</Text> 
+      </View>
+
 
       <View style={styles.runasContainer}>
         <Animated.View
@@ -129,9 +138,9 @@ const Runas = () => {
         </Animated.View>
         <View style={styles.mesa}></View>
       </View>
-    
     </View>
   );
+
 };
 
 const brightenColor = (color, percent) => {
@@ -157,7 +166,7 @@ const styles = StyleSheet.create({
   },
   runasContainer: {
     flexDirection: 'column',
-    alignItems: 'center', 
+    alignItems: 'center',
   },
   rodaGigante: {
     flexDirection: 'row',
