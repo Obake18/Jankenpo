@@ -14,7 +14,7 @@ const GameOver = ({ navigation }) => {
       <Text style={styles.title}>Game Over!</Text>
       <Text style={styles.message}>As runas não estavam ao seu lado desta vez. . . </Text>
       <TouchableOpacity style={styles.button} onPress={reloadGame}>
-        <Text style={styles.buttonText}>Recarregar</Text>
+        <Text style={styles.buttonText}>Tentar Novamente!</Text>
       </TouchableOpacity>
     </View>
   );
