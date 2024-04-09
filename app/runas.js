@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Animated, PanResponder, Button } from 'react-native';
 import { elementos } from './elementos';
 import { useNavigation } from '@react-navigation/native';
@@ -33,6 +33,8 @@ const Runas = () => {
       },
     })
   ).current;
+
+
 
   const randomComputerChoice = () => {
     const randomIndex = Math.floor(Math.random() * Object.keys(elementos).length);
@@ -97,20 +99,28 @@ const Runas = () => {
   };
 
 
+
+  useEffect(() => {
+    if (result === 'Game Over') {
+      reloadGame();
+    }
+  }, [result]);
+
   return (
     <View style={styles.container}>
       <View>
-        <Text style={styles.title}>Computador</Text>
+      <Text style={styles.title}>Computador</Text>
         <Text style={styles.choice}>{computerChoice ? computerChoice.nome : '-'}</Text>
       </View>
+
       <View>
-      <Text style={styles.title}>Rodada {round}</Text>
+        <Text style={styles.title}>Rodada {round}</Text>
       </View>
       <View>
         <Text style={styles.resultText}>{result}</Text>
 
-        <Text style={styles.title}>Vidas: {'❤️'.repeat(playerLives)}</Text> 
-        <Text style={styles.title}>Fase: {phase}</Text> 
+        <Text style={styles.title}>Vidas: {'❤️'.repeat(playerLives)}</Text>
+        <Text style={styles.title}>Fase: {phase}</Text>
       </View>
 
 
