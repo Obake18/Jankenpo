@@ -1,7 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Animated, PanResponder, Button } from 'react-native';
 import { elementos } from './elementos';
-import { useNavigation } from '@react-navigation/native'; // Importando o hook de navegação
 
 const Runa = ({ elemento, selecionado }) => {
   const borderColor = selecionado ? brightenColor(elementos[elemento].corBase, 0.3) : 'transparent';
@@ -19,7 +18,6 @@ const Runas = () => {
   const [round, setRound] = useState(1);
   const [playerLosses, setPlayerLosses] = useState(0);
   const spinValue = useRef(new Animated.Value(0)).current;
-  const navigation = useNavigation(); // Usando o hook de navegação
 
   const panResponder = useRef(
     PanResponder.create({
@@ -57,7 +55,6 @@ const Runas = () => {
     }
 
     if (playerLosses === 5) {
-      navigation.navigate('GameOver'); // Redirecionar para a tela de Game Over
       setResult('Game Over - Você perdeu 5 vezes consecutivas!');
       setRound(1);
       setPlayerLosses(0);
@@ -91,17 +88,18 @@ const Runas = () => {
   return (
     <View style={styles.container}>
       <View>
+
         <Text style={styles.title}>Computador</Text>
         <Text style={styles.choice}>{computerChoice ? computerChoice.nome : '-'}</Text>
       </View>
 
-      <View>
-        <Text style={styles.resultText}>{result}</Text>
-        <Text style={styles.title}>Rodada {round}</Text>
-        {result === 'Game Over - Você perdeu 5 vezes consecutivas!' && (
-          <Button title="Recarregar" onPress={reloadGame} />
-        )}
-      </View>
+          <View>
+          <Text style={styles.resultText}>{result}</Text>
+          <Text style={styles.title}>Rodada {round}</Text>
+          {result === 'Game Over - Você perdeu 5 vezes consecutivas!' && (
+        <Button title="Recarregar" onPress={reloadGame} />
+      )}
+          </View>
 
       <View style={styles.runasContainer}>
         <Animated.View
@@ -127,6 +125,7 @@ const Runas = () => {
         </Animated.View>
         <View style={styles.mesa}></View>
       </View>
+    
     </View>
   );
 };
