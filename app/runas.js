@@ -109,7 +109,7 @@ const Runas = () => {
       <View>
         <Text style={styles.resultText}>{result}</Text>
 
-        <Text style={styles.title}>Vidas: {playerLives}</Text> 
+        <Text style={styles.title}>Vidas: {'❤️'.repeat(playerLives)}</Text> 
         <Text style={styles.title}>Fase: {phase}</Text> 
       </View>
 
