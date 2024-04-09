@@ -1,8 +1,10 @@
 import React, { useState, useRef } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Animated, PanResponder, Button } from 'react-native';
 import { elementos } from './elementos';
+import { useNavigation } from '@react-navigation/native';
 
 const Runa = ({ elemento, selecionado }) => {
+
   const borderColor = selecionado ? brightenColor(elementos[elemento].corBase, 0.3) : 'transparent';
   return (
     <View style={[styles.runa, { backgroundColor: elementos[elemento].corBase, borderColor }]}>
@@ -12,6 +14,7 @@ const Runa = ({ elemento, selecionado }) => {
 };
 
 const Runas = () => {
+  const navigation = useNavigation();
   const [playerChoice, setPlayerChoice] = useState(null);
   const [computerChoice, setComputerChoice] = useState(null);
   const [result, setResult] = useState(null);
@@ -55,7 +58,8 @@ const Runas = () => {
     }
 
     if (playerLosses === 5) {
-      setResult('Game Over - Você perdeu 5 vezes consecutivas!');
+      setResult('Game Over');
+      navigation.navigate('GameOver');
       setRound(1);
       setPlayerLosses(0);
     } else {
