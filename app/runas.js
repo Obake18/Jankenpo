@@ -1,17 +1,29 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Animated, PanResponder, Button } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Animated, PanResponder, Button, Dimensions } from 'react-native';
 import { elementos } from './elementos';
 import { useNavigation } from '@react-navigation/native';
+import Carousel from 'react-native-snap-carousel'; // Adicione esta biblioteca
+import { ViewPropTypes } from 'deprecated-react-native-prop-types';
+
+
+// Obtenha as dimensões da tela
+const { width: screenWidth } = Dimensions.get('window');
 
 const Runa = ({ elemento, selecionado }) => {
+  const elementoObj = elementos[elemento];
+  if (!elementoObj) {
+    console.warn(`Elemento '${elemento}' não encontrado em 'elementos'`);
+    return null;
+  }
 
-  const borderColor = selecionado ? brightenColor(elementos[elemento].corBase, 0.3) : 'transparent';
+  const borderColor = selecionado ? brightenColor(elementoObj.corBase, 0.3) : 'transparent';
   return (
-    <View style={[styles.runa, { backgroundColor: elementos[elemento].corBase, borderColor }]}>
-      <Text style={styles.kanji}>{elementos[elemento].kanji}</Text>
+    <View style={[styles.runa, { backgroundColor: elementoObj.corBase, borderColor }]}>
+      <Text style={styles.kanji}>{elementoObj.kanji}</Text>
     </View>
   );
 };
+
 
 const Runas = () => {
   const navigation = useNavigation();
@@ -34,12 +46,12 @@ const Runas = () => {
     })
   ).current;
 
-
-
   const randomComputerChoice = () => {
-    const randomIndex = Math.floor(Math.random() * Object.keys(elementos).length);
-    return elementos[Object.keys(elementos)[randomIndex]];
+    const keys = Object.keys(elementos);
+    const randomIndex = Math.floor(Math.random() * keys.length);
+    return keys[randomIndex];
   };
+  
 
   const playGame = (elemento) => {
     const computer = randomComputerChoice();
@@ -77,41 +89,31 @@ const Runas = () => {
       setComputerChoice(null);
       setResult(null);
     }, 1000);
-
   };
 
-  const spin = spinValue.interpolate({
-    inputRange: [0, Object.keys(elementos).length],
-    outputRange: ['0deg', `${360 * Object.keys(elementos).length}deg`],
-  });
-
-  const radius = 120;
-  const numRunas = Object.keys(elementos).length;
-  const angleIncrement = (2 * Math.PI) / numRunas;
-
-  const reloadGame = () => {
-    setRound(1);
-    setPlayerLives(5); // Reseta as vidas do jogador para 5
-    setPhase(1); // Reseta a fase para 1
-    setPlayerChoice(null);
-    setComputerChoice(null);
-    setResult(null);
-  };
-
-
-
-  useEffect(() => {
-    if (result === 'Game Over') {
-      reloadGame();
-    }
-  }, [result]);
+  const renderItem = ({ item }) => (
+    <TouchableOpacity
+      style={styles.runaContainer}
+      onPress={() => playGame(item)}
+      disabled={playerChoice !== null}
+    >
+      <Runa elemento={item} selecionado={item === playerChoice} />
+    </TouchableOpacity>
+  );
 
   return (
     <View style={styles.container}>
       <View>
-      <Text style={styles.title}>Computador</Text>
-        <Text style={styles.choice}>{computerChoice ? computerChoice.nome : '-'}</Text>
+        <Text style={styles.title}>Computador</Text>
+        <Text style={styles.choice}>{computerChoice ? elementos[computerChoice].nome : '-'}</Text>
+        {computerChoice && (
+          <View style={[styles.runa, { backgroundColor: elementos[computerChoice].corBase }]}>
+            <Text style={styles.kanji}>{elementos[computerChoice].kanji}</Text>
+          </View>
+        )}
       </View>
+
+
 
       <View>
         <Text style={styles.title}>Rodada {round}</Text>
@@ -123,34 +125,16 @@ const Runas = () => {
         <Text style={styles.title}>Fase: {phase}</Text>
       </View>
 
-
       <View style={styles.runasContainer}>
-        <Animated.View
-          {...panResponder.panHandlers}
-          style={[styles.rodaGigante, { transform: [{ rotate: spin }] }]}
-        >
-          {Object.keys(elementos).map((elemento, index) => (
-            <TouchableOpacity
-              key={index}
-              style={[
-                styles.runaContainer,
-                {
-                  left: radius * Math.cos(angleIncrement * index + Math.PI / 2) - 50,
-                  top: radius * Math.sin(angleIncrement * index + Math.PI / 2) - 50,
-                },
-              ]}
-              onPress={() => playGame(elemento)}
-              disabled={playerChoice !== null}
-            >
-              <Runa elemento={elemento} selecionado={elemento === playerChoice} />
-            </TouchableOpacity>
-          ))}
-        </Animated.View>
-        <View style={styles.mesa}></View>
+        <Carousel
+          data={Object.keys(elementos)}
+          renderItem={renderItem}
+          sliderWidth={screenWidth}
+          itemWidth={100} // Ajuste conforme necessário
+        />
       </View>
     </View>
   );
-
 };
 
 const brightenColor = (color, percent) => {
@@ -170,13 +154,13 @@ const styles = StyleSheet.create({
   container: {
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'space-evenly',
     alignItems: 'center',
-    flex: 1,
+    flex: 1, // Adicionado
   },
   runasContainer: {
     flexDirection: 'column',
     alignItems: 'center',
+    flex: 1, // Adicionado
   },
   rodaGigante: {
     flexDirection: 'row',
@@ -193,7 +177,8 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   runaContainer: {
-    position: 'absolute',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   runa: {
     width: 100,
@@ -215,5 +200,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
+
 
 export default Runas;

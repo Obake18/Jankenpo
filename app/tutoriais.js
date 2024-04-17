@@ -13,7 +13,7 @@ const Tutorial = ({ navigation }) => {
     'Fogo (Katon) -> Vento (Fuuton) -> Trovão (Raiton) -> Terra (Doton) -> Água (Suiton) -> Fogo (Katon)',
     'Isso significa que Fogo vence Vento, Vento vence Trovão, Trovão vence Terra, Terra vence Água, e Água vence Fogo.',
     'Durante cada rodada do jogo, você e o computador escolherão um elemento. Se o seu elemento vencer o elemento do computador, você ganha a rodada!',
-    'Mas lembre-se : você só pode perder cinco vezes. . . '
+    'Mas lembre-se : você só pode perder cinco vezes . . . ',
     'Lembre-se, a estratégia é a chave para a vitória!',
     'Boa sorte e divirta-se jogando!'
   ];
