@@ -3,7 +3,6 @@ import { View, Text, StyleSheet, TouchableOpacity, Animated, PanResponder, Butto
 import { elementos } from './elementos';
 import { useNavigation } from '@react-navigation/native';
 import Carousel from 'react-native-snap-carousel'; // Adicione esta biblioteca
-import { ViewPropTypes } from 'deprecated-react-native-prop-types';
 
 
 // Obtenha as dimensões da tela
@@ -49,15 +48,16 @@ const Runas = () => {
   const randomComputerChoice = () => {
     const keys = Object.keys(elementos);
     const randomIndex = Math.floor(Math.random() * keys.length);
-    return keys[randomIndex];
+    return keys[randomIndex]; // Retornar a chave aleatória
   };
+  
   
 
   const playGame = (elemento) => {
     const computer = randomComputerChoice();
     setPlayerChoice(elemento);
     setComputerChoice(computer);
-
+  
     if (!computer) {
       setResult('Erro ao selecionar a escolha do computador.');
       return;
@@ -131,11 +131,15 @@ const Runas = () => {
           renderItem={renderItem}
           sliderWidth={screenWidth}
           itemWidth={100} // Ajuste conforme necessário
+          style={{ flexGrow: 1 }} // Adicione esta linha
         />
+
       </View>
     </View>
   );
 };
+
+
 
 const brightenColor = (color, percent) => {
   const bigint = parseInt(color.slice(1), 16);
