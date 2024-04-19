@@ -56,19 +56,24 @@ const Runas = () => {
   const playGame = (elemento) => {
     const computer = randomComputerChoice();
     setPlayerChoice(elemento);
-    console.log(elemento)
-    setComputerChoice(computer);
+    setComputerChoice(computer.nome);
     console.log(computer);
+    console.log(elemento);
   
     if (!computer) {
       setResult('Erro ao selecionar a escolha do computador.');
       return;
     }
-
+  
     if (elemento === computer.vence) {
+      setResult('Você ganhou!');
+      if (round % 7 === 0) { // Se o jogador ganhar 7 partidas
+        setPhase(phase + 1); // Avança para a próxima fase
+      }
+    } else {
       setResult('Você perdeu!');
       setPlayerLives(playerLives - 1); // Perde uma vida quando perde a partida
-
+  
       if (playerLives === 1) { // Se o jogador perder todas as vidas
         setResult('Game Over');
         navigation.navigate('GameOver');
@@ -76,15 +81,8 @@ const Runas = () => {
         setPlayerLives(5); // Reseta as vidas
         setPhase(1); // Reseta a fase
       }
-    } else if (elemento === computer.perde) {
-      setResult('Você ganhou!');
-      if (round % 7 === 0) { // Se o jogador ganhar 7 partidas
-        setPhase(phase + 1); // Avança para a próxima fase
-      }
-    } else {
-      setResult('Empate!');
     }
-
+  
     setRound(round + 1);
     setTimeout(() => {
       setPlayerChoice(null);
@@ -92,6 +90,7 @@ const Runas = () => {
       setResult(null);
     }, 1000);
   };
+  
 
   const renderItem = ({ item }) => (
     <TouchableOpacity
