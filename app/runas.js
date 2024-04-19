@@ -56,7 +56,9 @@ const Runas = () => {
   const playGame = (elemento) => {
     const computer = randomComputerChoice();
     setPlayerChoice(elemento);
+    console.log(elemento)
     setComputerChoice(computer);
+    console.log(computer);
   
     if (!computer) {
       setResult('Erro ao selecionar a escolha do computador.');
