@@ -62,12 +62,12 @@ const Runas = () => {
       setResult('Erro ao selecionar a escolha do computador.');
       return;
     }
-  
+    
     if (elemento === computer) {
       setResult('Empate!');
     } else if (
       (elemento === elementos[computer].vence && elementos[computer].vence !== null) ||
-      (elemento === elementos[computer].perde && elementos[computer].perde === null)
+      (elemento === elementos[computer].perde && elementos[computer].perde !== null)
     ) {
       setResult('Você ganhou!');
       if (round % 7 === 0) {
@@ -84,7 +84,7 @@ const Runas = () => {
         setPhase(1);
       }
     }
-  
+    
     setRound(round + 1);
     setTimeout(() => {
       setPlayerChoice(null);
