@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, Animated, PanResponder, Butto
 import { elementos } from './elementos';
 import { useNavigation } from '@react-navigation/native';
 import Carousel from 'react-native-snap-carousel'; // Adicione esta biblioteca
+import { ViewPropTypes } from 'deprecated-react-native-prop-types';
 
 
 // Obtenha as dimensões da tela
@@ -48,38 +49,39 @@ const Runas = () => {
   const randomComputerChoice = () => {
     const keys = Object.keys(elementos);
     const randomIndex = Math.floor(Math.random() * keys.length);
-    return keys[randomIndex]; // Retornar a chave aleatória
+    return keys[randomIndex];
   };
-  
   
 
   const playGame = (elemento) => {
     const computer = randomComputerChoice();
     setPlayerChoice(elemento);
-    setComputerChoice(computer.nome);
-    console.log(computer);
-    console.log(elemento);
+    setComputerChoice(computer);
   
     if (!computer) {
       setResult('Erro ao selecionar a escolha do computador.');
       return;
     }
   
-    if (elemento === computer.vence) {
+    if (elemento === computer) {
+      setResult('Empate!');
+    } else if (
+      (elemento === elementos[computer].vence && elementos[computer].vence !== null) ||
+      (elemento === elementos[computer].perde && elementos[computer].perde === null)
+    ) {
       setResult('Você ganhou!');
-      if (round % 7 === 0) { // Se o jogador ganhar 7 partidas
-        setPhase(phase + 1); // Avança para a próxima fase
+      if (round % 7 === 0) {
+        setPhase(phase + 1);
       }
     } else {
       setResult('Você perdeu!');
-      setPlayerLives(playerLives - 1); // Perde uma vida quando perde a partida
-  
-      if (playerLives === 1) { // Se o jogador perder todas as vidas
+      setPlayerLives(playerLives - 1);
+      if (playerLives === 1) {
         setResult('Game Over');
         navigation.navigate('GameOver');
         setRound(1);
-        setPlayerLives(5); // Reseta as vidas
-        setPhase(1); // Reseta a fase
+        setPlayerLives(5);
+        setPhase(1);
       }
     }
   
@@ -132,15 +134,11 @@ const Runas = () => {
           renderItem={renderItem}
           sliderWidth={screenWidth}
           itemWidth={100} // Ajuste conforme necessário
-          style={{ flexGrow: 1 }} // Adicione esta linha
         />
-
       </View>
     </View>
   );
 };
-
-
 
 const brightenColor = (color, percent) => {
   const bigint = parseInt(color.slice(1), 16);
