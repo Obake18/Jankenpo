@@ -3,7 +3,6 @@ import { View, Text, StyleSheet, TouchableOpacity, Animated, PanResponder, Butto
 import { elementos } from './elementos';
 import { useNavigation } from '@react-navigation/native';
 import Carousel from 'react-native-snap-carousel'; // Adicione esta biblioteca
-import { ViewPropTypes } from 'deprecated-react-native-prop-types';
 
 
 // Obtenha as dimensões da tela
