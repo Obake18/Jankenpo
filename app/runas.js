@@ -65,15 +65,12 @@ const Runas = () => {
     
     if (elemento === computer) {
       setResult('Empate!');
-    } else if (
-      (elemento === elementos[computer].vence && elementos[computer].vence !== null) ||
-      (elemento === elementos[computer].perde && elementos[computer].perde !== null)
-    ) {
+    } else if (elementos[elemento].vence === computer) {
       setResult('Você ganhou!');
       if (round % 7 === 0) {
         setPhase(phase + 1);
       }
-    } else {
+    } else if (elementos[elemento].perde === computer) {
       setResult('Você perdeu!');
       setPlayerLives(playerLives - 1);
       if (playerLives === 1) {
@@ -85,14 +82,16 @@ const Runas = () => {
       }
     }
     
-    setRound(round + 1);
+   setRound(round + 1);
     setTimeout(() => {
       setPlayerChoice(null);
       setComputerChoice(null);
       setResult(null);
     }, 1000);
-  };
+  };    
+
   
+ 
 
   const renderItem = ({ item }) => (
     <TouchableOpacity
