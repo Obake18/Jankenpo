@@ -69,7 +69,7 @@ const Runas = () => {
       if (round % 7 === 0) {
         setPhase(phase + 1);
       }
-    } else if (elementos[elemento].perde === computer) {
+    } else if (elementos[computer].vence === elemento) {
       setResult('Você perdeu!');
       setPlayerLives(playerLives - 1);
       if (playerLives === 1) {
@@ -81,13 +81,14 @@ const Runas = () => {
       }
     }
     
-   setRound(round + 1);
+    setRound(round + 1);
     setTimeout(() => {
       setPlayerChoice(null);
       setComputerChoice(null);
       setResult(null);
     }, 1000);
-  };    
+  };
+  
 
   
  
