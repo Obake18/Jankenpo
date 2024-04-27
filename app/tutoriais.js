@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { View, ImageBackground, Text, TouchableOpacity, StyleSheet, Image, TouchableWithoutFeedback } from 'react-native';
 
 const Tutorial = ({ navigation }) => {
   const [step, setStep] = useState(0);
@@ -26,71 +26,83 @@ const Tutorial = ({ navigation }) => {
     }
   };
 
+  const prevStep = () => {
+    if (step > 0) {
+      setStep(step - 1);
+    }
+  };
+
   return (
-    <View style={styles.container}>
-      <View style={styles.characterContainer}>
-        <Image source={require('../assets/imagens/Shanti.png')} style={styles.character} />
-        <View style={styles.balloonContainer}>
-          <Text style={styles.balloon}>{steps[step]}</Text>
-        </View>
+    <ImageBackground source={require('../assets/imagens/pergaminho.png')} style={styles.background}>
+      <View style={styles.container}>
+        <TouchableWithoutFeedback onPress={nextStep}>
+          <View style={styles.characterContainer}>
+            <Image source={require('../assets/imagens/Shanti.png')} style={styles.character} />
+            <View style={styles.balloonContainer}>
+              <Text style={styles.balloon}>{steps[step]}</Text>
+            </View>
+          </View>
+        </TouchableWithoutFeedback>
+        <TouchableOpacity style={styles.button} onPress={prevStep}>
+          <Text style={styles.buttonText}>Anterior</Text>
+        </TouchableOpacity>
       </View>
-      <TouchableOpacity style={styles.button} onPress={nextStep}>
-        <Text style={styles.buttonText}>Próximo</Text>
-      </TouchableOpacity>
-    </View>
+    </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      justifyContent: 'flex-end',
-      alignItems: 'center',
-      backgroundColor: '#F5DEB3',
-      padding: 20,
-    },
-    characterContainer: {
-      alignSelf: 'flex-start',
-      position: 'absolute',
-      bottom: 20,
-      left: 20,
-      flexDirection: 'row',
-      alignItems: 'center',
-    },
-    character: {
-      width: 280,
-      height: 280,
-    },
-    balloonContainer: {
-      marginLeft: 5,
-      maxWidth: '85%',
-      padding: 10,
-      backgroundColor: 'white',
-      borderRadius: 10,
-      shadowColor: '#000',
-      shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 0.25,
-      shadowRadius: 3.84,
-      elevation: 5,
-    },
-    balloon: {
-      fontSize: 18,
-    },
-    button: {
-      backgroundColor: '#8B4513',
-      padding: 10,
-      borderRadius: 5,
-      marginTop: 20,
-      alignSelf: 'flex-end',
-      position: 'absolute',
-      bottom: 20,
-      right: 20,
-    },
-    buttonText: {
-      color: 'white',
-      fontSize: 16,
-    },
-  });
-  
+  background: {
+    flex: 1,
+    resizeMode: 'cover',
+    justifyContent: 'center',
+  },
+  container: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    padding: 20,
+  },
+  characterContainer: {
+    position: 'absolute',
+    bottom: 20,
+    left: 20,
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+  },
+  character: {
+    width: 280,
+    height: 280,
+  },
+  balloonContainer: {
+    marginLeft: 5,
+    maxWidth: '85%',
+    padding: 10,
+    backgroundColor: 'white',
+    borderRadius: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  balloon: {
+    fontSize: 18,
+  },
+  button: {
+    backgroundColor: '#8B4513',
+    padding: 10,
+    borderRadius: 5,
+    marginTop: 20,
+    alignSelf: 'flex-end',
+    position: 'absolute',
+    bottom: 20,
+    right: 20,
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 16,
+  },
+});
 
 export default Tutorial;

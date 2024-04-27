@@ -108,7 +108,7 @@ const Runas = () => {
 
   return (
     <View style={styles.container}>
-      <View>
+      <View style={styles.topSection}>
         <Text style={styles.title}>Computador</Text>
         <Text style={styles.choice}>{computerChoice ? elementos[computerChoice].nome : '-'}</Text>
         {computerChoice && (
@@ -118,25 +118,21 @@ const Runas = () => {
         )}
       </View>
 
-      <View>
+      <View style={styles.middleSection}>
         <Text style={styles.title}>Rodada {round}</Text>
-      </View>
-      <View>
         <Text style={styles.resultText}>{result}</Text>
-
         <Text style={styles.title}>Vidas: {'❤️'.repeat(playerLives)}</Text>
         <Text style={styles.title}>Fase: {phase}</Text>
       </View>
 
       <View style={styles.runasContainer}>
-        {/* Alteração: Carrossel de seleção de runas abaixo, usando flexbox */}
         <Carousel
           data={Object.keys(elementos)}
           renderItem={renderItem}
           sliderWidth={screenWidth}
-          itemWidth={screenWidth / 3} // Ajuste para exibir 3 itens por vez
-          activeSlideAlignment={'center'} // Alinha o slide ativo (destacado) ao centro
-          firstItem={activeIndex} // Defina o primeiro item para a runa escolhida
+          itemWidth={screenWidth / 3}
+          activeSlideAlignment={'center'}
+          firstItem={activeIndex}
         />
       </View>
     </View>
@@ -165,26 +161,23 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   topSection: {
+    flex: 1,
+    justifyContent: 'flex-end',
     alignItems: 'center',
-    marginBottom: 20,
+    width: '100%',
   },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 10,
-  },
-  choice: {
-    fontSize: 18,
+  middleSection: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
   },
   runasContainer: {
     flex: 1,
     width: '100%',
-    justifyContent: 'flex-end',
+    justifyContent: 'flex-start',
   },
-  runaContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
+  
   runa: {
     width: 100,
     height: 100,
