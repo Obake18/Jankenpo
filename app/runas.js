@@ -33,6 +33,8 @@ const Runas = () => {
   const [playerLives, setPlayerLives] = useState(5); // Inicia com 5 vidas
   const [phase, setPhase] = useState(1); // Inicia na fase 1
   const spinValue = useRef(new Animated.Value(0)).current;
+  const [activeIndex, setActiveIndex] = useState(0);
+
 
   const panResponder = useRef(
     PanResponder.create({
@@ -50,18 +52,19 @@ const Runas = () => {
     const randomIndex = Math.floor(Math.random() * keys.length);
     return keys[randomIndex];
   };
-  
+
 
   const playGame = (elemento) => {
     const computer = randomComputerChoice();
     setPlayerChoice(elemento);
     setComputerChoice(computer);
-  
+    setActiveIndex(Object.keys(elementos).indexOf(elemento));
+
     if (!computer) {
       setResult('Erro ao selecionar a escolha do computador.');
       return;
     }
-    
+
     if (elemento === computer) {
       setResult('Empate!');
     } else if (elementos[elemento].vence === computer || elementos[computer].perde === elemento) {
@@ -69,7 +72,7 @@ const Runas = () => {
       if (round % 7 === 0) {
         setPhase(phase + 1);
       }
-    } else if (elementos[computer].vence === elemento  || elementos[elemento].perde === computer) {
+    } else if (elementos[computer].vence === elemento || elementos[elemento].perde === computer) {
       setResult('Você perdeu!');
       setPlayerLives(playerLives - 1);
       if (playerLives === 1) {
@@ -80,7 +83,7 @@ const Runas = () => {
         setPhase(1);
       }
     }
-    
+
     setRound(round + 1);
     setTimeout(() => {
       setPlayerChoice(null);
@@ -88,10 +91,10 @@ const Runas = () => {
       setResult(null);
     }, 2000);
   };
-  
 
-  
- 
+
+
+
 
   const renderItem = ({ item }) => (
     <TouchableOpacity
@@ -115,8 +118,6 @@ const Runas = () => {
         )}
       </View>
 
-
-
       <View>
         <Text style={styles.title}>Rodada {round}</Text>
       </View>
@@ -128,15 +129,19 @@ const Runas = () => {
       </View>
 
       <View style={styles.runasContainer}>
+        {/* Alteração: Carrossel de seleção de runas abaixo, usando flexbox */}
         <Carousel
           data={Object.keys(elementos)}
           renderItem={renderItem}
           sliderWidth={screenWidth}
-          itemWidth={100} // Ajuste conforme necessário
+          itemWidth={screenWidth / 3} // Ajuste para exibir 3 itens por vez
+          activeSlideAlignment={'center'} // Alinha o slide ativo (destacado) ao centro
+          firstItem={activeIndex} // Defina o primeiro item para a runa escolhida
         />
       </View>
     </View>
   );
+
 };
 
 const brightenColor = (color, percent) => {
@@ -154,21 +159,14 @@ const brightenColor = (color, percent) => {
 
 const styles = StyleSheet.create({
   container: {
-    display: 'flex',
-    flexDirection: 'column',
+    flex: 1,
+    justifyContent: 'space-between',
     alignItems: 'center',
-    flex: 1, // Adicionado
+    padding: 20,
   },
-  runasContainer: {
-    flexDirection: 'column',
+  topSection: {
     alignItems: 'center',
-    flex: 1, // Adicionado
-  },
-  rodaGigante: {
-    flexDirection: 'row',
-  },
-  mesa: {
-    marginBottom: 0,
+    marginBottom: 20,
   },
   title: {
     fontSize: 20,
@@ -177,6 +175,11 @@ const styles = StyleSheet.create({
   },
   choice: {
     fontSize: 18,
+  },
+  runasContainer: {
+    flex: 1,
+    width: '100%',
+    justifyContent: 'flex-end',
   },
   runaContainer: {
     justifyContent: 'center',
@@ -193,9 +196,6 @@ const styles = StyleSheet.create({
   kanji: {
     fontSize: 20,
     color: '#fff',
-  },
-  resultContainer: {
-    marginTop: 20,
   },
   resultText: {
     fontSize: 24,
