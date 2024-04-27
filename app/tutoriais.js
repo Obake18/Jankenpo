@@ -34,20 +34,21 @@ const Tutorial = ({ navigation }) => {
 
   return (
     <ImageBackground source={require('../assets/imagens/pergaminho.png')} style={styles.background}>
-      <View style={styles.container}>
-        <TouchableWithoutFeedback onPress={nextStep}>
-          <View style={styles.characterContainer}>
-            <Image source={require('../assets/imagens/Shanti.png')} style={styles.character} />
-            <View style={styles.balloonContainer}>
-              <Text style={styles.balloon}>{steps[step]}</Text>
-            </View>
-          </View>
-        </TouchableWithoutFeedback>
-        <TouchableOpacity style={styles.button} onPress={prevStep}>
-          <Text style={styles.buttonText}>Anterior</Text>
-        </TouchableOpacity>
+    <View style={styles.container}>
+      <View style={styles.characterContainer}>
+        <Image source={require('../assets/imagens/Shanti.png')} style={styles.character} />
       </View>
-    </ImageBackground>
+      <TouchableWithoutFeedback onPress={nextStep}>
+        <View style={styles.balloonContainer}>
+          <Text style={styles.balloon}>{steps[step]}</Text>
+        </View>
+      </TouchableWithoutFeedback>
+      <TouchableOpacity style={styles.button} onPress={prevStep}>
+        <Text style={styles.buttonText}>Anterior</Text>
+      </TouchableOpacity>
+    </View>
+  </ImageBackground>
+
   );
 };
 
@@ -65,17 +66,18 @@ const styles = StyleSheet.create({
   },
   characterContainer: {
     position: 'absolute',
-    bottom: 20,
-    left: 20,
+    bottom: '0%', // Ajuste para mover a personagem para cima
+    left: '0%', // Ajuste para mover a personagem para a direita
     flexDirection: 'row',
     alignItems: 'flex-end',
   },
   character: {
-    width: 280,
-    height: 280,
+    width: 380,
+    height: 380,
   },
   balloonContainer: {
-    marginLeft: 5,
+    bottom:'40%',
+    marginLeft: 85,
     maxWidth: '85%',
     padding: 10,
     backgroundColor: 'white',
