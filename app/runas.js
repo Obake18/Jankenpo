@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Animated, PanResponder, Button, Dimensions } from 'react-native';
+import { Image, View, Text, StyleSheet, TouchableOpacity, Animated, PanResponder, Button, Dimensions } from 'react-native';
 import { elementos } from './elementos';
 import { useNavigation } from '@react-navigation/native';
 import Carousel from 'react-native-snap-carousel'; // Adicione esta biblioteca
@@ -108,16 +108,15 @@ const Runas = () => {
 
   return (
     <View style={styles.container}>
+      <Image source={require('../assets/imagens/mesa.png')} style={styles.mesa} />
+      <Image source={require('../assets/imagens/mara.png')} style={styles.robo} />
       <View style={styles.topSection}>
-        <Text style={styles.title}>Computador</Text>
-        <Text style={styles.choice}>{computerChoice ? elementos[computerChoice].nome : '-'}</Text>
-        {computerChoice && (
-          <View style={[styles.runa, { backgroundColor: elementos[computerChoice].corBase }]}>
-            <Text style={styles.kanji}>{elementos[computerChoice].kanji}</Text>
-          </View>
-        )}
-      </View>
-
+  {computerChoice && (
+    <View style={[styles.runa, { backgroundColor: elementos[computerChoice].corBase, position: 'absolute', top: '70%', left: '50%', transform: [{ translateX: -50 }, { translateY: -50 }] }]}>
+      <Text style={styles.kanji}>{elementos[computerChoice].kanji}</Text>
+    </View>
+  )}
+</View>
       <View style={styles.middleSection}>
         <Text style={styles.title}>Rodada {round}</Text>
         <Text style={styles.resultText}>{result}</Text>
@@ -137,7 +136,6 @@ const Runas = () => {
       </View>
     </View>
   );
-
 };
 
 const brightenColor = (color, percent) => {
@@ -166,6 +164,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
   },
+  mesa: {
+    marginTop:'40%',
+    position: 'absolute',
+    objectFit:'contain'
+  },
+  robo: {
+    marginTop:'15%',
+    objectFit:'contain',
+    position: 'absolute',
+  },
   middleSection: {
     flex: 1,
     justifyContent: 'center',
@@ -173,9 +181,8 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   runasContainer: {
-    flex: 1,
     width: '100%',
-    justifyContent: 'flex-start',
+    justifyContent: 'flex-end',
   },
   
   runa: {
