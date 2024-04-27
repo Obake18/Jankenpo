@@ -86,13 +86,14 @@ const Runas = () => {
       setWinStreak(0); // Reset the win streak on a loss
       setPlayerLives(playerLives - 1);
         // Se o jogador não tiver mais vidas, termina o jogo e reseta tudo
-    if (playerLives - 1 === 0) {
-      setResult('Game Over');
-      navigation.navigate('GameOver');
-      setRound(1);
-      setPlayerLives(5);
-      setPhase(1);
-    }
+        if (playerLives - 1 === 0) {
+          setResult('Game Over');
+          resetGame(); // Chame resetGame antes de navegar
+          navigation.navigate('GameOver');
+        }
+        
+
+    
   
     } else {
       setResult('Reação desconhecida! Próxima rodada!!')
