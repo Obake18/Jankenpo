@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, ImageBackground, Text, TouchableOpacity, StyleSheet, Image, TouchableWithoutFeedback } from 'react-native';
+import { View, ImageBackground, Text, TouchableOpacity, StyleSheet, Image, TouchableWithoutFeedback, PermissionsAndroid } from 'react-native';
 
 const Tutorial = ({ navigation }) => {
   const [step, setStep] = useState(0);
@@ -32,23 +32,47 @@ const Tutorial = ({ navigation }) => {
     }
   };
 
+  const requestFilePermission = async () => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+        {
+          title: 'Permissão de Acesso aos Arquivos',
+          message: 'Este aplicativo precisa de permissão para acessar seus arquivos.',
+          buttonNeutral: 'Pergunte-me depois',
+          buttonNegative: 'Cancelar',
+          buttonPositive: 'OK',
+        },
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        console.log('Permissão para acessar arquivos concedida');
+      } else {
+        console.log('Permissão para acessar arquivos negada');
+      }
+    } catch (err) {
+      console.warn(err);
+    }
+  };
+
   return (
     <ImageBackground source={require('../assets/imagens/pergaminho.png')} style={styles.background}>
-    <View style={styles.container}>
-      <View style={styles.characterContainer}>
-        <Image source={require('../assets/imagens/Shanti.png')} style={styles.character} />
-      </View>
-      <TouchableWithoutFeedback onPress={nextStep}>
-        <View style={styles.balloonContainer}>
-          <Text style={styles.balloon}>{steps[step]}</Text>
+      <View style={styles.container}>
+        <View style={styles.characterContainer}>
+          <Image source={require('../assets/imagens/Shanti.png')} style={styles.character} />
         </View>
-      </TouchableWithoutFeedback>
-      <TouchableOpacity style={styles.button} onPress={prevStep}>
-        <Text style={styles.buttonText}>Anterior</Text>
-      </TouchableOpacity>
-    </View>
-  </ImageBackground>
-
+        <TouchableWithoutFeedback onPress={nextStep}>
+          <View style={styles.balloonContainer}>
+            <Text style={styles.balloon}>{steps[step]}</Text>
+          </View>
+        </TouchableWithoutFeedback>
+        <TouchableOpacity style={styles.button} onPress={prevStep}>
+          <Text style={styles.buttonText}>Anterior</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={requestFilePermission}>
+          <Text style={styles.buttonText}>Permissão de Arquivos</Text>
+        </TouchableOpacity>
+      </View>
+    </ImageBackground>
   );
 };
 
@@ -76,7 +100,7 @@ const styles = StyleSheet.create({
     height: 380,
   },
   balloonContainer: {
-    bottom:'40%',
+    bottom: '40%',
     marginLeft: 85,
     maxWidth: '85%',
     padding: 10,

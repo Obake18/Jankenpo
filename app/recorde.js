@@ -17,15 +17,18 @@ const Recorde = ({ navigation }) => {
       const recordData = await AsyncStorage.getItem('@recordData');
       if (recordData !== null) {
         const { maxWins, lastPlayerChoice, lastComputerChoice, mostChosenElements } = JSON.parse(recordData);
-        setMaxWins(maxWins);
+        setMaxWins(maxWins || 0); // Add null-check and fallback value
         setLastPlayerChoice(lastPlayerChoice);
         setLastComputerChoice(lastComputerChoice);
-        setMostChosenElements(mostChosenElements);
+        setMostChosenElements(mostChosenElements || {}); // Add null-check and fallback value
+      } else {
+        // Handle case where record data is null
       }
     } catch (error) {
       console.error('Erro ao carregar o recorde:', error);
     }
   };
+  
 
   const navigateBackToGame = () => {
     navigation.navigate('Jogo');
