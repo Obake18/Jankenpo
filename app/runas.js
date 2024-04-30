@@ -2,7 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Image, View, Text, StyleSheet, TouchableOpacity, Animated, PanResponder, Button, Dimensions } from 'react-native';
 import { elementos } from './elementos';
 import { useNavigation } from '@react-navigation/native';
-import Carousel from 'react-native-snap-carousel'; // Adicione esta biblioteca
+import Carousel from 'react-native-snap-carousel';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 // Obtenha as dimensões da tela
@@ -36,6 +37,38 @@ const Runas = () => {
   const [winStreak, setWinStreak] = useState(0);
   const [record, setRecord] = useState({ phase: 1, playerElement: null, computerElement: null, round: 1 });
 
+  useEffect(() => {
+    // Ao iniciar o componente, carregue os dados do jogo
+    loadGame();
+  }, []);
+
+  useEffect(() => {
+    // Sempre que houver uma mudança nos dados do jogo, salve-os
+    saveGame();
+  }, [round, playerLives, phase, record]);
+
+  const saveGame = async () => {
+    try {
+      await AsyncStorage.setItem('@gameData', JSON.stringify({ round, playerLives, phase, record }));
+    } catch (error) {
+      console.error('Erro ao salvar os dados do jogo:', error);
+    }
+  };
+
+  const loadGame = async () => {
+    try {
+      const gameData = await AsyncStorage.getItem('@gameData');
+      if (gameData !== null) {
+        const { round, playerLives, phase, record } = JSON.parse(gameData);
+        setRound(round);
+        setPlayerLives(playerLives);
+        setPhase(phase);
+        setRecord(record);
+      }
+    } catch (error) {
+      console.error('Erro ao carregar os dados do jogo:', error);
+    }
+  };
 
   const resetGame = () => {
     setRound(1);
@@ -89,7 +122,7 @@ const Runas = () => {
         if (playerLives - 1 === 0) {
           setResult('Game Over');
           resetGame(); // Chame resetGame antes de navegar
-          navigation.navigate('GameOver');
+          navigation.navigate('GameOver')
         }
         
 

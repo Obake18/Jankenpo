@@ -1,5 +1,3 @@
-// GameOver.js
-
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
@@ -9,12 +7,20 @@ const GameOver = ({ navigation }) => {
     navigation.navigate('Jogo');
   };
 
+  const goToRecords = () => {
+    // Navegar para a tela de recordes
+    navigation.navigate('Recorde');
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Game Over!</Text>
-      <Text style={styles.message}>As runas não estavam ao seu lado desta vez. . . </Text>
+      <Text style={styles.message}>As runas não estavam ao seu lado desta vez...</Text>
       <TouchableOpacity style={styles.button} onPress={reloadGame}>
         <Text style={styles.buttonText}>Tentar Novamente!</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.recordsButton} onPress={goToRecords}>
+        <Text style={styles.buttonText}>Ver Recordes</Text>
       </TouchableOpacity>
     </View>
   );
@@ -40,6 +46,13 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: '#8B4513', // Cor terrosa
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 10,
+    marginBottom: 10,
+  },
+  recordsButton: {
+    backgroundColor: '#4682B4', // Cor azul aço
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 10,
