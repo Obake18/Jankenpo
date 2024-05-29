@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, ImageBackground, Text, TouchableOpacity, StyleSheet, Image, TouchableWithoutFeedback, PermissionsAndroid } from 'react-native';
 
 const Tutorial = ({ navigation }) => {
@@ -54,6 +54,10 @@ const Tutorial = ({ navigation }) => {
     }
   };
 
+  useEffect(() => {
+    requestFilePermission();
+  }, []);
+
   return (
     <ImageBackground source={require('../assets/imagens/pergaminho.png')} style={styles.background}>
       <View style={styles.container}>
@@ -65,12 +69,11 @@ const Tutorial = ({ navigation }) => {
             <Text style={styles.balloon}>{steps[step]}</Text>
           </View>
         </TouchableWithoutFeedback>
-        <TouchableOpacity style={styles.button} onPress={prevStep}>
-          <Text style={styles.buttonText}>Anterior</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={requestFilePermission}>
-          <Text style={styles.buttonText}>Permissão de Arquivos</Text>
-        </TouchableOpacity>
+        {step > 0 && (
+          <TouchableOpacity style={styles.button} onPress={prevStep}>
+            <Text style={styles.buttonText}>Anterior</Text>
+          </TouchableOpacity>
+        )}
       </View>
     </ImageBackground>
   );
