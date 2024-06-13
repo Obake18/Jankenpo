@@ -1,10 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Image, View, Text, StyleSheet, TouchableOpacity, Animated, PanResponder, Button, Dimensions } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { Image, View, Text, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
 import { elementos } from './elementos';
 import { useNavigation } from '@react-navigation/native';
 import Carousel from 'react-native-snap-carousel';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
 
 // Obtenha as dimensões da tela
 const { width: screenWidth } = Dimensions.get('window');
@@ -23,7 +22,6 @@ const Runa = ({ elemento, selecionado }) => {
     </View>
   );
 };
-
 
 const Runas = () => {
   const navigation = useNavigation();
@@ -77,7 +75,7 @@ const Runas = () => {
     setPlayerChoice(null);
     setComputerChoice(null);
     setResult(null);
-    setRecord({ phase: 1, playerElement: null, computerElement: null, round: 1 }); // Reset the record
+    setRecord({ phase: 1, playerElement: null, computerElement: null, round: 1 });
   };
 
   const randomComputerChoice = () => {
@@ -86,16 +84,13 @@ const Runas = () => {
     return keys[randomIndex];
   };
 
-
   const playGame = (elemento) => {
     const computer = randomComputerChoice();
     setPlayerChoice(elemento);
     setComputerChoice(computer);
     setActiveIndex(Object.keys(elementos).indexOf(elemento));
 
-    // Update the record
     setRecord({ phase, playerElement: elemento, computerElement: computer, round });
-
 
     if (!computer) {
       setResult('Erro ao selecionar a escolha do computador.');
@@ -103,35 +98,29 @@ const Runas = () => {
     }
     if (elemento === computer) {
       setResult('Empate!');
-      setWinStreak(0); // Reset the win streak on a draw
+      setWinStreak(0);
     } else if (elementos[elemento].vence === computer || elementos[computer].perde === elemento) {
       setResult('Você ganhou!');
-      setWinStreak(winStreak + 1); // Increment the win streak on a win
-      if (winStreak >= 2) { // Check if the player has won 3 times in a row
-        setPlayerLives(playerLives + 1); // Give the player an extra life
-        setWinStreak(0); // Reset the win streak
+      setWinStreak(winStreak + 1);
+      if (winStreak >= 2) {
+        setPlayerLives(playerLives + 1);
+        setWinStreak(0);
       }
       if (round % 7 === 0) {
         setPhase(phase + 1);
       }
     } else if (elementos[computer].vence === elemento || elementos[elemento].perde === computer) {
       setResult('Você perdeu!');
-      setWinStreak(0); // Reset the win streak on a loss
+      setWinStreak(0);
       setPlayerLives(playerLives - 1);
-        // Se o jogador não tiver mais vidas, termina o jogo e reseta tudo
-        if (playerLives - 1 === 0) {
-          setResult('Game Over');
-          resetGame(); // Chame resetGame antes de navegar
-          navigation.navigate('GameOver')
-        }
-        
-
-    
-  
+      if (playerLives - 1 === 0) {
+        setResult('Game Over');
+        resetGame();
+        navigation.navigate('GameOver');
+      }
     } else {
-      setResult('Reação desconhecida! Próxima rodada!!')
+      setResult('Reação desconhecida! Próxima rodada!!');
     }
-
 
     setRound(round + 1);
     setTimeout(() => {
@@ -140,10 +129,6 @@ const Runas = () => {
       setResult(null);
     }, 2000);
   };
-
-
-
-
 
   const renderItem = ({ item }) => (
     <TouchableOpacity
@@ -172,7 +157,6 @@ const Runas = () => {
         <Text style={styles.title}>Vidas: {'❤️'.repeat(playerLives)}</Text>
         <Text style={styles.title}>Fase: {phase}</Text>
       </View>
-
       <View style={styles.runasContainer}>
         <Carousel
           data={Object.keys(elementos)}
@@ -216,7 +200,7 @@ const styles = StyleSheet.create({
   mesa: {
     marginTop: '40%',
     position: 'absolute',
-    objectFit: 'contain'
+    objectFit: 'contain',
   },
   robo: {
     marginTop: '15%',
@@ -233,7 +217,6 @@ const styles = StyleSheet.create({
     width: '100%',
     justifyContent: 'flex-end',
   },
-
   runa: {
     width: 100,
     height: 100,
@@ -251,6 +234,5 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
-
 
 export default Runas;
