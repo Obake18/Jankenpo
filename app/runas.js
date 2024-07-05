@@ -47,7 +47,8 @@ const Runas = () => {
 
   const saveGame = async () => {
     try {
-      await AsyncStorage.setItem('@gameData', JSON.stringify({ round, playerLives, phase, record }));
+      const dataToSave = JSON.stringify({ round, playerLives, phase, record });
+      await AsyncStorage.setItem('@gameData', dataToSave);
     } catch (error) {
       console.error('Erro ao salvar os dados do jogo:', error);
     }

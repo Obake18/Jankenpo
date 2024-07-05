@@ -13,8 +13,8 @@ const Tutorial = ({ navigation }) => {
     'Fogo (Katon) -> Vento (Fuuton) -> Trovão (Raiton) -> Terra (Doton) -> Água (Suiton) -> Fogo (Katon)',
     'Isso significa que Fogo vence Vento, Vento vence Trovão, Trovão vence Terra, Terra vence Água, e Água vence Fogo.',
     'Durante cada rodada do jogo, você e o computador escolherão um elemento. Se o seu elemento vencer o elemento do computador, você ganha a rodada!',
-    'Mas lembre-se : você só pode perder cinco vezes . . . ',
-    'Lembre-se, a estratégia é a chave para a vitória!',
+    'Mas atente-se: você só pode perder cinco vezes...',
+    'Lembre-se, a estratégia e a sorte são as chaves para a vitória!',
     'Boa sorte e divirta-se jogando!'
   ];
 
@@ -35,14 +35,7 @@ const Tutorial = ({ navigation }) => {
   const requestFilePermission = async () => {
     try {
       const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
-        {
-          title: 'Permissão de Acesso aos Arquivos',
-          message: 'Este aplicativo precisa de permissão para acessar seus arquivos.',
-          buttonNeutral: 'Pergunte-me depois',
-          buttonNegative: 'Cancelar',
-          buttonPositive: 'OK',
-        },
+        PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE
       );
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
         console.log('Permissão para acessar arquivos concedida');
@@ -93,8 +86,8 @@ const styles = StyleSheet.create({
   },
   characterContainer: {
     position: 'absolute',
-    bottom: '0%', // Ajuste para mover a personagem para cima
-    left: '0%', // Ajuste para mover a personagem para a direita
+    bottom: '0%',
+    left: '0%',
     flexDirection: 'row',
     alignItems: 'flex-end',
   },
