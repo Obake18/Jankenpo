@@ -155,7 +155,7 @@ const Runas = () => {
       <View style={styles.middleSection}>
         <Text style={styles.title}>Rodada {round}</Text>
         <Text style={styles.resultText}>{result}</Text>
-        <Text style={styles.title}>Vidas: {'❤️'.repeat(playerLives)}</Text>
+        <Text style={styles.title}>HP: {'❤️'.repeat(playerLives)}</Text>
         <Text style={styles.title}>Fase: {phase}</Text>
       </View>
       <View style={styles.runasContainer}>
