@@ -16,9 +16,10 @@ const Runa = ({ elemento, selecionado }) => {
   }
 
   const borderColor = selecionado ? brightenColor(elementoObj.corBase, 0.3) : 'transparent';
+
   return (
     <View style={[styles.runa, { backgroundColor: elementoObj.corBase, borderColor }]}>
-      <Text style={styles.kanji}>{elementoObj.kanji}</Text>
+      <Image source={elementoObj.image} style={styles.image} />
     </View>
   );
 };
@@ -148,7 +149,7 @@ const Runas = () => {
       <View style={styles.topSection}>
         {computerChoice && (
           <View style={[styles.runa, { backgroundColor: elementos[computerChoice].corBase, position: 'absolute', top: '70%', left: '50%', transform: [{ translateX: -50 }, { translateY: -50 }] }]}>
-            <Text style={styles.kanji}>{elementos[computerChoice].kanji}</Text>
+            <Image source={elementos[computerChoice].image} style={styles.image} />
           </View>
         )}
       </View>
@@ -226,9 +227,10 @@ const styles = StyleSheet.create({
     borderWidth: 3,
     borderRadius: 50,
   },
-  kanji: {
-    fontSize: 20,
-    color: '#fff',
+  image: {
+    width: '80%',
+    height: '80%',
+    resizeMode: 'contain',
   },
   resultText: {
     fontSize: 24,

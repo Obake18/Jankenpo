@@ -1,5 +1,6 @@
 export const elementos = {
   Katon: {
+    image: require ('../assets/icons/fogo.png'),
     kanji: '火',
     nome: 'Fogo',
     vence: 'Fuuton',
@@ -7,20 +8,23 @@ export const elementos = {
     corBase: '#Bf0000',
   },
   Fuuton: {
+    image: require ('../assets/icons/vento.png'),
     kanji: '風',
     nome: 'Vento',
     vence: 'Raiton',
     perde: 'Doton',
-    corBase: '#abdbe3',
+    corBase: '#588083',
   },
   Raiton: {
+    image: require ('../assets/icons/trovão.png'),
     kanji: '雷',
     nome: 'Trovão',
     vence: 'Doton',
     perde: 'Fuuton',
-    corBase: '#FFD700',
+    corBase: '#B28009',
   },
   Doton: {
+    image: require ('../assets/icons/terra.png'),
     kanji: '土',
     nome: 'Terra',
     vence: 'Suiton',
@@ -28,6 +32,7 @@ export const elementos = {
     corBase: '#873e23',
   },
   Suiton: {
+    image: require ('../assets/icons/agua.png'),
     kanji: '水',
     nome: 'Água',
     vence: 'Katon',
