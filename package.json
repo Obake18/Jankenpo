@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "main": "expo-router/entry",
   "scripts": {
+    "postinstall": "patch-package",
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
@@ -17,6 +18,7 @@
     "expo-linking": "~6.3.1",
     "expo-router": "~3.5.17",
     "expo-status-bar": "~1.12.1",
+    "patch-package": "^8.0.0",
     "react": "18.2.0",
     "react-native": "0.74.3",
     "react-native-animatable": "^1.4.0",
