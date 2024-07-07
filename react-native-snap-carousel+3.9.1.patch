@@ -6,8 +6,7 @@ index dae71a3..4c1c8c1 100644
  import { Animated, Easing, FlatList, I18nManager, Platform, ScrollView, View, ViewPropTypes } from 'react-native';
  import PropTypes from 'prop-types';
  import shallowCompare from 'react-addons-shallow-compare';
-+import { ViewStyle } from 'react-native'
- import {
++import {ViewStyle} from 'react-native/Libraries/StyleSheet';
      defaultScrollInterpolator,
      stackScrollInterpolator,
 @@ -43,8 +44,16 @@ export default class Carousel extends Component {
@@ -60,7 +59,7 @@ index 5c021cf..ee5fe96 100644
  import PropTypes from 'prop-types';
  import PaginationDot from './PaginationDot';
  import styles from './Pagination.style';
-+import { ViewStyle } from 'react-native'
++import {ViewStyle} from 'react-native/Libraries/StyleSheet';
 +
  
  const IS_IOS = Platform.OS === 'ios';
@@ -110,7 +109,7 @@ index e59d196..bedbf81 100644
  import { View, Animated, Easing, TouchableOpacity, ViewPropTypes } from 'react-native';
  import PropTypes from 'prop-types';
  import styles from './Pagination.style';
-+import { ViewStyle } from 'react-native'
++import {ViewStyle} from 'react-native/Libraries/StyleSheet';
  
  export default class PaginationDot extends PureComponent {
  
@@ -149,7 +148,7 @@ index 8bc774a..c9c2578 100644
  import { View, ViewPropTypes, Image, Animated, Easing, ActivityIndicator, findNodeHandle } from 'react-native';
  import PropTypes from 'prop-types';
  import styles from './ParallaxImage.style';
-+import { ViewStyle } from 'react-native'
++import {ViewStyle} from 'react-native/Libraries/StyleSheet';
 +
  
  export default class ParallaxImage extends Component {
