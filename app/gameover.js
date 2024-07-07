@@ -1,8 +1,15 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
-const GameOver = ({ navigation }) => {
+const GameOver = ({ navigation, route }) => {
+  // A função resetGame é passada como parte das props através da navegação
+  const { resetGame } = route.params || {};
+
   const reloadGame = () => {
+    // Chamando a função resetGame recebida como prop
+    if (resetGame) {
+      resetGame();
+    }
     // Navegar de volta para a tela do jogo
     navigation.navigate('Jogo');
   };

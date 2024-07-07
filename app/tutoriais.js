@@ -32,6 +32,10 @@ const Tutorial = ({ navigation }) => {
     }
   };
 
+  const skipTutorial = () => {
+    navigation.navigate('Jogo');
+  };
+
   const requestFilePermission = async () => {
     try {
       const granted = await PermissionsAndroid.request(
@@ -63,10 +67,13 @@ const Tutorial = ({ navigation }) => {
           </View>
         </TouchableWithoutFeedback>
         {step > 0 && (
-          <TouchableOpacity style={styles.button} onPress={prevStep}>
+          <TouchableOpacity style={[styles.button, { bottom: step === 0 ? 80 : 20 }]} onPress={prevStep}>
             <Text style={styles.buttonText}>Anterior</Text>
           </TouchableOpacity>
         )}
+        <TouchableOpacity style={[styles.skipButton, { bottom: step > 0 ? 85 : 20 }]} onPress={skipTutorial}>
+          <Text style={styles.skipButtonText}>Pular Tutorial</Text>
+        </TouchableOpacity>
       </View>
     </ImageBackground>
   );
@@ -115,13 +122,23 @@ const styles = StyleSheet.create({
     backgroundColor: '#8B4513',
     padding: 10,
     borderRadius: 5,
-    marginTop: 20,
     alignSelf: 'flex-end',
     position: 'absolute',
-    bottom: 20,
     right: 20,
   },
   buttonText: {
+    color: 'white',
+    fontSize: 16,
+  },
+  skipButton: {
+    backgroundColor: '#8B4513',
+    padding: 10,
+    borderRadius: 5,
+    alignSelf: 'flex-end',
+    position: 'absolute',
+    right: 20,
+  },
+  skipButtonText: {
     color: 'white',
     fontSize: 16,
   },

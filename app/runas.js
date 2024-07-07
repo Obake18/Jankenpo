@@ -5,7 +5,6 @@ import { useNavigation } from '@react-navigation/native';
 import Carousel from 'react-native-snap-carousel';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-// Obtenha as dimensões da tela
 const { width: screenWidth } = Dimensions.get('window');
 
 const Runa = ({ elemento, selecionado }) => {
@@ -24,51 +23,56 @@ const Runa = ({ elemento, selecionado }) => {
   );
 };
 
+const LastElements = ({ lastElements }) => {
+  const { player, computer } = lastElements;
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>Últimos Elementos Jogados:</Text>
+      {player || computer ? (
+        <>
+          
+          {computer && (
+            <View style={styles.elementContainer}>
+              {elementos[computer]?.image ? (
+                <Image source={elementos[computer]?.image} style={styles.image} />
+              ) : (
+                <Text>Imagem não disponível</Text>
+              )}
+              <Text>{computer}</Text>
+            </View>
+          )}
+
+{player && (
+            <View style={styles.elementContainer}>
+              {elementos[player]?.image ? (
+                <Image source={elementos[player]?.image} style={styles.image} />
+              ) : (
+                <Text>Imagem não disponível</Text>
+              )}
+              <Text>{player}</Text>
+            </View>
+          )}
+        </>
+      ) : (
+        <Text>Nenhum elemento jogado ainda.</Text>
+      )}
+    </View>
+  );
+};
+
 const Runas = () => {
   const navigation = useNavigation();
+  const [lastElements, setLastElements] = useState({ player: null, computer: null });
   const [playerChoice, setPlayerChoice] = useState(null);
   const [computerChoice, setComputerChoice] = useState(null);
   const [result, setResult] = useState(null);
   const [round, setRound] = useState(1);
-  const [playerLives, setPlayerLives] = useState(5); // Inicia com 5 vidas
-  const [phase, setPhase] = useState(1); // Inicia na fase 1
+  const [playerLives, setPlayerLives] = useState(5);
+  const [phase, setPhase] = useState(1);
   const [activeIndex, setActiveIndex] = useState(0);
   const [winStreak, setWinStreak] = useState(0);
   const [record, setRecord] = useState({ phase: 1, playerElement: null, computerElement: null, round: 1 });
-
-  useEffect(() => {
-    // Ao iniciar o componente, carregue os dados do jogo
-    loadGame();
-  }, []);
-
-  useEffect(() => {
-    // Sempre que houver uma mudança nos dados do jogo, salve-os
-    saveGame();
-  }, [round, playerLives, phase, record]);
-
-  const saveGame = async () => {
-    try {
-      const dataToSave = JSON.stringify({ round, playerLives, phase, record });
-      await AsyncStorage.setItem('@gameData', dataToSave);
-    } catch (error) {
-      console.error('Erro ao salvar os dados do jogo:', error);
-    }
-  };
-
-  const loadGame = async () => {
-    try {
-      const gameData = await AsyncStorage.getItem('@gameData');
-      if (gameData !== null) {
-        const { round, playerLives, phase, record } = JSON.parse(gameData);
-        setRound(round);
-        setPlayerLives(playerLives);
-        setPhase(phase);
-        setRecord(record);
-      }
-    } catch (error) {
-      console.error('Erro ao carregar os dados do jogo:', error);
-    }
-  };
 
   const resetGame = () => {
     setRound(1);
@@ -78,6 +82,54 @@ const Runas = () => {
     setComputerChoice(null);
     setResult(null);
     setRecord({ phase: 1, playerElement: null, computerElement: null, round: 1 });
+    setWinStreak(0);
+    setLastElements({ player: null, computer: null });
+    AsyncStorage.removeItem('@gameData');
+
+  };
+  
+
+  useEffect(() => {
+    const loadGame = async () => {
+      try {
+        const savedData = await AsyncStorage.getItem('@gameData');
+        if (savedData) {
+          const {
+            round: savedRound,
+            playerLives: savedPlayerLives,
+            phase: savedPhase,
+            record: savedRecord,
+            winStreak: savedWinStreak,
+            lastElements: savedLastElements,
+          } = JSON.parse(savedData);
+
+          setRound(savedRound || 1);
+          setPlayerLives(savedPlayerLives || 5);
+          setPhase(savedPhase || 1);
+          setRecord(savedRecord || { phase: 1, playerElement: null, computerElement: null, round: 1 });
+          setWinStreak(savedWinStreak || 0);
+          setLastElements(savedLastElements || { player: null, computer: null });
+        }
+      } catch (error) {
+        console.error('Erro ao carregar os dados do jogo:', error);
+      }
+    };
+
+    loadGame();
+  }, []);
+
+  useEffect(() => {
+    saveGame();
+  }, [round, playerLives, phase, record, winStreak, lastElements]);
+
+  const saveGame = async () => {
+    try {
+      const dataToSave = JSON.stringify({ round, playerLives, phase, record, winStreak, lastElements });
+      await AsyncStorage.setItem('@gameData', dataToSave);
+      console.log('Dados do jogo salvos:', dataToSave);
+    } catch (error) {
+      console.error('Erro ao salvar os dados do jogo:', error);
+    }
   };
 
   const randomComputerChoice = () => {
@@ -91,9 +143,18 @@ const Runas = () => {
     setPlayerChoice(elemento);
     setComputerChoice(computer);
     setActiveIndex(Object.keys(elementos).indexOf(elemento));
-
+  
+    // Atualiza o registro
     setRecord({ phase, playerElement: elemento, computerElement: computer, round });
-
+  
+    // Atualiza os últimos elementos jogados
+    setLastElements({
+      player: elemento,    // O novo elemento do jogador
+      computer: computer,  // O novo elemento do computador
+    });
+  
+    console.log('Escolha do computador:', computer);
+  
     if (!computer) {
       setResult('Erro ao selecionar a escolha do computador.');
       return;
@@ -104,7 +165,7 @@ const Runas = () => {
     } else if (elementos[elemento].vence === computer || elementos[computer].perde === elemento) {
       setResult('Você ganhou!');
       setWinStreak(winStreak + 1);
-      if (winStreak >= 2) {
+      if (winStreak + 1 >= 2) {
         setPlayerLives(playerLives + 1);
         setWinStreak(0);
       }
@@ -117,20 +178,25 @@ const Runas = () => {
       setPlayerLives(playerLives - 1);
       if (playerLives - 1 === 0) {
         setResult('Game Over');
-        resetGame();
-        navigation.navigate('GameOver');
+        navigation.navigate('GameOver', { resetGame });
       }
     } else {
       setResult('Reação desconhecida! Próxima rodada!!');
     }
-
-    setRound(round + 1);
+  
+    setRound(prevRound => {
+      const newRound = prevRound + 1;
+      console.log('Rodada atualizada para:', newRound);
+      return newRound;
+    });
+  
     setTimeout(() => {
       setPlayerChoice(null);
       setComputerChoice(null);
       setResult(null);
     }, 2000);
   };
+  
 
   const renderItem = ({ item }) => (
     <TouchableOpacity
@@ -158,7 +224,11 @@ const Runas = () => {
         <Text style={styles.resultText}>{result}</Text>
         <Text style={styles.title}>HP: {'❤️'.repeat(playerLives)}</Text>
         <Text style={styles.title}>Fase: {phase}</Text>
+        <View style={styles.container}>
+          <LastElements lastElements={lastElements} />
+        </View>
       </View>
+
       <View style={styles.runasContainer}>
         <Carousel
           data={Object.keys(elementos)}
@@ -221,11 +291,11 @@ const styles = StyleSheet.create({
   },
   runa: {
     width: 120,
-    height: 130,
+    height: 120,
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 3,
-    borderRadius: 50,
+    borderRadius: 70,
   },
   image: {
     width: '90%',
@@ -235,6 +305,20 @@ const styles = StyleSheet.create({
   resultText: {
     fontSize: 24,
     fontWeight: 'bold',
+  },
+  lastElementsContainer: {
+    width: '60%',
+    alignItems: 'center',
+  },
+  elementContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 5,
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 10,
   },
 });
 

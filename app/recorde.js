@@ -17,18 +17,15 @@ const Recorde = ({ navigation }) => {
       const recordData = await AsyncStorage.getItem('@recordData');
       if (recordData !== null) {
         const { maxWins, lastPlayerChoice, lastComputerChoice, mostChosenElements } = JSON.parse(recordData);
-        setMaxWins(maxWins || 0); // Add null-check and fallback value
-        setLastPlayerChoice(lastPlayerChoice);
-        setLastComputerChoice(lastComputerChoice);
-        setMostChosenElements(mostChosenElements || {}); // Add null-check and fallback value
-      } else {
-        // Handle case where record data is null
+        setMaxWins(maxWins || 0);
+        setLastPlayerChoice(lastPlayerChoice || 'Nenhum');
+        setLastComputerChoice(lastComputerChoice || 'Nenhum');
+        setMostChosenElements(mostChosenElements || {});
       }
     } catch (error) {
       console.error('Erro ao carregar o recorde:', error);
     }
   };
-  
 
   const navigateBackToGame = () => {
     navigation.navigate('Jogo');
@@ -37,10 +34,6 @@ const Recorde = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Recordes</Text>
-      <Text>Máximo de Partidas Ganhas: {maxWins}</Text>
-      <Text>Último Elemento Escolhido pelo Jogador: {lastPlayerChoice}</Text>
-      <Text>Último Elemento Escolhido pelo Computador: {lastComputerChoice}</Text>
-      <Text>Elementos Mais Escolhidos:</Text>
       <View style={styles.mostChosenContainer}>
         {Object.entries(mostChosenElements).map(([elemento, frequencia]) => (
           <Text key={elemento}>{elemento}: {frequencia}</Text>
@@ -69,7 +62,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   button: {
-    backgroundColor: '#8B4513', // Cor terrosa
+    backgroundColor: '#8B4513',
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 10,
