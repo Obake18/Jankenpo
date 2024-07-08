@@ -66,6 +66,11 @@ const Tutorial = ({ navigation }) => {
             <Text style={styles.balloon}>{steps[step]}</Text>
           </View>
         </TouchableWithoutFeedback>
+        {step === 4 && (
+          <View style={styles.graphicContainer}>
+            <Image source={require('../assets/imagens/grafico.png')} style={styles.graphic} />
+          </View>
+        )}
         {step > 0 && (
           <TouchableOpacity style={[styles.button, { bottom: step === 0 ? 80 : 20 }]} onPress={prevStep}>
             <Text style={styles.buttonText}>Anterior</Text>
@@ -82,19 +87,18 @@ const Tutorial = ({ navigation }) => {
 const styles = StyleSheet.create({
   background: {
     flex: 1,
-    resizeMode: 'cover',
+    resizeMode: 'cover', // Cobrir toda a área
     justifyContent: 'center',
   },
   container: {
     flex: 1,
-    justifyContent: 'flex-end',
     alignItems: 'center',
-    padding: 20,
+    justifyContent: 'flex-end', // Manter o conteúdo alinhado ao fundo
   },
   characterContainer: {
     position: 'absolute',
-    bottom: '0%',
-    left: '0%',
+    bottom: 0,
+    left: 0,
     flexDirection: 'row',
     alignItems: 'flex-end',
   },
@@ -117,6 +121,18 @@ const styles = StyleSheet.create({
   },
   balloon: {
     fontSize: 18,
+  },
+  graphicContainer: {
+    position: 'absolute',
+    top: '20%',
+    left: '10%',
+    right: '10%',
+    alignItems: 'center',
+  },
+  graphic: {
+    width: '100%',
+    height: 200,
+    resizeMode: 'contain',
   },
   button: {
     backgroundColor: '#8B4513',

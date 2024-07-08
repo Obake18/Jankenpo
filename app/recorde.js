@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { ImageBackground, View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Recorde = ({ navigation }) => {
@@ -32,21 +32,30 @@ const Recorde = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Recordes</Text>
-      <View style={styles.mostChosenContainer}>
-        {Object.entries(mostChosenElements).map(([elemento, frequencia]) => (
-          <Text key={elemento}>{elemento}: {frequencia}</Text>
-        ))}
+    <ImageBackground source={require('../assets/imagens/pergaminho.png')} style={styles.background}>
+
+
+      <View style={styles.container}>
+        <Text style={styles.title}>Recordes</Text>
+        <View style={styles.mostChosenContainer}>
+          {Object.entries(mostChosenElements).map(([elemento, frequencia]) => (
+            <Text key={elemento}>{elemento}: {frequencia}</Text>
+          ))}
+        </View>
+        <TouchableOpacity style={styles.button} onPress={navigateBackToGame}>
+          <Text style={styles.buttonText}>Voltar para o Jogo</Text>
+        </TouchableOpacity>
       </View>
-      <TouchableOpacity style={styles.button} onPress={navigateBackToGame}>
-        <Text style={styles.buttonText}>Voltar para o Jogo</Text>
-      </TouchableOpacity>
-    </View>
+    </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
+  background: {
+    flex: 1,
+    resizeMode: 'cover', // Cobrir toda a área
+    justifyContent: 'center',
+  },
   container: {
     flex: 1,
     justifyContent: 'center',

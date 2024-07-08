@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { ImageBackground, View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
 const GameOver = ({ navigation, route }) => {
   // A função resetGame é passada como parte das props através da navegação
@@ -20,25 +20,34 @@ const GameOver = ({ navigation, route }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Game Over!</Text>
-      <Text style={styles.message}>As runas não estavam ao seu lado desta vez...</Text>
-      <TouchableOpacity style={styles.button} onPress={reloadGame}>
-        <Text style={styles.buttonText}>Tentar Novamente!</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.recordsButton} onPress={goToRecords}>
-        <Text style={styles.buttonText}>Ver Recordes</Text>
-      </TouchableOpacity>
-    </View>
+    <ImageBackground source={require('../assets/imagens/pergaminho.png')} style={styles.background}>
+      <View style={styles.container}>
+
+
+        <Text style={styles.title}>Game Over!</Text>
+        <Text style={styles.message}>As runas não estavam ao seu lado desta vez...</Text>
+        <TouchableOpacity style={styles.button} onPress={reloadGame}>
+          <Text style={styles.buttonText}>Tentar Novamente!</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.recordsButton} onPress={goToRecords}>
+          <Text style={styles.buttonText}>Ver Recordes</Text>
+        </TouchableOpacity>
+
+      </View>
+    </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
+  background: {
+    flex: 1,
+    resizeMode: 'cover', // Cobrir toda a área
+    justifyContent: 'center',
+  },
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5DEB3', // Cor de pergaminho
   },
   title: {
     fontSize: 24,
@@ -59,7 +68,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   recordsButton: {
-    backgroundColor: '#4682B4', // Cor azul aço
+    backgroundColor: '#D25802', // Cor azul aço
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 10,
