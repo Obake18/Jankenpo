@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
   graphicContainer: {
     position: 'absolute',
     top: '20%',
-    left: '10%',
+    left: '35%',
     right: '10%',
     alignItems: 'center',
   },
