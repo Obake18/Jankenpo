@@ -5,18 +5,22 @@ const Tutorial = ({ navigation }) => {
   const [step, setStep] = useState(0);
 
   const steps = [
-    'Bem-Vindo Jogador!',
-    'Neste jogo, você estará usando o poder dos elementos para enfrentar o computador.',
-    'Existem cinco elementos no jogo: Fogo (Katon), Vento (Fuuton), Trovão (Raiton), Terra (Doton) e Água (Suiton).',
-    'Cada elemento tem um elemento que pode vencer e um elemento que pode perder. Por exemplo, Fogo (Katon) vence Vento (Fuuton), mas perde para Água (Suiton).',
-    'Vamos ver como isso funciona:',
-    'Fogo (Katon) -> Vento (Fuuton) -> Trovão (Raiton) -> Terra (Doton) -> Água (Suiton) -> Fogo (Katon)',
-    'Isso significa que Fogo vence Vento, Vento vence Trovão, Trovão vence Terra, Terra vence Água, e Água vence Fogo.',
-    'Durante cada rodada do jogo, você e o computador escolherão um elemento. Se o seu elemento vencer o elemento do computador, você ganha a rodada!',
-    'Mas atente-se: você só pode perder cinco vezes...',
-    'Lembre-se, a estratégia e a sorte são as chaves para a vitória!',
-    'Boa sorte e divirta-se jogando!'
-  ];
+    'Bem-vindo ao nosso jogo de elementos! O objetivo é usar o poder dos elementos para vencer o computador.',
+    'Existem cinco elementos no jogo: Fogo, Vento, Trovão, Terra e Água.',
+    'Cada elemento possui forças e fraquezas baseadas em suas propriedades naturais e interações elementares.',
+    'Por exemplo, o Fogo é poderoso contra o Vento porque o fogo se intensifica com o vento, mas é vulnerável à Água porque a água apaga o fogo.',
+    'Vamos ver alguns exemplos:',
+    'Aqui está um gráfico mostrando as interações de vitória: Fogo -> Vento -> Trovão -> Terra -> Água -> Fogo',
+    'Aqui está um gráfico mostrando as interações de derrota: Fogo <- Terra <- Vento <- Trovão <- Água <- Fogo',
+    'Durante cada rodada, você e o computador escolherão um elemento. Se seu elemento vencer o do computador, você ganha a rodada!',
+    'Lembre-se de que você só pode perder cinco vezes, então escolha sabiamente!',
+    'Dicas rápidas: observe os padrões do computador e ajuste sua estratégia de acordo.',
+    'Agora é a sua vez! Boa sorte e divirta-se jogando!',
+    'Vamos explorar as fraquezas dos elementos em detalhes:',
+    'Cada fraqueza é explicada pelas interações naturais dos elementos no mundo real. Por exemplo, se seu elemento for igual ao do computador, será um empate!',
+    'Use essas informações para criar sua estratégia e vencer o jogo!'
+];
+
 
   const nextStep = () => {
     if (step < steps.length - 1) {
@@ -87,13 +91,13 @@ const Tutorial = ({ navigation }) => {
 const styles = StyleSheet.create({
   background: {
     flex: 1,
-    resizeMode: 'cover', // Cobrir toda a área
+    resizeMode: 'cover',
     justifyContent: 'center',
   },
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'flex-end', // Manter o conteúdo alinhado ao fundo
+    justifyContent: 'flex-end',
   },
   characterContainer: {
     position: 'absolute',
