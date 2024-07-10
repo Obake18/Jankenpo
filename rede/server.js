@@ -1,17 +1,17 @@
-const http = require('http');
-const socketIo = require('socket.io');
+import http from 'http';
+import { Server } from 'socket.io';
+
+const port = 8080;
+const DISCOVERY_EVENT = 'playerDiscovery';
+const players = {}; // Armazenar informações dos jogadores
 
 const server = http.createServer();
-const io = socketIo(server, {
+const io = new Server(server, {
   cors: {
     origin: '*',
     methods: ['GET', 'POST'],
   },
 });
-
-const port = 8080;
-const DISCOVERY_EVENT = 'playerDiscovery';
-const players = {}; // Armazenar informações dos jogadores
 
 io.on('connection', (socket) => {
   console.log('New client connected:', socket.id);

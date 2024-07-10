@@ -7,12 +7,14 @@ import Jogo from './jogo';
 import GameOver from './gameover';
 import Tutoriais from './tutoriais';
 import Recorde from './recorde';
+import MultPlayer from './multplayer';
 
 const Stack = createStackNavigator();
 
 export default function App() {
   return (
-    <Stack.Navigator initialRouteName="Lobby" screenOptions={{ headerShown: false }}>
+    <Stack.Navigator initialRouteName="MultPlayer" screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="MultPlayer" component={MultPlayer} />
       <Stack.Screen name="Lobby" component={Lobby} />
       <Stack.Screen name="Tutoriais" component={Tutoriais} />
       <Stack.Screen name="Jogo" component={Jogo} />
