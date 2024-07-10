@@ -27,6 +27,14 @@ export default function Lobby({ navigation }) {
                     <Text style={styles.buttonText}>Ver Recordes</Text>
                 </TouchableOpacity>
 
+                <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => navigation.navigate('Sobre')}
+                >
+                    <Text style={styles.buttonText}>Info.</Text>
+                </TouchableOpacity>
+
+
             </View>
         </ImageBackground>
     );

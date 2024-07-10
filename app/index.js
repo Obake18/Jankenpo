@@ -1,5 +1,6 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
+import Lobby from './lobby';
 import Sobre from './sobre';
 import Detalhes from './detalhes';
 import Jogo from './jogo';
