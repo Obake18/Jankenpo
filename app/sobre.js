@@ -1,6 +1,5 @@
-// sobre.js
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Image, Dimensions } from 'react-native';
+import { View, TouchableOpacity, StyleSheet, Image, Dimensions, Linking } from 'react-native';
 import { elementos } from './elementos'; // Certifique-se de ajustar o caminho conforme necessário
 
 const { width } = Dimensions.get('window');
@@ -20,6 +19,11 @@ const Sobre = ({ navigation }) => {
 
   const pentagonCoordinates = getPentagonCoordinates();
 
+  // Função para abrir o perfil do GitHub
+  const openGitHubProfile = () => {
+    Linking.openURL('https://github.com/Obake18');
+  };
+
   return (
     <View style={styles.container}>
       {Object.keys(elementos).map((key, index) => {
@@ -35,6 +39,11 @@ const Sobre = ({ navigation }) => {
           </TouchableOpacity>
         );
       })}
+
+      {/* Botão para abrir o perfil do GitHub */}
+      <TouchableOpacity style={styles.githubButton} onPress={openGitHubProfile}>
+        <Image source={require('../assets/icons/github.png')} style={styles.githubIcon} />
+      </TouchableOpacity>
     </View>
   );
 };
@@ -58,6 +67,20 @@ const styles = StyleSheet.create({
   image: {
     width: 80,
     height: 80,
+  },
+  githubButton: {
+    width: 120, // Ajuste o tamanho conforme necessário
+    height: 120, // Ajuste o tamanho conforme necessário
+    marginTop: '170%', // Ajuste o espaço conforme necessário
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#333',
+    padding: 10,
+    borderRadius: 30, // Ajuste o arredondamento conforme necessário
+  },
+  githubIcon: {
+    width: '90%',
+    height: '90%',
   },
 });
 
