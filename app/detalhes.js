@@ -1,11 +1,12 @@
 // detalhes.js
 import React from 'react';
-import { View, Text, Image, StyleSheet, ScrollView } from 'react-native';
+import {ImageBackground, View, Text, Image, StyleSheet, ScrollView } from 'react-native';
 
 const Detalhes = ({ route }) => {
   const { elemento } = route.params;
 
   return (
+    <ImageBackground source={require('../assets/imagens/pergaminho.png')} style={styles.background}>
     <ScrollView contentContainerStyle={styles.scrollContainer}>
       <View style={[styles.runa, { backgroundColor: elemento.corBase }]}>
         <Image source={elemento.image} style={styles.image} />
@@ -26,15 +27,21 @@ const Detalhes = ({ route }) => {
         {elemento.nome} vence {elemento.vence} e perde para {elemento.perde}.
       </Text>
     </ScrollView>
+    </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
+
+    background: {
+        flex: 1,
+        resizeMode: 'cover', // Cobrir toda a área
+        justifyContent: 'center',
+      },
   scrollContainer: {
     flexGrow: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#f5f5f5',
     padding: 20,
   },
   runa: {
