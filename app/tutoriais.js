@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, ImageBackground, Text, TouchableOpacity, StyleSheet, Image, TouchableWithoutFeedback, PermissionsAndroid } from 'react-native';
+import { StatusBar, View, ImageBackground, Text, TouchableOpacity, StyleSheet, Image, TouchableWithoutFeedback, PermissionsAndroid } from 'react-native';
 
 const Tutorial = ({ navigation }) => {
   const [step, setStep] = useState(0);
@@ -17,8 +17,7 @@ const Tutorial = ({ navigation }) => {
     'Dicas rápidas: observe os padrões do computador e ajuste sua estratégia de acordo.',
     'Agora é a sua vez! Boa sorte e divirta-se jogando!',
     'Use essas informações para criar sua estratégia e vencer o jogo!'
-];
-
+  ];
 
   const nextStep = () => {
     if (step < steps.length - 1) {
@@ -58,31 +57,34 @@ const Tutorial = ({ navigation }) => {
   }, []);
 
   return (
-    <ImageBackground source={require('../assets/imagens/pergaminho.png')} style={styles.background}>
-      <View style={styles.container}>
-        <View style={styles.characterContainer}>
-          <Image source={require('../assets/imagens/Shanti.png')} style={styles.character} />
-        </View>
-        <TouchableWithoutFeedback onPress={nextStep}>
-          <View style={styles.balloonContainer}>
-            <Text style={styles.balloon}>{steps[step]}</Text>
+    <>
+      <StatusBar barStyle="light-content" backgroundColor="#000000" />
+      <ImageBackground source={require('../assets/imagens/pergaminho.png')} style={styles.background}>
+        <View style={styles.container}>
+          <View style={styles.characterContainer}>
+            <Image source={require('../assets/imagens/Shanti.png')} style={styles.character} />
           </View>
-        </TouchableWithoutFeedback>
-        {step === 4 && (
-          <View style={styles.graphicContainer}>
-            <Image source={require('../assets/imagens/grafico.png')} style={styles.graphic} />
-          </View>
-        )}
-        {step > 0 && (
-          <TouchableOpacity style={[styles.button, { bottom: step === 0 ? 80 : 20 }]} onPress={prevStep}>
-            <Text style={styles.buttonText}>Anterior</Text>
+          <TouchableWithoutFeedback onPress={nextStep}>
+            <View style={styles.balloonContainer}>
+              <Text style={styles.balloon}>{steps[step]}</Text>
+            </View>
+          </TouchableWithoutFeedback>
+          {step === 4 && (
+            <View style={styles.graphicContainer}>
+              <Image source={require('../assets/imagens/grafico.png')} style={styles.graphic} />
+            </View>
+          )}
+          {step > 0 && (
+            <TouchableOpacity style={[styles.button, { bottom: step === 0 ? 80 : 20 }]} onPress={prevStep}>
+              <Text style={styles.buttonText}>Anterior</Text>
+            </TouchableOpacity>
+          )}
+          <TouchableOpacity style={[styles.skipButton, { bottom: step > 0 ? 85 : 20 }]} onPress={skipTutorial}>
+            <Text style={styles.skipButtonText}>Pular Tutorial</Text>
           </TouchableOpacity>
-        )}
-        <TouchableOpacity style={[styles.skipButton, { bottom: step > 0 ? 85 : 20 }]} onPress={skipTutorial}>
-          <Text style={styles.skipButtonText}>Pular Tutorial</Text>
-        </TouchableOpacity>
-      </View>
-    </ImageBackground>
+        </View>
+      </ImageBackground>
+    </>
   );
 };
 

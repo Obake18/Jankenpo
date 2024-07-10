@@ -21,5 +21,5 @@ export default function App() {
       <Stack.Screen name="Sobre" component={Sobre} />
       <Stack.Screen name="Detalhes" component={Detalhes} />
     </Stack.Navigator>
-  );
+  );    
 }
