@@ -54,8 +54,8 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   image: {
-    width: 140,
-    height: 140,
+    width: 190,
+    height: 190,
   },
   title: {
     fontSize: 24,

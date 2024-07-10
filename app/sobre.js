@@ -71,8 +71,8 @@ const styles = StyleSheet.create({
         position: 'absolute',
     },
     image: {
-        width: 80,
-        height: 80,
+        width: '90%',
+        height: '90%',
     },
     githubButton: {
         width: 120, // Ajuste o tamanho conforme necessário
