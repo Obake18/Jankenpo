@@ -1,51 +1,45 @@
-const WebSocket = require('ws');
+const http = require('http');
+const socketIo = require('socket.io');
 
-// Função para iniciar o servidor WebSocket
-const startServer = () => {
-  const port = 8080; // Considerar usar uma variável de ambiente para configuração
-  const server = new WebSocket.Server({ port });
-  let clients = [];
+const server = http.createServer();
+const io = socketIo(server, {
+  cors: {
+    origin: '*',
+    methods: ['GET', 'POST'],
+  },
+});
 
-  console.log(`WebSocket server is running on ws://localhost:${port}`);
+const port = 8080;
+const DISCOVERY_EVENT = 'playerDiscovery';
+const players = {}; // Armazenar informações dos jogadores
 
-  // Evento de conexão com o WebSocket
-  server.on('connection', (ws) => {
-    console.log('New client connected');
-    clients.push(ws);
+io.on('connection', (socket) => {
+  console.log('New client connected:', socket.id);
 
-    // Evento de recebimento de mensagem
-    ws.on('message', (message) => {
-      try {
-        const data = JSON.parse(message);
+  // Adicionar o jogador à lista
+  players[socket.id] = { id: socket.id, name: `Player ${socket.id.substring(0, 6)}` };
 
-        // Validação simples de mensagem
-        if (data.type && data.type === 'CHOICE' && data.choice) {
-          // Broadcast the message to all other clients
-          clients.forEach((client) => {
-            if (client !== ws && client.readyState === WebSocket.OPEN) {
-              client.send(JSON.stringify(data));
-            }
-          });
-        } else {
-          console.log('Invalid message format');
-        }
-      } catch (e) {
-        console.error('Error parsing message:', e);
-      }
-    });
+  // Notificar todos os jogadores sobre o novo jogador
+  io.emit(DISCOVERY_EVENT, players[socket.id]);
 
-    // Evento de fechamento da conexão
-    ws.on('close', () => {
-      console.log('Client disconnected');
-      clients = clients.filter(client => client !== ws);
-    });
-
-    // Evento de erro
-    ws.on('error', (error) => {
-      console.error('WebSocket error:', error);
-    });
+  // Receber mensagens dos jogadores
+  socket.on('gameMessage', (message) => {
+    console.log('Message received:', message);
+    socket.broadcast.emit('gameMessage', message);
   });
-};
 
-// Chamar a função para iniciar o servidor
-startServer();
+  // Evento de desconexão
+  socket.on('disconnect', () => {
+    console.log('Client disconnected:', socket.id);
+
+    // Remover o jogador da lista
+    delete players[socket.id];
+
+    // Notificar todos os jogadores sobre a desconexão
+    io.emit(DISCOVERY_EVENT, { id: socket.id, disconnected: true });
+  });
+});
+
+server.listen(port, () => {
+  console.log(`Server is running on http://localhost:${port}`);
+});
