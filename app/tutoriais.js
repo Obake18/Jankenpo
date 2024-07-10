@@ -16,8 +16,6 @@ const Tutorial = ({ navigation }) => {
     'Lembre-se de que você só pode perder cinco vezes, então escolha sabiamente!',
     'Dicas rápidas: observe os padrões do computador e ajuste sua estratégia de acordo.',
     'Agora é a sua vez! Boa sorte e divirta-se jogando!',
-    'Vamos explorar as fraquezas dos elementos em detalhes:',
-    'Cada fraqueza é explicada pelas interações naturais dos elementos no mundo real. Por exemplo, se seu elemento for igual ao do computador, será um empate!',
     'Use essas informações para criar sua estratégia e vencer o jogo!'
 ];
 
