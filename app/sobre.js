@@ -65,8 +65,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     runa: {
-        width: pentagonSize * 0.7, // Ajuste proporcional ao tamanho do pentágono
-        height: pentagonSize * 0.7, // Ajuste proporcional ao tamanho do pentágono
+        width: pentagonSize * 0.7,
+        height: pentagonSize * 0.7,
         justifyContent: 'center',
         alignItems: 'center',
         borderWidth: 3,
@@ -78,15 +78,15 @@ const styles = StyleSheet.create({
         height: '90%',
     },
     githubButton: {
-        bottom: 20, // Ajuste o espaço conforme necessário
-        width: 60, // Ajuste o tamanho conforme necessário
-        height: 60, // Ajuste o tamanho conforme necessário
+        bottom: 20,
+        width: 75, 
+        height: 75, 
         position: 'absolute',
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#333',
         padding: 10,
-        borderRadius: 30, // Ajuste o arredondamento conforme necessário
+        borderRadius: 50, 
     },
     githubIcon: {
         width: '100%',
