@@ -1,30 +1,18 @@
-import http from 'http';
-import { Server } from 'socket.io';
-import os from 'os';
+const http = require('http');
+const socketIo = require('socket.io');
 
-const getLocalIpAddress = () => {
-  const interfaces = os.networkInterfaces();
-  for (const iface in interfaces) {
-    for (const alias of interfaces[iface]) {
-      if (alias.family === 'IPv4' && !alias.internal) {
-        return alias.address;
-      }
-    }
-  }
-  return 'localhost';
-};
-
-const port = 8080;
-const DISCOVERY_EVENT = 'playerDiscovery';
-const players = {}; // Armazenar informações dos jogadores
-
+// Crie o servidor HTTP
 const server = http.createServer();
-const io = new Server(server, {
+const io = socketIo(server, {
   cors: {
     origin: '*',
     methods: ['GET', 'POST'],
   },
 });
+
+const port = 8080;
+const DISCOVERY_EVENT = 'playerDiscovery';
+const players = {}; // Armazenar informações dos jogadores
 
 io.on('connection', (socket) => {
   console.log('New client connected:', socket.id);
@@ -53,7 +41,6 @@ io.on('connection', (socket) => {
   });
 });
 
-const ip = getLocalIpAddress();
-server.listen(port, ip, () => {
-  console.log(`Server is running on http://${ip}:${port}`);
+server.listen(port, () => {
+  console.log(`Server is running on http://localhost:${port}`);
 });
