@@ -1,5 +1,18 @@
 import http from 'http';
 import { Server } from 'socket.io';
+import os from 'os';
+
+const getLocalIpAddress = () => {
+  const interfaces = os.networkInterfaces();
+  for (const iface in interfaces) {
+    for (const alias of interfaces[iface]) {
+      if (alias.family === 'IPv4' && !alias.internal) {
+        return alias.address;
+      }
+    }
+  }
+  return 'localhost';
+};
 
 const port = 8080;
 const DISCOVERY_EVENT = 'playerDiscovery';
@@ -40,6 +53,7 @@ io.on('connection', (socket) => {
   });
 });
 
-server.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
+const ip = getLocalIpAddress();
+server.listen(port, ip, () => {
+  console.log(`Server is running on http://${ip}:${port}`);
 });

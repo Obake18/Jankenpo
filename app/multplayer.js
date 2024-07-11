@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, StyleSheet } from 'react-native';
 import io from 'socket.io-client';
 
-const SERVER_URL = 'http://192.168.1.100:8080'; // Substitua pelo IP real do servidor
+// Defina o IP do servidor manualmente aqui
+const SERVER_URL = 'http://192.168.1.100:8080'; // Substitua pelo IP local do servidor
 
 const MultPlayer = () => {
   const [players, setPlayers] = useState([]);
