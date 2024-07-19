@@ -13,7 +13,7 @@ const Stack = createStackNavigator();
 
 export default function App() {
   return (
-    <Stack.Navigator initialRouteName="MultPlayer" screenOptions={{ headerShown: false }}>
+    <Stack.Navigator initialRouteName="Lobby" screenOptions={{ headerShown: false }}>
       <Stack.Screen name="MultPlayer" component={MultPlayer} />
       <Stack.Screen name="Lobby" component={Lobby} />
       <Stack.Screen name="Tutoriais" component={Tutoriais} />
