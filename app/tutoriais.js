@@ -5,6 +5,7 @@ const Tutorial = ({ navigation }) => {
   const [step, setStep] = useState(0);
 
   const steps = [
+    '(Clique aqui)',
     'Bem-vindo ao nosso jogo de elementos! O objetivo é usar o poder dos elementos para vencer o computador.',
     'Existem cinco elementos no jogo: Fogo, Vento, Trovão, Terra e Água.',
     'Cada elemento possui forças e fraquezas baseadas em suas propriedades naturais e interações elementares.',
@@ -79,9 +80,10 @@ const Tutorial = ({ navigation }) => {
               <Text style={styles.buttonText}>Anterior</Text>
             </TouchableOpacity>
           )}
-          <TouchableOpacity style={[styles.skipButton, { bottom: step > 0 ? 85 : 20 }]} onPress={skipTutorial}>
+          {step > 7 && (<TouchableOpacity style={[styles.skipButton, { bottom: step > 0 ? 85 : 20 }]} onPress={skipTutorial}>
             <Text style={styles.skipButtonText}>Pular Tutorial</Text>
-          </TouchableOpacity>
+          </TouchableOpacity>)}
+          
         </View>
       </ImageBackground>
     </>
@@ -128,7 +130,7 @@ const styles = StyleSheet.create({
   },
   graphicContainer: {
     position: 'absolute',
-    top: '20%',
+    top: '7%',
     left: '35%',
     right: '10%',
     alignItems: 'center',
