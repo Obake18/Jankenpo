@@ -70,7 +70,7 @@ const Tutorial = ({ navigation }) => {
               <Text style={styles.balloon}>{steps[step]}</Text>
             </View>
           </TouchableWithoutFeedback>
-          {step === 4 && (
+          {step === 2 && (
             <View style={styles.graphicContainer}>
               <Image source={require('../assets/imagens/grafico.png')} style={styles.graphic} />
             </View>

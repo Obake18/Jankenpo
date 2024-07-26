@@ -222,7 +222,7 @@ const Runas = () => {
       <View style={styles.middleSection}>
         <Text style={styles.title}>Rodada {round}</Text>
         <Text style={styles.resultText}>{result}</Text>
-        <Text style={styles.title}>HP: {'❤️'.repeat(playerLives)}</Text>
+        <Text style={styles.title}>Vidas: {'❤️'.repeat(playerLives)}</Text>
         <Text style={styles.title}>Fase: {phase}</Text>
         <View style={styles.container}>
           <LastElements lastElements={lastElements} />
@@ -234,9 +234,9 @@ const Runas = () => {
           data={Object.keys(elementos)}
           renderItem={renderItem}
           sliderWidth={screenWidth}
-          itemWidth={screenWidth / 3}
+          itemWidth={screenWidth / 3.7}
           activeSlideAlignment={'center'}
-          firstItem={activeIndex}
+          firstItem={2}
         />
       </View>
     </View>
