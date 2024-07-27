@@ -31,7 +31,7 @@ const LastElements = ({ lastElements }) => {
       <Text style={styles.title}>Últimos Elementos Jogados:</Text>
       {player || computer ? (
         <>
-          
+
           {computer && (
             <View style={styles.elementContainer}>
               {elementos[computer]?.image ? (
@@ -43,7 +43,7 @@ const LastElements = ({ lastElements }) => {
             </View>
           )}
 
-{player && (
+          {player && (
             <View style={styles.elementContainer}>
               {elementos[player]?.image ? (
                 <Image source={elementos[player]?.image} style={styles.image} />
@@ -87,7 +87,7 @@ const Runas = () => {
     AsyncStorage.removeItem('@gameData');
 
   };
-  
+
 
   useEffect(() => {
     const loadGame = async () => {
@@ -143,18 +143,18 @@ const Runas = () => {
     setPlayerChoice(elemento);
     setComputerChoice(computer);
     setActiveIndex(Object.keys(elementos).indexOf(elemento));
-  
+
     // Atualiza o registro
     setRecord({ phase, playerElement: elemento, computerElement: computer, round });
-  
+
     // Atualiza os últimos elementos jogados
     setLastElements({
       player: elemento,    // O novo elemento do jogador
       computer: computer,  // O novo elemento do computador
     });
-  
+
     console.log('Escolha do computador:', computer);
-  
+
     if (!computer) {
       setResult('Erro ao selecionar a escolha do computador.');
       return;
@@ -183,20 +183,20 @@ const Runas = () => {
     } else {
       setResult('Reação desconhecida! Próxima rodada!!');
     }
-  
+
     setRound(prevRound => {
       const newRound = prevRound + 1;
       console.log('Rodada atualizada para:', newRound);
       return newRound;
     });
-  
+
     setTimeout(() => {
       setPlayerChoice(null);
       setComputerChoice(null);
       setResult(null);
     }, 2000);
   };
-  
+
 
   const renderItem = ({ item }) => (
     <TouchableOpacity
@@ -233,10 +233,15 @@ const Runas = () => {
         <Carousel
           data={Object.keys(elementos)}
           renderItem={renderItem}
-          sliderWidth={screenWidth}
+          sliderWidth={screenWidth / 0.9}
           itemWidth={screenWidth / 3.7}
           activeSlideAlignment={'center'}
           firstItem={2}
+          loop={true}
+          loopClonesPerSide={9}
+          onSnapToItem={(index) => setActiveIndex(index)}
+          inactiveSlideScale={0.76}   // Ajusta a escala dos itens inativos
+          inactiveSlideOpacity={0.96} // Ajusta a opacidade dos itens inativos
         />
       </View>
     </View>
