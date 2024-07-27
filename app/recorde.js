@@ -4,28 +4,28 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Recorde = ({ navigation }) => {
   const [maxWins, setMaxWins] = useState(0);
-  const [lastPlayerChoice, setLastPlayerChoice] = useState(null);
-  const [lastComputerChoice, setLastComputerChoice] = useState(null);
+  const [lastPlayerChoice, setLastPlayerChoice] = useState('Nenhum');
+  const [lastComputerChoice, setLastComputerChoice] = useState('Nenhum');
   const [mostChosenElements, setMostChosenElements] = useState({});
 
   useEffect(() => {
+    const loadRecord = async () => {
+      try {
+        const recordData = await AsyncStorage.getItem('@recordData');
+        if (recordData) {
+          const { maxWins, lastPlayerChoice, lastComputerChoice, mostChosenElements } = JSON.parse(recordData);
+          setMaxWins(maxWins || 0);
+          setLastPlayerChoice(lastPlayerChoice || 'Nenhum');
+          setLastComputerChoice(lastComputerChoice || 'Nenhum');
+          setMostChosenElements(mostChosenElements || {});
+        }
+      } catch (error) {
+        console.error('Erro ao carregar o recorde:', error);
+      }
+    };
+
     loadRecord();
   }, []);
-
-  const loadRecord = async () => {
-    try {
-      const recordData = await AsyncStorage.getItem('@recordData');
-      if (recordData !== null) {
-        const { maxWins, lastPlayerChoice, lastComputerChoice, mostChosenElements } = JSON.parse(recordData);
-        setMaxWins(maxWins || 0);
-        setLastPlayerChoice(lastPlayerChoice || 'Nenhum');
-        setLastComputerChoice(lastComputerChoice || 'Nenhum');
-        setMostChosenElements(mostChosenElements || {});
-      }
-    } catch (error) {
-      console.error('Erro ao carregar o recorde:', error);
-    }
-  };
 
   const navigateBackToGame = () => {
     navigation.navigate('Jogo');
@@ -37,13 +37,25 @@ const Recorde = ({ navigation }) => {
       <ImageBackground source={require('../assets/imagens/pergaminho.png')} style={styles.background}>
         <View style={styles.container}>
           <Text style={styles.title}>Recordes</Text>
-          <Text style={styles.recordText}>Maior número de vitórias consecutivas: {maxWins}</Text>
-          <Text style={styles.recordText}>Última escolha do jogador: {lastPlayerChoice}</Text>
-          <Text style={styles.recordText}>Última escolha do computador: {lastComputerChoice}</Text>
+          <View style={styles.card}>
+            <Text style={styles.recordText}>Maior número de vitórias consecutivas:</Text>
+            <Text style={styles.recordValue}>{maxWins}</Text>
+          </View>
+          <View style={styles.card}>
+            <Text style={styles.recordText}>Última escolha do jogador:</Text>
+            <Text style={styles.recordValue}>{lastPlayerChoice}</Text>
+          </View>
+          <View style={styles.card}>
+            <Text style={styles.recordText}>Última escolha do computador:</Text>
+            <Text style={styles.recordValue}>{lastComputerChoice}</Text>
+          </View>
           <View style={styles.mostChosenContainer}>
             <Text style={styles.sectionTitle}>Elementos mais escolhidos:</Text>
             {Object.entries(mostChosenElements).map(([elemento, frequencia]) => (
-              <Text key={elemento} style={styles.recordText}>{elemento}: {frequencia}</Text>
+              <View key={elemento} style={styles.elementRow}>
+                <Text style={styles.recordText}>{elemento}</Text>
+                <Text style={styles.recordValue}>{frequencia}</Text>
+              </View>
             ))}
           </View>
           <TouchableOpacity style={styles.button} onPress={navigateBackToGame}>
@@ -58,7 +70,7 @@ const Recorde = ({ navigation }) => {
 const styles = StyleSheet.create({
   background: {
     flex: 1,
-    resizeMode: 'cover', // Cobrir toda a área
+    resizeMode: 'cover',
     justifyContent: 'center',
   },
   container: {
@@ -68,28 +80,61 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   title: {
-    fontSize: 24,
+    fontSize: 28,
     fontWeight: 'bold',
-    marginBottom: 20,
+    marginBottom: 30,
+    color: '#FFF',
+  },
+  card: {
+    backgroundColor: '#FFFFFFCC',
+    borderRadius: 10,
+    padding: 15,
+    marginVertical: 10,
+    width: '100%',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 5,
+    elevation: 5,
   },
   recordText: {
     fontSize: 18,
-    marginBottom: 10,
+    color: '#333',
+  },
+  recordValue: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: '#000',
   },
   mostChosenContainer: {
     marginTop: 20,
+    width: '100%',
   },
   sectionTitle: {
     fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 10,
+    color: '#FFF',
+  },
+  elementRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingVertical: 5,
+    paddingHorizontal: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: '#CCC',
   },
   button: {
     backgroundColor: '#8B4513',
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    borderRadius: 10,
+    paddingHorizontal: 25,
+    paddingVertical: 12,
+    borderRadius: 15,
     marginTop: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 5,
+    elevation: 5,
   },
   buttonText: {
     color: '#FFF',

@@ -7,34 +7,32 @@ export default function Lobby({ navigation }) {
             <View style={styles.container}>
                 <Text style={styles.title}>Bem-vindo ao Jankenpon!</Text>
                 <TouchableOpacity
-                    style={styles.button}
+                    style={styles.card}
                     onPress={() => navigation.navigate('Tutoriais')}
                 >
-                    <Text style={styles.buttonText}>Iniciar Tutorial</Text>
+                    <Text style={styles.cardText}>Iniciar Tutorial</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
-                    style={styles.button}
+                    style={styles.card}
                     onPress={() => navigation.navigate('Jogo')}
                 >
-                    <Text style={styles.buttonText}>Continuar Jogo</Text>
+                    <Text style={styles.cardText}>Continuar Jogo</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
-                    style={styles.button}
+                    style={styles.card}
                     onPress={() => navigation.navigate('Recorde')}
                 >
-                    <Text style={styles.buttonText}>Ver Recordes</Text>
+                    <Text style={styles.cardText}>Ver Recordes</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
-                    style={styles.button}
+                    style={styles.card}
                     onPress={() => navigation.navigate('Sobre')}
                 >
-                    <Text style={styles.buttonText}>Info.</Text>
+                    <Text style={styles.cardText}>Info.</Text>
                 </TouchableOpacity>
-
-
             </View>
         </ImageBackground>
     );
@@ -43,28 +41,38 @@ export default function Lobby({ navigation }) {
 const styles = StyleSheet.create({
     background: {
         flex: 1,
-        resizeMode: 'cover', // Cobrir toda a área
+        resizeMode: 'cover',
         justifyContent: 'center',
     },
     container: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
+        padding: 20,
     },
     title: {
-        fontSize: 24,
+        fontSize: 28,
         fontWeight: 'bold',
-        marginBottom: 20,
+        marginBottom: 40,
+        color: '#000',
     },
-    button: {
+    card: {
         backgroundColor: '#8B4513',
-        padding: 10,
-        borderRadius: 5,
-        margin: 10,
+        paddingVertical: 15,
+        paddingHorizontal: 25,
+        borderRadius: 10,
+        marginVertical: 10,
+        width: '80%',
+        alignItems: 'center',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.3,
+        shadowRadius: 5,
+        elevation: 5,
     },
-    buttonText: {
-        color: 'white',
+    cardText: {
+        color: '#ffffff',
         fontSize: 18,
+        fontWeight: 'bold',
     },
 });
-

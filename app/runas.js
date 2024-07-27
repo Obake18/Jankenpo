@@ -31,7 +31,6 @@ const LastElements = ({ lastElements }) => {
       <Text style={styles.title}>Últimos Elementos Jogados:</Text>
       {player || computer ? (
         <>
-
           {computer && (
             <View style={styles.elementContainer}>
               {elementos[computer]?.image ? (
@@ -42,7 +41,6 @@ const LastElements = ({ lastElements }) => {
               <Text>{computer}</Text>
             </View>
           )}
-
           {player && (
             <View style={styles.elementContainer}>
               {elementos[player]?.image ? (
@@ -72,64 +70,69 @@ const Runas = () => {
   const [phase, setPhase] = useState(1);
   const [activeIndex, setActiveIndex] = useState(0);
   const [winStreak, setWinStreak] = useState(0);
-  const [record, setRecord] = useState({ phase: 1, playerElement: null, computerElement: null, round: 1 });
 
-  const resetGame = () => {
-    setRound(1);
-    setPlayerLives(5);
-    setPhase(1);
-    setPlayerChoice(null);
-    setComputerChoice(null);
-    setResult(null);
-    setRecord({ phase: 1, playerElement: null, computerElement: null, round: 1 });
-    setWinStreak(0);
-    setLastElements({ player: null, computer: null });
-    AsyncStorage.removeItem('@gameData');
+  const [record, setRecord] = useState({
+    maxWins: 0,
+    lastPlayerChoice: 'Nenhum',
+    lastComputerChoice: 'Nenhum',
+    mostChosenElements: {},
+  });
 
+  const saveRecord = async (data) => {
+    try {
+      await AsyncStorage.setItem('@recordData', JSON.stringify(data));
+    } catch (error) {
+      console.error('Erro ao salvar o recorde:', error);
+    }
   };
 
+  const loadRecord = async () => {
+    try {
+      const recordData = await AsyncStorage.getItem('@recordData');
+      return recordData ? JSON.parse(recordData) : {
+        maxWins: 0,
+        lastPlayerChoice: 'Nenhum',
+        lastComputerChoice: 'Nenhum',
+        mostChosenElements: {},
+      };
+    } catch (error) {
+      console.error('Erro ao carregar o recorde:', error);
+      return {
+        maxWins: 0,
+        lastPlayerChoice: 'Nenhum',
+        lastComputerChoice: 'Nenhum',
+        mostChosenElements: {},
+      };
+    }
+  };
 
   useEffect(() => {
     const loadGame = async () => {
-      try {
-        const savedData = await AsyncStorage.getItem('@gameData');
-        if (savedData) {
-          const {
-            round: savedRound,
-            playerLives: savedPlayerLives,
-            phase: savedPhase,
-            record: savedRecord,
-            winStreak: savedWinStreak,
-            lastElements: savedLastElements,
-          } = JSON.parse(savedData);
-
-          setRound(savedRound || 1);
-          setPlayerLives(savedPlayerLives || 5);
-          setPhase(savedPhase || 1);
-          setRecord(savedRecord || { phase: 1, playerElement: null, computerElement: null, round: 1 });
-          setWinStreak(savedWinStreak || 0);
-          setLastElements(savedLastElements || { player: null, computer: null });
-        }
-      } catch (error) {
-        console.error('Erro ao carregar os dados do jogo:', error);
-      }
+      const data = await loadRecord();
+      setRecord(data);
     };
-
     loadGame();
   }, []);
 
-  useEffect(() => {
-    saveGame();
-  }, [round, playerLives, phase, record, winStreak, lastElements]);
+  const updateRecord = (playerElement, computerElement) => {
+    setRecord(prevRecord => {
+      const newMostChosenElements = { ...prevRecord.mostChosenElements };
+      newMostChosenElements[playerElement] = (newMostChosenElements[playerElement] || 0) + 1;
+      newMostChosenElements[computerElement] = (newMostChosenElements[computerElement] || 0) + 1;
 
-  const saveGame = async () => {
-    try {
-      const dataToSave = JSON.stringify({ round, playerLives, phase, record, winStreak, lastElements });
-      await AsyncStorage.setItem('@gameData', dataToSave);
-      console.log('Dados do jogo salvos:', dataToSave);
-    } catch (error) {
-      console.error('Erro ao salvar os dados do jogo:', error);
-    }
+      const newMaxWins = winStreak > prevRecord.maxWins ? winStreak : prevRecord.maxWins;
+
+      const newRecord = {
+        ...prevRecord,
+        maxWins: newMaxWins,
+        lastPlayerChoice: playerElement,
+        lastComputerChoice: computerElement,
+        mostChosenElements: newMostChosenElements,
+      };
+
+      saveRecord(newRecord);
+      return newRecord;
+    });
   };
 
   const randomComputerChoice = () => {
@@ -144,16 +147,7 @@ const Runas = () => {
     setComputerChoice(computer);
     setActiveIndex(Object.keys(elementos).indexOf(elemento));
 
-    // Atualiza o registro
-    setRecord({ phase, playerElement: elemento, computerElement: computer, round });
-
-    // Atualiza os últimos elementos jogados
-    setLastElements({
-      player: elemento,    // O novo elemento do jogador
-      computer: computer,  // O novo elemento do computador
-    });
-
-    console.log('Escolha do computador:', computer);
+    updateRecord(elemento, computer);
 
     if (!computer) {
       setResult('Erro ao selecionar a escolha do computador.');
@@ -175,20 +169,17 @@ const Runas = () => {
     } else if (elementos[computer].vence === elemento || elementos[elemento].perde === computer) {
       setResult('Você perdeu!');
       setWinStreak(0);
-      setPlayerLives(playerLives - 1);
       if (playerLives - 1 === 0) {
         setResult('Game Over');
         navigation.navigate('GameOver', { resetGame });
+      } else {
+        setPlayerLives(playerLives - 1);
       }
     } else {
       setResult('Reação desconhecida! Próxima rodada!!');
     }
 
-    setRound(prevRound => {
-      const newRound = prevRound + 1;
-      console.log('Rodada atualizada para:', newRound);
-      return newRound;
-    });
+    setRound(prevRound => prevRound + 1);
 
     setTimeout(() => {
       setPlayerChoice(null);
@@ -196,7 +187,6 @@ const Runas = () => {
       setResult(null);
     }, 2000);
   };
-
 
   const renderItem = ({ item }) => (
     <TouchableOpacity
@@ -240,8 +230,8 @@ const Runas = () => {
           loop={true}
           loopClonesPerSide={9}
           onSnapToItem={(index) => setActiveIndex(index)}
-          inactiveSlideScale={0.76}   // Ajusta a escala dos itens inativos
-          inactiveSlideOpacity={0.96} // Ajusta a opacidade dos itens inativos
+          inactiveSlideScale={0.76}
+          inactiveSlideOpacity={0.96}
         />
       </View>
     </View>
