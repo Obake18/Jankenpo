@@ -1,5 +1,5 @@
 import React from 'react';
-import { StatusBar, ImageBackground, View, TouchableOpacity, StyleSheet, Image, Dimensions, Linking } from 'react-native';
+import { StatusBar, ImageBackground, View, TouchableOpacity, StyleSheet, Image, Dimensions, Linking, Text } from 'react-native';
 import { elementos } from './elementos';
 
 const { width, height } = Dimensions.get('window');
@@ -45,7 +45,7 @@ const Sobre = ({ navigation }) => {
 
                     {/* Botão para abrir o perfil do GitHub */}
                     <TouchableOpacity style={styles.githubButton} onPress={openGitHubProfile}>
-                        <Image source={require('../assets/icons/github.png')} style={styles.githubIcon} />
+                        <Text style={styles.githubText}>Sobre o autor</Text>
                     </TouchableOpacity>
                 </View>
             </ImageBackground>
@@ -78,19 +78,22 @@ const styles = StyleSheet.create({
         height: '90%',
     },
     githubButton: {
-        bottom: 20,
-        width: 75, 
-        height: 75, 
         position: 'absolute',
+        bottom: 20,
+        width: 150, // Aumentado para melhor visualização
+        height: 50,  // Aumentado para melhor visualização
+        backgroundColor: '#333',
+        borderRadius: 25, // Tornar o botão arredondado
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#333',
-        padding: 10,
-        borderRadius: 50, 
     },
-    githubIcon: {
-        width: '100%',
-        height: '100%',
+    githubText: {
+        color: '#fff',
+        fontSize: 16,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        textTransform: 'uppercase',
+        letterSpacing: 1,
     },
 });
 
