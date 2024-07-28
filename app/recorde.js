@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
     color: '#FFF',
   },
   card: {
-    backgroundColor: '#FFFFFFCC',
+    backgroundColor: '#FFFFFF80', 
     borderRadius: 10,
     padding: 15,
     marginVertical: 10,
@@ -96,7 +96,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 5,
     elevation: 5,
-  },
+},
+
   recordText: {
     fontSize: 18,
     color: '#333',
