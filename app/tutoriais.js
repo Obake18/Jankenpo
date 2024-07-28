@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { StatusBar, View, ImageBackground, Text, TouchableOpacity, StyleSheet, Image, TouchableWithoutFeedback, Animated, Easing } from 'react-native';
-import elementos from './elementos'; // Importa os dados dos elementos
+import { StatusBar, View, ImageBackground, Text, TouchableOpacity, StyleSheet, Image, TouchableWithoutFeedback, PermissionsAndroid } from 'react-native';
 
 const Tutorial = ({ navigation }) => {
   const [step, setStep] = useState(0);
-  const [imageVisible, setImageVisible] = useState(true);
 
   const steps = [
     '(Clique aqui)',
@@ -22,17 +20,9 @@ const Tutorial = ({ navigation }) => {
     'Use essas informações para criar sua estratégia e vencer o jogo!'
   ];
 
-  const toggleImageVisibility = () => {
-    setImageVisible(!imageVisible);
-  };
-
   const nextStep = () => {
     if (step < steps.length - 1) {
       setStep(step + 1);
-      if (step === 5) {
-        // Esconde a imagem após o passo 5
-        setImageVisible(false);
-      }
     } else {
       navigation.navigate('Jogo');
     }
@@ -48,34 +38,24 @@ const Tutorial = ({ navigation }) => {
     navigation.navigate('Jogo');
   };
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (step >= 6) {
-        // Alterna a visibilidade da imagem após o passo 6
-        toggleImageVisibility();
+  const requestFilePermission = async () => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        console.log('Permissão para acessar arquivos concedida');
+      } else {
+        console.log('Permissão para acessar arquivos negada');
       }
-    }, 3000); // Alterna a cada 3 segundos
-
-    return () => clearInterval(interval);
-  }, [step]);
-
-  const renderElementRunas = () => {
-    return elementos.map((elemento) => (
-      <View key={elemento.nome} style={[styles.runaContainer, { backgroundColor: elemento.cor }]}>
-        <Image source={elemento.icone} style={styles.runaIcon} />
-        <Text style={styles.runaText}>{elemento.nome}</Text>
-      </View>
-    ));
+    } catch (err) {
+      console.warn(err);
+    }
   };
 
-  const renderCarousel = () => {
-    return (
-      <View style={styles.carouselContainer}>
-        {/* Aqui você pode renderizar o carrossel usando o componente desejado */}
-        <Text style={styles.carouselText}>Aqui está o carrossel de elementos. Use-o para explorar cada elemento e suas fraquezas.</Text>
-      </View>
-    );
-  };
+  useEffect(() => {
+    requestFilePermission();
+  }, []);
 
   return (
     <>
@@ -90,29 +70,20 @@ const Tutorial = ({ navigation }) => {
               <Text style={styles.balloon}>{steps[step]}</Text>
             </View>
           </TouchableWithoutFeedback>
-
-          {step >= 6 && (
-            <View style={styles.elementContainer}>
-              {renderElementRunas()}
+          {step === 2 && (
+            <View style={styles.graphicContainer}>
+              <Image source={require('../assets/imagens/grafico.png')} style={styles.graphic} />
             </View>
           )}
-
-          {step === 11 && renderCarousel()}
-
-          {imageVisible && step >= 5 && (
-            <Image source={require('../assets/imagens/grafico.png')} style={styles.image} />
-          )}
-
           {step > 0 && (
             <TouchableOpacity style={[styles.button, { bottom: step === 0 ? 80 : 20 }]} onPress={prevStep}>
               <Text style={styles.buttonText}>Anterior</Text>
             </TouchableOpacity>
           )}
-          {step > 7 && (
-            <TouchableOpacity style={[styles.skipButton, { bottom: step > 0 ? 85 : 20 }]} onPress={skipTutorial}>
-              <Text style={styles.skipButtonText}>Pular Tutorial</Text>
-            </TouchableOpacity>
-          )}
+          {step > 7 && (<TouchableOpacity style={[styles.skipButton, { bottom: step > 0 ? 85 : 20 }]} onPress={skipTutorial}>
+            <Text style={styles.skipButtonText}>Pular Tutorial</Text>
+          </TouchableOpacity>)}
+          
         </View>
       </ImageBackground>
     </>
@@ -142,67 +113,32 @@ const styles = StyleSheet.create({
     height: 380,
   },
   balloonContainer: {
-    position: 'absolute',
-    top: '30%',
-    width: '80%',
-    padding: 20,
+    bottom: '40%',
+    marginLeft: 85,
+    maxWidth: '85%',
+    padding: 10,
     backgroundColor: 'white',
-    borderRadius: 20,
+    borderRadius: 10,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
-    alignItems: 'center',
   },
   balloon: {
-    fontSize: 20,
-    textAlign: 'center',
+    fontSize: 18,
   },
-  image: {
+  graphicContainer: {
     position: 'absolute',
-    top: '20%',
+    top: '7%',
+    left: '35%',
+    right: '10%',
+    alignItems: 'center',
+  },
+  graphic: {
     width: '100%',
-    height: '30%',
+    height: 200,
     resizeMode: 'contain',
-  },
-  elementContainer: {
-    position: 'absolute',
-    top: '10%',
-    width: '100%',
-    alignItems: 'center',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
-  },
-  runaContainer: {
-    width: 80,
-    height: 80,
-    borderRadius: 10,
-    margin: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  runaIcon: {
-    width: 40,
-    height: 40,
-    resizeMode: 'contain',
-  },
-  runaText: {
-    marginTop: 5,
-    fontSize: 14,
-    color: 'white',
-  },
-  carouselContainer: {
-    position: 'absolute',
-    bottom: '10%',
-    width: '100%',
-    alignItems: 'center',
-  },
-  carouselText: {
-    fontSize: 16,
-    color: 'white',
-    textAlign: 'center',
   },
   button: {
     backgroundColor: '#8B4513',
