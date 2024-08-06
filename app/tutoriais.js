@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { StatusBar, View, ImageBackground, Text, TouchableOpacity, StyleSheet, Image, TouchableWithoutFeedback, PermissionsAndroid } from 'react-native';
+import * as Animatable from 'react-native-animatable';
+
 
 const Tutorial = ({ navigation }) => {
   const [step, setStep] = useState(0);
@@ -28,16 +30,6 @@ const Tutorial = ({ navigation }) => {
     }
   };
 
-  const prevStep = () => {
-    if (step > 0) {
-      setStep(step - 1);
-    }
-  };
-
-  const skipTutorial = () => {
-    navigation.navigate('Jogo');
-  };
-
   const requestFilePermission = async () => {
     try {
       const granted = await PermissionsAndroid.request(
@@ -61,30 +53,33 @@ const Tutorial = ({ navigation }) => {
     <>
       <StatusBar barStyle="light-content" backgroundColor="#000000" />
       <ImageBackground source={require('../assets/imagens/pergaminho.png')} style={styles.background}>
-        <View style={styles.container}>
-          <View style={styles.characterContainer}>
-            <Image source={require('../assets/imagens/Shanti.png')} style={styles.character} />
-          </View>
-          <TouchableWithoutFeedback onPress={nextStep}>
-            <View style={styles.balloonContainer}>
+        <TouchableWithoutFeedback onPress={nextStep}>
+          <View style={styles.container}>
+            {step % 2 !== 0 && (
+              <View style={styles.characterContainer}>
+                <Image source={require('../assets/imagens/Shanti.png')} style={styles.character} />
+              </View>
+            )}
+            <Animatable.View animation="fadeIn" duration={800} style={styles.balloonContainer}>
               <Text style={styles.balloon}>{steps[step]}</Text>
-            </View>
-          </TouchableWithoutFeedback>
-          {step === 2 && (
-            <View style={styles.graphicContainer}>
-              <Image source={require('../assets/imagens/grafico.png')} style={styles.graphic} />
-            </View>
-          )}
-          {step > 0 && (
-            <TouchableOpacity style={[styles.button, { bottom: step === 0 ? 80 : 20 }]} onPress={prevStep}>
-              <Text style={styles.buttonText}>Anterior</Text>
-            </TouchableOpacity>
-          )}
-          {step > 7 && (<TouchableOpacity style={[styles.skipButton, { bottom: step > 0 ? 85 : 20 }]} onPress={skipTutorial}>
-            <Text style={styles.skipButtonText}>Pular Tutorial</Text>
-          </TouchableOpacity>)}
-          
-        </View>
+            </Animatable.View>
+            {step === 2 && (
+              <View style={styles.graphicContainer}>
+                <Image source={require('../assets/imagens/grafico.png')} style={styles.graphic} />
+              </View>
+            )}
+            {step > 0 && (
+              <TouchableOpacity style={[styles.button, { bottom: step === 0 ? 80 : 20 }]} onPress={() => setStep(step - 1)}>
+                <Text style={styles.buttonText}>Anterior</Text>
+              </TouchableOpacity>
+            )}
+            {step > 7 && (
+              <TouchableOpacity style={[styles.skipButton, { bottom: step > 0 ? 85 : 20 }]} onPress={() => navigation.navigate('Jogo')}>
+                <Text style={styles.skipButtonText}>Pular Tutorial</Text>
+              </TouchableOpacity>
+            )}
+          </View>
+        </TouchableWithoutFeedback>
       </ImageBackground>
     </>
   );
@@ -103,22 +98,22 @@ const styles = StyleSheet.create({
   },
   characterContainer: {
     position: 'absolute',
-    bottom: 0,
-    left: 0,
-    flexDirection: 'row',
-    alignItems: 'flex-end',
+    bottom: 20,
+    left: 20,
   },
   character: {
-    width: 380,
-    height: 380,
+    width: 180,
+    height: 180,
   },
   balloonContainer: {
+    position: 'absolute',
     bottom: '40%',
-    marginLeft: 85,
-    maxWidth: '85%',
-    padding: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: 'white',
-    borderRadius: 10,
+    borderRadius: 20,
+    padding: 20,
+    maxWidth: '80%',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
@@ -126,12 +121,13 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   balloon: {
-    fontSize: 18,
+    fontSize: 20,
+    textAlign: 'center',
   },
   graphicContainer: {
     position: 'absolute',
-    top: '7%',
-    left: '35%',
+    top: '10%',
+    left: '10%',
     right: '10%',
     alignItems: 'center',
   },
@@ -144,7 +140,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#8B4513',
     padding: 10,
     borderRadius: 5,
-    alignSelf: 'flex-end',
     position: 'absolute',
     right: 20,
   },
@@ -156,7 +151,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#8B4513',
     padding: 10,
     borderRadius: 5,
-    alignSelf: 'flex-end',
     position: 'absolute',
     right: 20,
   },

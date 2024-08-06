@@ -1,39 +1,42 @@
 import React from 'react';
 import { ImageBackground, View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { BlurView } from 'expo-blur';
 
 export default function Lobby({ navigation }) {
     return (
         <ImageBackground source={require('../assets/imagens/pergaminho.png')} style={styles.background}>
-            <View style={styles.container}>
-                <Text style={styles.title}>Bem-vindo ao Jankenpon!</Text>
-                <TouchableOpacity
-                    style={styles.card}
-                    onPress={() => navigation.navigate('Tutoriais')}
-                >
-                    <Text style={styles.cardText}>Iniciar Tutorial</Text>
-                </TouchableOpacity>
+            <BlurView intensity={10} style={styles.absolute}>
+                <View style={styles.container}>
+                    <Text style={styles.title}>Bem-vindo ao Jankenpon!</Text>
+                    <TouchableOpacity
+                        style={styles.card}
+                        onPress={() => navigation.navigate('Tutoriais')}
+                    >
+                        <Text style={styles.cardText}>Iniciar Tutorial</Text>
+                    </TouchableOpacity>
 
-                <TouchableOpacity
-                    style={styles.card}
-                    onPress={() => navigation.navigate('Jogo')}
-                >
-                    <Text style={styles.cardText}>Continuar Jogo</Text>
-                </TouchableOpacity>
+                    <TouchableOpacity
+                        style={styles.card}
+                        onPress={() => navigation.navigate('Jogo')}
+                    >
+                        <Text style={styles.cardText}>Continuar Jogo</Text>
+                    </TouchableOpacity>
 
-                <TouchableOpacity
-                    style={styles.card}
-                    onPress={() => navigation.navigate('Recorde')}
-                >
-                    <Text style={styles.cardText}>Ver Recordes</Text>
-                </TouchableOpacity>
+                    <TouchableOpacity
+                        style={styles.card}
+                        onPress={() => navigation.navigate('Recorde')}
+                    >
+                        <Text style={styles.cardText}>Ver Recordes</Text>
+                    </TouchableOpacity>
 
-                <TouchableOpacity
-                    style={styles.card}
-                    onPress={() => navigation.navigate('Sobre')}
-                >
-                    <Text style={styles.cardText}>Info.</Text>
-                </TouchableOpacity>
-            </View>
+                    <TouchableOpacity
+                        style={styles.card}
+                        onPress={() => navigation.navigate('Sobre')}
+                    >
+                        <Text style={styles.cardText}>Info.</Text>
+                    </TouchableOpacity>
+                </View>
+            </BlurView>
         </ImageBackground>
     );
 }
@@ -43,6 +46,13 @@ const styles = StyleSheet.create({
         flex: 1,
         resizeMode: 'cover',
         justifyContent: 'center',
+    },
+    absolute: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        bottom: 0,
+        right: 0,
     },
     container: {
         flex: 1,
