@@ -8,18 +8,8 @@ const Tutorial = ({ navigation }) => {
 
   const steps = [
     '(Clique aqui)',
-    'Bem-vindo ao nosso jogo de elementos! O objetivo é usar o poder dos elementos para vencer o computador.',
-    'Existem cinco elementos no jogo: Fogo, Vento, Trovão, Terra e Água.',
-    'Cada elemento possui forças e fraquezas baseadas em suas propriedades naturais e interações elementares.',
-    'Por exemplo, o Fogo é poderoso contra o Vento porque o fogo se intensifica com o vento, mas é vulnerável à Água porque a água apaga o fogo.',
-    'Vamos ver alguns exemplos:',
-    'Aqui está um gráfico mostrando as interações de vitória: Fogo -> Vento -> Trovão -> Terra -> Água -> Fogo',
-    'Aqui está um gráfico mostrando as interações de derrota: Fogo <- Terra <- Vento <- Trovão <- Água <- Fogo',
-    'Durante cada rodada, você e o computador escolherão um elemento. Se seu elemento vencer o do computador, você ganha a rodada!',
-    'Lembre-se de que você só pode perder cinco vezes, então escolha sabiamente!',
-    'Dicas rápidas: observe os padrões do computador e ajuste sua estratégia de acordo.',
-    'Agora é a sua vez! Boa sorte e divirta-se jogando!',
-    'Use essas informações para criar sua estratégia e vencer o jogo!'
+    'Ainda bem que você chegou . . .',
+    'O meu nome é Asirpa, sou uma nativa destas terras. Prazer em te conhecer.'
   ];
 
   const nextStep = () => {

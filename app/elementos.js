@@ -7,10 +7,11 @@ export const elementos = {
     perde: 'Suiton',
     corBase: '#Bf0000',
     descricao: {
-      historia: 'O poder do Fogo foi um presente de Kamuy Fuchi, a deusa do fogo e da lareira, para os antigos humanos. Observando a necessidade dos humanos por calor e proteção, Kamuy Fuchi desceu do céu e lhes ensinou como canalizar o poder das chamas. Os humanos aprenderam a usar o Fogo para forjar armas, aquecer suas moradias e proteger suas comunidades. Os primeiros talismãs de Fogo eram feitos de pedras vulcânicas e metais aquecidos, imbuídos com símbolos de proteção e poder destrutivo.',
+      historia: 'O poder do Fogo foi um presente de Kamuy Huci, a deusa do Fogo e da lareira, para os humanos. Observando a necessidade dos humanos por calor e proteção, Kamuy Huci desceu do céu e lhes ensinou como canalizar o poder das chamas. Os humanos aprenderam a usar o Fogo para forjar armas, aquecer suas moradias e proteger suas comunidades. Os primeiros talismãs de Fogo eram feitos de pedras vulcânicas e metais aquecidos, imbuídos com símbolos de proteção e poder destrutivo. Kamuy Huci é retratada como uma idosa Ainu com um semblante acolhedor, rodeada por chamas estilizadas que simbolizam seu calor e conforto.',
       representacao: 'O Fogo representa a transformação e a destruição criativa. É o elemento da paixão, do desejo e da mudança. Sua força é a capacidade de transformar e renovar, enquanto sua fraqueza é a vulnerabilidade à Água, que pode apagar suas chamas e extinguir seu poder.',
       fraquezasForcas: 'O Fogo vence o Vento (Fuuton) porque o calor intenso pode dispersar a brisa, mas perde para a Água (Suiton) devido à sua capacidade de apagar as chamas.',
     },
+    kamuyImage: require('../assets/icons/kamuy_Huci.png'),
   },
   Fuuton: {
     image: require('../assets/icons/vento.png'),
@@ -20,10 +21,11 @@ export const elementos = {
     perde: 'Doton',
     corBase: '#588083',
     descricao: {
-      historia: 'O elemento Vento foi um presente de Fujin, o deus japonês do vento. Fujin desceu das montanhas sagradas, trazendo consigo o conhecimento dos padrões atmosféricos e das tempestades. Ele ensinou os humanos a usar o Vento para comunicação através de sinais e para navegação, ajudando-os a entender o fluxo das correntes de ar. Runas e talismãs de Vento eram frequentemente feitos de plumas e folhas, simbolizando a liberdade e a rapidez. Os amuletos de Vento foram projetados para trazer velocidade e clareza mental.',
+      historia: 'O elemento Vento foi um presente de Fujin, a Kamuy dos Ventos. Fujin desceu das montanhas sagradas, trazendo consigo o conhecimento dos padrões atmosféricos e das tempestades. Ela ensinou os humanos a usar o Vento para comunicação através de sinais e para navegação, ajudando-os a entender o fluxo das correntes de ar. Runas e talismãs de Vento eram frequentemente feitos de plumas e folhas, simbolizando a liberdade e a rapidez. Os amuletos de Vento foram projetados para trazer velocidade e clareza mental. Fujin é retratada como uma figura etérea e majestosa, com um semblante sereno e dominador, vestida com roupas fluídas que refletem o movimento do vento.',
       representacao: 'O Vento simboliza a liberdade, a mudança e a comunicação. Representa a adaptação e a agilidade, sendo um elemento de movimento constante e transformação. Sua força é a capacidade de mover e dispersar, enquanto sua fraqueza está na Terra (Doton), que pode bloquear e absorver seus movimentos.',
       fraquezasForcas: 'O Vento vence o Trovão (Raiton) porque pode dispersar a eletricidade com seu movimento, mas perde para a Terra (Doton), que pode abrandar e neutralizar seus efeitos.',
     },
+    kamuyImage: require('../assets/icons/kamuy_fujin.png'),
   },
   Raiton: {
     image: require('../assets/icons/trovão.png'),
@@ -33,10 +35,11 @@ export const elementos = {
     perde: 'Fuuton',
     corBase: '#B28009',
     descricao: {
-      historia: 'O poder do Trovão foi um presente de Kamuy Thunder, o deus do trovão e da eletricidade. Kamuy Thunder apareceu em meio a uma tempestade, iluminando o céu com seus raios e ensinando os humanos a canalizar a energia elétrica. Os talismãs de Trovão eram frequentemente feitos de metais e pedras que conduziam eletricidade. A energia elétrica foi um dos primeiros poderes a ser canalizado para fins de ataque e defesa, usando runas que representavam o poder e a força do céu.',
+      historia: 'O poder do Trovão foi um presente de Kanna Kamuy, o deus do Trovão. Kanna Kamuy apareceu em meio a uma tempestade, iluminando o céu com seus raios e ensinando os humanos a canalizar a energia elétrica. Os talismãs de Trovão eram frequentemente feitos de metais e pedras que conduziam eletricidade. A energia elétrica foi um dos primeiros poderes a ser canalizado para fins de ataque e defesa, usando runas que representavam o poder e a força do céu. Kanna Kamuy é retratado como uma figura imponente e poderosa, com uma expressão enérgica e dinâmica.',
       representacao: 'O Trovão representa o poder, a intensidade e o impacto súbito. É um símbolo de força e de revelação, trazendo energia e choque. Sua força é a capacidade de causar impactos fortes e repentinos, enquanto sua fraqueza é o Vento (Fuuton), que pode dissipar sua eletricidade.',
       fraquezasForcas: 'O Trovão vence a Terra (Doton) porque a eletricidade pode penetrar e afetar o solo, mas perde para o Vento (Fuuton), que pode dispersar o choque elétrico.',
     },
+    kamuyImage: require('../assets/icons/kamuy_thunder.png'),
   },
   Doton: {
     image: require('../assets/icons/terra.png'),
@@ -46,10 +49,11 @@ export const elementos = {
     perde: 'Katon',
     corBase: '#873e23',
     descricao: {
-      historia: 'O poder da Terra foi um presente de Omoikane, o deus japonês do conhecimento e da sabedoria. Observando a necessidade dos humanos por estabilidade e estrutura, Omoikane ensinou-lhes a observar as rochas e o solo e a usar a Terra para construção e defesa. Ele revelou como criar amuletos que representavam estabilidade e proteção, utilizando pedras e minerais. Runas de Terra eram usadas para criar barreiras e fortalecer fundações, garantindo a segurança das comunidades humanas.',
+      historia: 'O poder da Terra foi um presente de Omoikane, o Kamuy das Rochas. Observando a necessidade dos humanos por estabilidade e estrutura, Omoikane ensinou-lhes a observar as rochas e o solo e a usar a Terra para construção e defesa. Ele revelou como criar amuletos que representavam estabilidade e proteção, utilizando pedras e minerais. Runas de Terra eram usadas para criar barreiras e fortalecer fundações, garantindo a segurança das comunidades humanas. Omoikane é retratado como um imponente guerreiro Ainu com uma postura firme e determinada, combatendo apenas com os punhos.',
       representacao: 'A Terra simboliza a estabilidade, a força e a durabilidade. Representa a base e o suporte, sendo um elemento de resistência e proteção. Sua força é a capacidade de criar e sustentar estruturas, enquanto sua fraqueza é o Fogo (Katon), que pode derreter e destruir suas estruturas.',
       fraquezasForcas: 'A Terra vence a Água (Suiton) porque pode absorver e conter a umidade, mas perde para o Fogo (Katon), que pode derreter e destruir suas estruturas.',
     },
+    kamuyImage: require('../assets/icons/kamuy_omoikane.png'),
   },
   Suiton: {
     image: require('../assets/icons/agua.png'),
@@ -59,9 +63,10 @@ export const elementos = {
     perde: 'Raiton',
     corBase: '#3377FF',
     descricao: {
-      historia: 'O elemento Água foi um presente de Kamuy Toyo, o deus da água e da chuva. Kamuy Toyo ensinou os humanos a estudar os rios, mares e a chuva, e a usar a Água para irrigação e purificação. Seus talismãs eram feitos de conchas e algas marinhas. Runas de Água eram usadas para trazer fluidez e adaptação, bem como para proporcionar cura e limpeza.',
+      historia: 'O elemento Água foi um presente de Kamuy Toyo, a deusa da Água e da chuva. Kamuy Toyo ensinou os humanos a estudar os rios, mares e a chuva, e a usar a Água para irrigação e purificação. Seus talismãs eram feitos de conchas e algas marinhas. Runas de Água eram usadas para trazer fluidez e adaptação, bem como para proporcionar cura e limpeza. Kamuy Toyo é retratada como uma figura serena e graciosa com uma conexão profunda com a água, vestida com roupas tradicionais Ainu fluídas que refletem o movimento da água.',
       representacao: 'A Água representa a fluidez, a adaptação e a purificação. É um símbolo de transformação e renovação, podendo moldar-se a qualquer forma e trazer vida. Sua força é a capacidade de se adaptar e fluir, enquanto sua fraqueza é o Trovão (Raiton), que pode eletrificar e desestabilizar suas formas líquidas.',
       fraquezasForcas: 'A Água vence o Fogo (Katon) porque pode extinguir as chamas, mas perde para o Trovão (Raiton), que pode energizar e alterar suas propriedades.',
     },
+    kamuyImage: require('../assets/icons/kamuy_toyo.png'),
   },
 };
