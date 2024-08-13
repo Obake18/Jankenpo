@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { StatusBar, View, ImageBackground, Text, TouchableOpacity, StyleSheet, Image, TouchableWithoutFeedback, PermissionsAndroid } from 'react-native';
 import * as Animatable from 'react-native-animatable';
-import { elementos } from './elementos';  
+import { elementos } from './elementos';
 
 const Tutorial = ({ navigation }) => {
   const [step, setStep] = useState(0);
@@ -52,39 +52,39 @@ const Tutorial = ({ navigation }) => {
     requestFilePermission();
   }, []);
 
-  const renderKamuyInfo = (kamuy) => (
-    <View style={styles.kamuyInfoContainer}>
-      <Image source={kamuy.image} style={styles.kamuyImage} />
-      <Text style={styles.kamuyName}>{kamuy.nome}</Text>
-      <Text style={styles.kamuyDescription}>{kamuy.descricao}</Text>
-      <View style={styles.elementsContainer}>
-        {kamuy.elementos.map(element => (
-          <View key={element.nome} style={styles.elementContainer}>
-            <Image source={element.image} style={styles.elementImage} />
-            <Text style={styles.elementName}>{element.nome}</Text>
-            <Text style={styles.elementDescription}>{element.descricao.fraquezasForcas}</Text>
-          </View>
-        ))}
-      </View>
-    </View>
-  );
-
   const getKamuyForStep = () => {
     switch (step) {
-      case 7:
-        return elementos.Katon; // Kamuy Huci
-      case 8:
-        return elementos.Fuuton; // Kamuy Fujin
-      case 9:
-        return elementos.Raiton; // Kanna Kamuy
-      case 10:
-        return elementos.Doton; // Kamuy Omoikane
-      case 11:
-        return elementos.Suiton; // Kamuy Toyo
-      default:
-        return null;
+      case 7: return 'Katon';
+      case 8: return 'Fuuton';
+      case 9: return 'Raiton';
+      case 10: return 'Doton';
+      case 11: return 'Suiton';
+      default: return null;
     }
   };
+
+  const renderKamuyInfo = (element) => {
+    if (!elementos[element]) return null;
+
+    const { image, nome, descricao, kamuyImage } = elementos[element];
+
+    return (
+      <View style={styles.kamuyInfoContainer}>
+        <Image source={kamuyImage} style={styles.kamuyImage} />
+        <Text style={styles.kamuyName}>{nome}</Text>
+        <Text style={styles.kamuyDescription}>{descricao.fraquezasForcas}</Text>
+        <View style={styles.elementsContainer}>
+          <View style={[styles.elementContainer, { backgroundColor: elementos[element].corBase }]}>
+            <Image source={image} style={styles.elementImage} />
+            <Text style={styles.elementName}>{nome}</Text>
+            <Text style={styles.elementDescription}>{descricao.fraquezasForcas}</Text>
+          </View>
+        </View>
+      </View>
+    );
+  };
+
+  const showCharacter = step === 2 || step === 3 || step === 4 || step === 5 || step === 6;
 
   return (
     <>
@@ -92,7 +92,7 @@ const Tutorial = ({ navigation }) => {
       <ImageBackground source={require('../assets/imagens/pergaminho.png')} style={styles.background}>
         <TouchableWithoutFeedback onPress={nextStep}>
           <View style={styles.container}>
-            {step % 2 !== 0 && (
+            {showCharacter && (
               <View style={styles.characterContainer}>
                 <Image source={require('../assets/imagens/Shanti.png')} style={styles.character} />
               </View>
@@ -138,10 +138,12 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 20,
     left: 20,
+    width: 320, // Aumentado para melhor visualização
+    height: 320, // Aumentado para melhor visualização
   },
   character: {
-    width: 180,
-    height: 180,
+    width: 250, // Aumentado para melhor visualização
+    height: 250, // Aumentado para melhor visualização
   },
   balloonContainer: {
     position: 'absolute',
@@ -150,7 +152,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: 'white',
     borderRadius: 20,
-    padding: 20,
+    padding: 25, // Aumentado para melhor visualização
     maxWidth: '80%',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
@@ -159,7 +161,7 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   balloon: {
-    fontSize: 20,
+    fontSize: 24, // Aumentado para melhor legibilidade
     textAlign: 'center',
   },
   graphicContainer: {
@@ -171,39 +173,39 @@ const styles = StyleSheet.create({
   },
   graphic: {
     width: '100%',
-    height: 200,
+    height: 250, // Aumentado para melhor visualização
     resizeMode: 'contain',
   },
   button: {
     backgroundColor: '#8B4513',
-    padding: 10,
+    padding: 15, // Aumentado para melhor visualização
     borderRadius: 5,
     position: 'absolute',
     right: 20,
   },
   buttonText: {
     color: 'white',
-    fontSize: 16,
+    fontSize: 18, // Aumentado para melhor legibilidade
   },
   skipButton: {
     backgroundColor: '#8B4513',
-    padding: 10,
+    padding: 15, // Aumentado para melhor visualização
     borderRadius: 5,
     position: 'absolute',
     right: 20,
   },
   skipButtonText: {
     color: 'white',
-    fontSize: 16,
+    fontSize: 18, // Aumentado para melhor legibilidade
   },
   kamuyInfoContainer: {
     position: 'absolute',
-    top: '30%',
+    top: '10%',
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'white',
     borderRadius: 20,
-    padding: 20,
+    padding: 25, // Aumentado para melhor visualização
     maxWidth: '80%',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
@@ -212,43 +214,45 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   kamuyImage: {
-    width: 100,
-    height: 100,
+    width: 150, // Aumentado para melhor visualização
+    height: 150, // Aumentado para melhor visualização
+    resizeMode: 'contain',
   },
   kamuyName: {
-    fontSize: 18,
+    fontSize: 22, // Aumentado para melhor legibilidade
     fontWeight: 'bold',
-    color: '#000',
-    marginTop: 10,
+    marginVertical: 10,
   },
   kamuyDescription: {
-    fontSize: 14,
+    fontSize: 18, // Aumentado para melhor legibilidade
     textAlign: 'center',
-    marginHorizontal: 10,
-    marginTop: 5,
   },
   elementsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
     marginTop: 20,
   },
   elementContainer: {
+    backgroundColor: '#f4f4f4',
+    borderRadius: 10,
+    padding: 15, // Aumentado para melhor visualização
     alignItems: 'center',
-    marginVertical: 10,
+    justifyContent: 'center',
+    margin: 10,
   },
   elementImage: {
-    width: 80,
-    height: 80,
+    width: 100, // Aumentado para melhor visualização
+    height: 100, // Aumentado para melhor visualização
+    resizeMode: 'contain',
   },
   elementName: {
-    fontSize: 16,
+    fontSize: 18, // Aumentado para melhor legibilidade
     fontWeight: 'bold',
-    color: '#000',
-    marginTop: 5,
+    marginVertical: 5,
   },
   elementDescription: {
-    fontSize: 12,
+    fontSize: 16, // Aumentado para melhor legibilidade
     textAlign: 'center',
-    marginHorizontal: 10,
-    marginTop: 5,
   },
 });
 
