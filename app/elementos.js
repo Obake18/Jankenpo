@@ -11,7 +11,7 @@ export const elementos = {
       representacao: 'O Fogo representa a transformação e a destruição criativa. É o elemento da paixão, do desejo e da mudança. Sua força é a capacidade de transformar e renovar, enquanto sua fraqueza é a vulnerabilidade à Água, que pode apagar suas chamas e extinguir seu poder.',
       fraquezasForcas: 'O Fogo vence o Vento (Fuuton) porque o calor intenso pode dispersar a brisa, mas perde para a Água (Suiton) devido à sua capacidade de apagar as chamas.',
     },
-    kamuyImage: require('../assets/icons/kamuy_Huci.png'),
+    kamuyImage: require('../assets/icons/kamuy/kamuy_Huci.png'),
   },
   Fuuton: {
     image: require('../assets/icons/vento.png'),
@@ -25,7 +25,7 @@ export const elementos = {
       representacao: 'O Vento simboliza a liberdade, a mudança e a comunicação. Representa a adaptação e a agilidade, sendo um elemento de movimento constante e transformação. Sua força é a capacidade de mover e dispersar, enquanto sua fraqueza está na Terra (Doton), que pode bloquear e absorver seus movimentos.',
       fraquezasForcas: 'O Vento vence o Trovão (Raiton) porque pode dispersar a eletricidade com seu movimento, mas perde para a Terra (Doton), que pode abrandar e neutralizar seus efeitos.',
     },
-    kamuyImage: require('../assets/icons/kamuy_fujin.png'),
+    kamuyImage: require('../assets/icons/kamuy/kamuy_fujin.png'),
   },
   Raiton: {
     image: require('../assets/icons/trovão.png'),
@@ -39,7 +39,7 @@ export const elementos = {
       representacao: 'O Trovão representa o poder, a intensidade e o impacto súbito. É um símbolo de força e de revelação, trazendo energia e choque. Sua força é a capacidade de causar impactos fortes e repentinos, enquanto sua fraqueza é o Vento (Fuuton), que pode dissipar sua eletricidade.',
       fraquezasForcas: 'O Trovão vence a Terra (Doton) porque a eletricidade pode penetrar e afetar o solo, mas perde para o Vento (Fuuton), que pode dispersar o choque elétrico.',
     },
-    kamuyImage: require('../assets/icons/kamuy_thunder.png'),
+    kamuyImage: require('../assets/icons/kamuy/kamuy_thunder.png'),
   },
   Doton: {
     image: require('../assets/icons/terra.png'),
@@ -53,7 +53,7 @@ export const elementos = {
       representacao: 'A Terra simboliza a estabilidade, a força e a durabilidade. Representa a base e o suporte, sendo um elemento de resistência e proteção. Sua força é a capacidade de criar e sustentar estruturas, enquanto sua fraqueza é o Fogo (Katon), que pode derreter e destruir suas estruturas.',
       fraquezasForcas: 'A Terra vence a Água (Suiton) porque pode absorver e conter a umidade, mas perde para o Fogo (Katon), que pode derreter e destruir suas estruturas.',
     },
-    kamuyImage: require('../assets/icons/kamuy_omoikane.png'),
+    kamuyImage: require('../assets/icons/kamuy/kamuy_omoikane.png'),
   },
   Suiton: {
     image: require('../assets/icons/agua.png'),
@@ -67,6 +67,6 @@ export const elementos = {
       representacao: 'A Água representa a fluidez, a adaptação e a purificação. É um símbolo de transformação e renovação, podendo moldar-se a qualquer forma e trazer vida. Sua força é a capacidade de se adaptar e fluir, enquanto sua fraqueza é o Trovão (Raiton), que pode eletrificar e desestabilizar suas formas líquidas.',
       fraquezasForcas: 'A Água vence o Fogo (Katon) porque pode extinguir as chamas, mas perde para o Trovão (Raiton), que pode energizar e alterar suas propriedades.',
     },
-    kamuyImage: require('../assets/icons/kamuy_toyo.png'),
+    kamuyImage: require('../assets/icons/kamuy/kamuy_toyo.png'),
   },
 };
