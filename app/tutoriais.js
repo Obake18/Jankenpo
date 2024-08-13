@@ -100,11 +100,6 @@ const Tutorial = ({ navigation }) => {
             <Animatable.View animation="fadeIn" duration={800} style={styles.balloonContainer}>
               <Text style={styles.balloon}>{steps[step]}</Text>
             </Animatable.View>
-            {step === 2 && (
-              <View style={styles.graphicContainer}>
-                <Image source={require('../assets/imagens/grafico.png')} style={styles.graphic} />
-              </View>
-            )}
             {step > 6 && renderKamuyInfo(getKamuyForStep())}
             {step > 0 && (
               <TouchableOpacity style={[styles.button, { bottom: step === 0 ? 80 : 20 }]} onPress={() => setStep(step - 1)}>
@@ -136,7 +131,7 @@ const styles = StyleSheet.create({
   },
   characterContainer: {
     position: 'absolute',
-    bottom: 20,
+    bottom: 0,
     left: 20,
     width: 320, // Aumentado para melhor visualização
     height: 320, // Aumentado para melhor visualização
