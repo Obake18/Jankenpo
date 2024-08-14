@@ -23,7 +23,7 @@ const Tutorial = ({ navigation }) => {
     'Cada benção tem um poder sobre outra, para fins de equilíbrio.',
     'Você só pode perder cinco vezes. . . ',
     '. . .',
-    'Boa sorte, Forasteiro! E divirta-se'
+    'Boa sorte, Forasteiro! Que a benção dos Kamuy, esteja contigo.'
   ];
 
   const nextStep = () => {
