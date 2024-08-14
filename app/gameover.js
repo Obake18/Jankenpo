@@ -11,7 +11,7 @@ const GameOver = ({ navigation, route }) => {
       resetGame();
     }
     // Navegar de volta para a tela do jogo
-    navigation.navigate('Jogo');
+    navigation.navigate('Lobby');
   };
 
   const goToRecords = () => {
