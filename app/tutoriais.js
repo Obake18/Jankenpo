@@ -228,6 +228,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   elementContainer: {
+    fontSize: '52',
     backgroundColor: '#f4f4f4',
     borderRadius: 10,
     padding: 15, // Aumentado para melhor visualização

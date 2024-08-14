@@ -25,6 +25,9 @@ const Runa = ({ elemento, selecionado }) => {
 
 const LastElements = ({ lastElements }) => {
   const { player, computer } = lastElements;
+  console.log('Últimos elementos recebidos:', lastElements);
+  console.log('Imagem do jogador:', elementos[player]?.image);
+  console.log('Imagem do computador:', elementos[computer]?.image);
 
   return (
     <View style={styles.container}>
@@ -38,7 +41,7 @@ const LastElements = ({ lastElements }) => {
               ) : (
                 <Text>Imagem não disponível</Text>
               )}
-              <Text>{computer}</Text>
+              <Text style={styles.elementText}>{computer}</Text>
             </View>
           )}
           {player && (
@@ -48,7 +51,7 @@ const LastElements = ({ lastElements }) => {
               ) : (
                 <Text>Imagem não disponível</Text>
               )}
-              <Text>{player}</Text>
+              <Text style={styles.elementText}>{player}</Text>
             </View>
           )}
         </>
@@ -58,6 +61,8 @@ const LastElements = ({ lastElements }) => {
     </View>
   );
 };
+
+
 
 const Runas = () => {
   const navigation = useNavigation();
@@ -146,9 +151,10 @@ const Runas = () => {
     setPlayerChoice(elemento);
     setComputerChoice(computer);
     setActiveIndex(Object.keys(elementos).indexOf(elemento));
-
+  
     updateRecord(elemento, computer);
-
+    setLastElements({ player: elemento, computer }); // Atualizar o estado dos últimos elementos
+  
     if (!computer) {
       setResult('Erro ao selecionar a escolha do computador.');
       return;
@@ -178,15 +184,16 @@ const Runas = () => {
     } else {
       setResult('Reação desconhecida! Próxima rodada!!');
     }
-
+  
     setRound(prevRound => prevRound + 1);
-
+  
     setTimeout(() => {
       setPlayerChoice(null);
       setComputerChoice(null);
       setResult(null);
     }, 2000);
   };
+  
 
   const renderItem = ({ item }) => (
     <TouchableOpacity
@@ -306,9 +313,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   elementContainer: {
+    
     flexDirection: 'row',
     alignItems: 'center',
     marginVertical: 5,
+  },
+  elementText: {
+    fontSize: 24, // Ajuste o tamanho da fonte conforme necessário
+    fontWeight: 'bold',
+    marginHorizontal: 0,
   },
   title: {
     fontSize: 18,
