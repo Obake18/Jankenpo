@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Image, View, Text, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
+import {resetGame} from './gameover';
 import { elementos } from './elementos';
 import { useNavigation } from '@react-navigation/native';
 import Carousel from 'react-native-snap-carousel';

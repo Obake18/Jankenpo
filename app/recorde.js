@@ -53,7 +53,7 @@ const Recorde = ({ navigation }) => {
             <Text style={styles.sectionTitle}>Elementos mais escolhidos:</Text>
             {Object.entries(mostChosenElements).map(([elemento, frequencia]) => (
               <View key={elemento} style={styles.elementRow}>
-                <Text style={styles.recordText}>{elemento.nome}</Text>
+                <Text style={styles.recordText}>{elemento}</Text>
                 <Text style={styles.recordValue}>{frequencia}</Text>
               </View>
             ))}
