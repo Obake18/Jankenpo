@@ -72,7 +72,7 @@ const Tutorial = ({ navigation }) => {
       <View style={styles.kamuyInfoContainer}>
         <Image source={kamuyImage} style={styles.kamuyImage} />
         <Text style={styles.kamuyName}>{nome}</Text>
-        <Text style={styles.kamuyDescription}>{descricao.fraquezasForcas}</Text>
+        <Text style={styles.kamuyDescription}>{elementos[element].kamuy}</Text>
         <View style={styles.elementsContainer}>
           <View style={[styles.elementContainer, { backgroundColor: elementos[element].corBase }]}>
             <Image source={image} style={styles.elementImage} />
