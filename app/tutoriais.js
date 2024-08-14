@@ -21,8 +21,9 @@ const Tutorial = ({ navigation }) => {
     'Kamuy Toyo, nos deu o Água',
     'Você escolherá uma benção para combater o Wenkamuy! Mas tome cuidado, ele roubou a magia de nossas terras, então ele também pode usar nossas bençãos.',
     'Cada benção tem um poder sobre outra, para fins de equilíbrio.',
-    'Você tem 5 vidas. Quando você perder todas as vidas, você perderá o jogo.',
-    'Boa sorte, jogador! E divirta-se'
+    'Você só pode perder cinco vezes. . . ',
+    '. . .',
+    'Boa sorte, Forasteiro! E divirta-se'
   ];
 
   const nextStep = () => {
@@ -84,7 +85,7 @@ const Tutorial = ({ navigation }) => {
     );
   };
 
-  const showCharacter = step === 2 || step === 3 || step === 4 || step === 5 || step === 6;
+  const showCharacter = step === 2 || step === 3 || step === 4 || step === 5 || step === 6 || step === 11 || step === 12 || step === 13 || step === 14 || step === 15 || step === 16 || step === 17;
 
   return (
     <>
@@ -125,20 +126,21 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   container: {
+    bottom: '0',
     flex: 1,
     alignItems: 'center',
     justifyContent: 'flex-end',
   },
   characterContainer: {
     position: 'absolute',
-    bottom: 0,
+    bottom: -66,
     left: 20,
-    width: 320, // Aumentado para melhor visualização
-    height: 320, // Aumentado para melhor visualização
+    width: 420, // Aumentado para melhor visualização
+    height: 420, // Aumentado para melhor visualização
   },
   character: {
-    width: 250, // Aumentado para melhor visualização
-    height: 250, // Aumentado para melhor visualização
+    width: 350, // Aumentado para melhor visualização
+    height: 350, // Aumentado para melhor visualização
   },
   balloonContainer: {
     position: 'absolute',
@@ -158,13 +160,6 @@ const styles = StyleSheet.create({
   balloon: {
     fontSize: 24, // Aumentado para melhor legibilidade
     textAlign: 'center',
-  },
-  graphicContainer: {
-    position: 'absolute',
-    top: '10%',
-    left: '10%',
-    right: '10%',
-    alignItems: 'center',
   },
   graphic: {
     width: '100%',
@@ -195,7 +190,7 @@ const styles = StyleSheet.create({
   },
   kamuyInfoContainer: {
     position: 'absolute',
-    top: '10%',
+    top: '2%',
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'white',
@@ -209,10 +204,11 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   kamuyImage: {
-    width: 150, // Aumentado para melhor visualização
-    height: 150, // Aumentado para melhor visualização
-    resizeMode: 'contain',
+    width: 350, // Largura ajustada
+    height: 380, // Altura reduzida um pouco mais
+    resizeMode: 'contain', // Ajusta a imagem ao contêiner sem distorção
   },
+  
   kamuyName: {
     fontSize: 22, // Aumentado para melhor legibilidade
     fontWeight: 'bold',
