@@ -85,7 +85,7 @@ const Tutorial = ({ navigation }) => {
     );
   };
 
-  const showCharacter = step === 2 || step === 3 || step === 4 || step === 5 || step === 6 || step === 11 || step === 12 || step === 13 || step === 14 || step === 15 || step === 16 || step === 17;
+  const showCharacter = step === 2 || step === 3 || step === 4 || step === 5 || step === 6 || step === 12 || step === 13 || step === 14 || step === 15 || step === 16 || step === 17;
 
   return (
     <>
