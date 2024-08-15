@@ -8,6 +8,7 @@ import GameOver from './gameover';
 import Tutoriais from './tutoriais';
 import Recorde from './recorde';
 import MultPlayer from './multplayer';
+import LoginScreen from './logins.js';
 
 const Stack = createStackNavigator();
 
@@ -22,6 +23,7 @@ export default function App() {
       <Stack.Screen name="Recorde" component={Recorde} />
       <Stack.Screen name="Sobre" component={Sobre} />
       <Stack.Screen name="Detalhes" component={Detalhes} />
+      <Stack.Screen name="LoginScreen" component={LoginScreen} /> 
     </Stack.Navigator>
   );    
 }

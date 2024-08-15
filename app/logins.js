@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StatusBar,
   ImageBackground,
@@ -8,22 +8,30 @@ import {
   TouchableOpacity,
   TextInput,
   Button,
-  Image
+  Alert,
 } from 'react-native';
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from 'firebase/auth';
 import { getFirestore, doc, setDoc } from 'firebase/firestore';
-import { launchImageLibrary } from 'react-native-image-picker';
-import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 const auth = getAuth();
 const db = getFirestore();
-const storage = getStorage();
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [profileImage, setProfileImage] = useState(null);
   const [userId, setUserId] = useState(null);
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        setUserId(user.uid);
+      } else {
+        setUserId(null);
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   const handleLogin = async () => {
     try {
@@ -36,28 +44,27 @@ const LoginScreen = ({ navigation }) => {
     }
   };
 
-  const handleImagePicker = () => {
-    launchImageLibrary({ mediaType: 'photo' }, async (response) => {
-      if (response.didCancel) {
-        console.log('Usuário cancelou a seleção de imagem');
-      } else if (response.errorCode) {
-        console.error('Erro ao selecionar imagem:', response.errorMessage);
-      } else {
-        const imageUri = response.assets[0].uri;
-        setProfileImage(imageUri);
+  const handleCreateAccount = async () => {
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+      setUserId(user.uid);
+      // Criação de documento no Firestore para o novo usuário
+      await setDoc(doc(db, 'users', user.uid), { email }, { merge: true });
+      navigation.navigate('Recorde'); // Navega para a tela de recordes após a criação
+    } catch (error) {
+      console.error('Erro ao criar conta:', error);
+    }
+  };
 
-        if (userId) {
-          const storageRef = ref(storage, `profileImages/${userId}`);
-          const response = await fetch(imageUri);
-          const blob = await response.blob();
-          await uploadBytes(storageRef, blob);
-          const downloadURL = await getDownloadURL(storageRef);
-
-          // Salvar URL da imagem no Firestore
-          await setDoc(doc(db, 'users', userId), { profileImage: downloadURL }, { merge: true });
-        }
-      }
-    });
+  const handleSignOut = async () => {
+    try {
+      await signOut(auth);
+      setUserId(null);
+      Alert.alert('Desconectado', 'Você foi desconectado com sucesso.');
+    } catch (error) {
+      console.error('Erro ao deslogar:', error);
+    }
   };
 
   return (
@@ -81,11 +88,13 @@ const LoginScreen = ({ navigation }) => {
             secureTextEntry
           />
           <Button title="Fazer Login" onPress={handleLogin} />
-          <TouchableOpacity style={styles.button} onPress={handleImagePicker}>
-            <Text style={styles.buttonText}>Escolher Foto de Perfil</Text>
+          <TouchableOpacity style={styles.button} onPress={handleCreateAccount}>
+            <Text style={styles.buttonText}>Criar Conta</Text>
           </TouchableOpacity>
-          {profileImage && (
-            <Image source={{ uri: profileImage }} style={styles.profileImage} />
+          {userId && (
+            <TouchableOpacity style={styles.button} onPress={handleSignOut}>
+              <Text style={styles.buttonText}>Deslogar</Text>
+            </TouchableOpacity>
           )}
         </View>
       </ImageBackground>
@@ -125,17 +134,12 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 5,
     marginTop: 10,
+    width: '100%',
+    alignItems: 'center',
   },
   buttonText: {
     color: '#FFF',
     fontSize: 16,
-  },
-  profileImage: {
-    marginTop: 20,
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    resizeMode: 'cover',
   },
 });
 
