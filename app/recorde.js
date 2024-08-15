@@ -1,31 +1,73 @@
 import React, { useState, useEffect } from 'react';
 import { StatusBar, ImageBackground, View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { db, auth } from './firebaseconfig'; // Ajuste o caminho conforme necessário
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 
 const Recorde = ({ navigation }) => {
   const [maxWins, setMaxWins] = useState(0);
   const [lastPlayerChoice, setLastPlayerChoice] = useState('Nenhum');
   const [lastComputerChoice, setLastComputerChoice] = useState('Nenhum');
   const [mostChosenElements, setMostChosenElements] = useState({});
+  const [userId, setUserId] = useState(null);
 
   useEffect(() => {
-    const loadRecord = async () => {
-      try {
-        const recordData = await AsyncStorage.getItem('@recordData');
-        if (recordData) {
-          const { maxWins, lastPlayerChoice, lastComputerChoice, mostChosenElements } = JSON.parse(recordData);
-          setMaxWins(maxWins || 0);
-          setLastPlayerChoice(lastPlayerChoice || 'Nenhum');
-          setLastComputerChoice(lastComputerChoice || 'Nenhum');
-          setMostChosenElements(mostChosenElements || {});
-        }
-      } catch (error) {
-        console.error('Erro ao carregar o recorde:', error);
+    const loadUser = async () => {
+      const user = auth.currentUser;
+      if (user) {
+        setUserId(user.uid);
+        await loadRecord(user.uid);
+      } else {
+        console.error('Usuário não autenticado');
       }
     };
 
-    loadRecord();
+    loadUser();
   }, []);
+
+  const loadRecord = async (userId) => {
+    try {
+      const recordData = await AsyncStorage.getItem('@recordData');
+      if (recordData) {
+        const { maxWins, lastPlayerChoice, lastComputerChoice, mostChosenElements } = JSON.parse(recordData);
+        setMaxWins(maxWins || 0);
+        setLastPlayerChoice(lastPlayerChoice || 'Nenhum');
+        setLastComputerChoice(lastComputerChoice || 'Nenhum');
+        setMostChosenElements(mostChosenElements || {});
+      }
+
+      const docRef = doc(db, 'recordData', userId);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        setMaxWins(data.maxWins || 0);
+        setLastPlayerChoice(data.lastPlayerChoice || 'Nenhum');
+        setLastComputerChoice(data.lastComputerChoice || 'Nenhum');
+        setMostChosenElements(data.mostChosenElements || {});
+      }
+    } catch (error) {
+      console.error('Erro ao carregar o recorde:', error);
+    }
+  };
+
+  const saveRecordToFirebase = async () => {
+    if (userId) {
+      try {
+        await setDoc(doc(db, 'recordData', userId), {
+          maxWins,
+          lastPlayerChoice,
+          lastComputerChoice,
+          mostChosenElements
+        });
+      } catch (error) {
+        console.error('Erro ao salvar o recorde no Firebase:', error);
+      }
+    }
+  };
+
+  useEffect(() => {
+    saveRecordToFirebase();
+  }, [maxWins, lastPlayerChoice, lastComputerChoice, mostChosenElements]);
 
   const navigateBackToGame = () => {
     navigation.navigate('Lobby');
@@ -86,7 +128,7 @@ const styles = StyleSheet.create({
     color: '#FFF',
   },
   card: {
-    backgroundColor: '#FFFFFF80', 
+    backgroundColor: '#FFFFFF80',
     borderRadius: 10,
     padding: 15,
     marginVertical: 10,
@@ -96,8 +138,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 5,
     elevation: 5,
-},
-
+  },
   recordText: {
     fontSize: 18,
     color: '#333',

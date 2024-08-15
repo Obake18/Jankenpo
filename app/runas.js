@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Image, View, Text, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
-import {resetGame} from './gameover';
+import { resetGame } from './gameover';
 import { elementos } from './elementos';
 import { useNavigation } from '@react-navigation/native';
 import Carousel from 'react-native-snap-carousel';
@@ -42,7 +42,7 @@ const LastElements = ({ lastElements }) => {
               ) : (
                 <Text>Imagem não disponível</Text>
               )}
-              <Text style={styles.elementText}>{computer}</Text>
+              <Text style={styles.elementText}>{elementos[computer]?.nome}</Text>
             </View>
           )}
           {player && (
@@ -52,7 +52,7 @@ const LastElements = ({ lastElements }) => {
               ) : (
                 <Text>Imagem não disponível</Text>
               )}
-              <Text style={styles.elementText}>{player}</Text>
+              <Text style={styles.elementText}>{elementos[player]?.nome}</Text>
             </View>
           )}
         </>
@@ -62,8 +62,6 @@ const LastElements = ({ lastElements }) => {
     </View>
   );
 };
-
-
 
 const Runas = () => {
   const navigation = useNavigation();
@@ -246,17 +244,19 @@ const Runas = () => {
   );
 };
 
-const brightenColor = (color, percent) => {
-  const bigint = parseInt(color.slice(1), 16);
-  const r = (bigint >> 16) & 255;
-  const g = (bigint >> 8) & 255;
-  const b = bigint & 255;
+const brightenColor = (color, percentage) => {
+  const decimalPercentage = percentage / 100;
+  const r = parseInt(color.slice(1, 3), 16);
+  const g = parseInt(color.slice(3, 5), 16);
+  const b = parseInt(color.slice(5, 7), 16);
 
-  const brightenedR = Math.round(r + (255 - r) * percent);
-  const brightenedG = Math.round(g + (255 - g) * percent);
-  const brightenedB = Math.round(b + (255 - b) * percent);
+  const newR = Math.min(255, Math.floor(r + (255 - r) * decimalPercentage));
+  const newG = Math.min(255, Math.floor(g + (255 - g) * decimalPercentage));
+  const newB = Math.min(255, Math.floor(b + (255 - b) * decimalPercentage));
 
-  return `#${(brightenedR << 16 | brightenedG << 8 | brightenedB).toString(16).padStart(6, '0')}`;
+  const newColor = `#${newR.toString(16).padStart(2, '0')}${newG.toString(16).padStart(2, '0')}${newB.toString(16).padStart(2, '0')}`;
+
+  return newColor;
 };
 
 const styles = StyleSheet.create({
@@ -320,7 +320,7 @@ const styles = StyleSheet.create({
     marginVertical: 5,
   },
   elementText: {
-    fontSize: 24, // Ajuste o tamanho da fonte conforme necessário
+    fontSize: 24,
     fontWeight: 'bold',
     marginHorizontal: 0,
   },

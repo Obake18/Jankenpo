@@ -1,30 +1,39 @@
 import React, { useState, useEffect } from 'react';
-import { StatusBar, View, ImageBackground, Text, TouchableOpacity, StyleSheet, Image, TouchableWithoutFeedback, PermissionsAndroid } from 'react-native';
+import { StatusBar, View, ImageBackground, Text, TouchableOpacity, StyleSheet, Image, TouchableWithoutFeedback, PermissionsAndroid, Dimensions, PixelRatio } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import { elementos } from './elementos';
+
+const { width, height } = Dimensions.get('window');
+const scale = width / 320;
+
+function normalize(size) {
+  const newSize = size * scale;
+  return Math.round(PixelRatio.roundToNearestPixel(newSize));
+}
 
 const Tutorial = ({ navigation }) => {
   const [step, setStep] = useState(0);
 
   const steps = [
     '(Clique aqui)',
-    'Ainda bem que você chegou . . .',
-    'O meu nome é Asirpa, sou uma nativa destas terras. Prazer em te conhecer.',
-    'Há muito tempo atrás, meu povo, os Ainu, vivia em paz. Mas então os "Sisam" chegaram aqui nestas terras. Eles trouxeram consigo, um monstro de metal, que sugou a magia de nosso solo, nossos rios, nossos ventos, nossos céus, e apagou nossas chamas.',
-    'Este Monstro, ou como os mais velhos chamam, "Kanep Wenkamuy", é a fonte de nosso sofrimento. Você é a chave para salvar nossas terras! Por favor nos ajude!',
-    'Você não sabe como? Eu te ensino!',
-    'Os Kamuy, os deuses de nossas terras, nos enviaram cada qual uma "benção". Essas bençãos podem nos ajudar a derrotar este Wenkamuy!',
-    'Kamuy Huci, nos deu o Fogo',
-    'Kamuy Fujin, nos deu o Vento',
-    'Kanna Kamuy, nos deu o Trovão',
-    'Kamuy Omoikane, nos deu o Terra',
-    'Kamuy Toyo, nos deu o Água',
-    'Você escolherá uma benção para combater o Wenkamuy! Mas tome cuidado, ele roubou a magia de nossas terras, então ele também pode usar nossas bençãos.',
-    'Cada benção tem um poder sobre outra, para fins de equilíbrio.',
-    'Você só pode perder cinco vezes. . . ',
-    '. . .',
-    'Boa sorte, Forasteiro! Que a benção dos Kamuy, esteja contigo.'
+    'Que bom que você chegou!',
+    'Meu nome é Asirpa. Sou uma nativa destas terras. Prazer em conhecê-lo.',
+    'Há muito tempo, meu povo, os Ainu, vivia em paz. Mas então os "Sisam" chegaram e trouxeram consigo um monstro de metal que sugou a magia do nosso solo, dos nossos rios, dos nossos ventos, dos nossos céus e apagou nossas chamas.',
+    'Esse monstro, conhecido pelos mais velhos como "Kanep Wenkamuy", é a fonte do nosso sofrimento. Você é a nossa esperança para salvar essas terras! Por favor, nos ajude!',
+    'Não sabe como? Eu te ensino!',
+    'Os Kamuy, deuses de nossas terras, nos enviaram bênçãos especiais. Essas bênçãos podem nos ajudar a derrotar o Wenkamuy!',
+    'Kamuy Huci nos deu o poder do Fogo.',
+    'Kamuy Fujin nos deu o poder do Vento.',
+    'Kanna Kamuy nos deu o poder do Trovão.',
+    'Kamuy Omoikane nos deu o poder da Terra.',
+    'Kamuy Toyo nos deu o poder da Água.',
+    'Você escolherá uma bênção para combater o Wenkamuy! Mas cuidado, ele roubou a magia das nossas terras e pode usar as mesmas bênçãos contra você.',
+    'Cada bênção tem poder sobre outra, criando um equilíbrio entre elas.',
+    'Você só pode perder cinco vezes antes que seja tarde demais...',
+    '...',
+    'Boa sorte, Forasteiro! Que as bênçãos dos Kamuy estejam com você.'
   ];
+  
 
   const nextStep = () => {
     if (step < steps.length - 1) {
@@ -126,21 +135,21 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   container: {
-    bottom: '0',
     flex: 1,
     alignItems: 'center',
     justifyContent: 'flex-end',
   },
   characterContainer: {
     position: 'absolute',
-    bottom: -66,
-    left: 20,
-    width: 420, // Aumentado para melhor visualização
-    height: 420, // Aumentado para melhor visualização
+    bottom: -normalize(1),
+    left: normalize(20),
+    width: normalize(180),
+    height: normalize(180),
   },
   character: {
-    width: 350, // Aumentado para melhor visualização
-    height: 350, // Aumentado para melhor visualização
+    width: '100%',
+    height: '100%',
+    resizeMode: 'contain',
   },
   balloonContainer: {
     position: 'absolute',
@@ -149,7 +158,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: 'white',
     borderRadius: 20,
-    padding: 25, // Aumentado para melhor visualização
+    padding: normalize(25),
     maxWidth: '80%',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
@@ -158,44 +167,44 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   balloon: {
-    fontSize: 24, // Aumentado para melhor legibilidade
+    fontSize: normalize(16),
     textAlign: 'center',
   },
   graphic: {
     width: '100%',
-    height: 250, // Aumentado para melhor visualização
+    height: normalize(150),
     resizeMode: 'contain',
   },
   button: {
     backgroundColor: '#8B4513',
-    padding: 15, // Aumentado para melhor visualização
+    padding: normalize(10),
     borderRadius: 5,
     position: 'absolute',
-    right: 20,
+    right: normalize(20),
   },
   buttonText: {
     color: 'white',
-    fontSize: 18, // Aumentado para melhor legibilidade
+    fontSize: normalize(14),
   },
   skipButton: {
     backgroundColor: '#8B4513',
-    padding: 15, // Aumentado para melhor visualização
+    padding: normalize(10),
     borderRadius: 5,
     position: 'absolute',
-    right: 20,
+    right: normalize(20),
   },
   skipButtonText: {
     color: 'white',
-    fontSize: 18, // Aumentado para melhor legibilidade
+    fontSize: normalize(14),
   },
   kamuyInfoContainer: {
     position: 'absolute',
-    top: '2%',
+    top: '10%',
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'white',
     borderRadius: 20,
-    padding: 25, // Aumentado para melhor visualização
+    padding: normalize(20),
     maxWidth: '80%',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
@@ -204,46 +213,42 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   kamuyImage: {
-    width: 350, // Largura ajustada
-    height: 380, // Altura reduzida um pouco mais
-    resizeMode: 'contain', // Ajusta a imagem ao contêiner sem distorção
+    width: '100%',
+    height: normalize(150),
+    resizeMode: 'contain',
   },
-  
   kamuyName: {
-    fontSize: 22, // Aumentado para melhor legibilidade
+    fontSize: normalize(18),
     fontWeight: 'bold',
-    marginVertical: 10,
+    marginVertical: normalize(10),
   },
   kamuyDescription: {
-    fontSize: 18, // Aumentado para melhor legibilidade
+    fontSize: normalize(14),
     textAlign: 'center',
   },
   elementsContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
-    marginTop: 20,
+    marginTop: normalize(20),
   },
   elementContainer: {
-    fontSize: '52',
-    backgroundColor: '#f4f4f4',
-    borderRadius: 10,
-    padding: 15, // Aumentado para melhor visualização
     alignItems: 'center',
-    justifyContent: 'center',
-    margin: 10,
+    borderRadius: 10,
+    marginHorizontal: normalize(10),
+    padding: normalize(10),
   },
   elementImage: {
-    width: 100, // Aumentado para melhor visualização
-    height: 100, // Aumentado para melhor visualização
+    width: normalize(50),
+    height: normalize(50),
     resizeMode: 'contain',
   },
   elementName: {
-    fontSize: 18, // Aumentado para melhor legibilidade
+    fontSize: normalize(16),
     fontWeight: 'bold',
-    marginVertical: 5,
+    marginTop: normalize(10),
   },
   elementDescription: {
-    fontSize: 16, // Aumentado para melhor legibilidade
+    fontSize: normalize(14),
     textAlign: 'center',
   },
 });

@@ -12,14 +12,18 @@
   "dependencies": {
     "@react-native-async-storage/async-storage": "1.23.1",
     "@react-native-community/blur": "^4.4.0",
+    "@react-native-firebase/app": "^20.4.0",
+    "@react-native-firebase/auth": "^20.4.0",
     "@react-navigation/native": "^6.1.17",
     "@react-navigation/stack": "^6.3.29",
     "expo": "^51.0.18",
+    "expo-blur": "~13.0.2",
     "expo-constants": "~16.0.2",
     "expo-image-picker": "~15.0.7",
     "expo-linking": "~6.3.1",
     "expo-router": "~3.5.17",
     "expo-status-bar": "~1.12.1",
+    "firebase": "^10.12.5",
     "patch-package": "^8.0.0",
     "react": "18.2.0",
     "react-native": "0.74.3",
@@ -32,8 +36,7 @@
     "react-native-snap-carousel": "^3.9.1",
     "socket.io": "^4.7.5",
     "socket.io-client": "^4.7.5",
-    "ws": "^8.18.0",
-    "expo-blur": "~13.0.2"
+    "ws": "^8.18.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"
