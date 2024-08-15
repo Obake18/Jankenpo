@@ -27,25 +27,15 @@ const Recorde = ({ navigation }) => {
 
   const loadRecord = async (userId) => {
     try {
-      // Carregar dados do AsyncStorage
-      const recordData = await AsyncStorage.getItem(`@recordData_${userId}`);
+      const recordData = await AsyncStorage.getItem('@recordData');
       if (recordData) {
         const { maxWins, lastPlayerChoice, lastComputerChoice, mostChosenElements } = JSON.parse(recordData);
         setMaxWins(maxWins || 0);
         setLastPlayerChoice(lastPlayerChoice || 'Nenhum');
         setLastComputerChoice(lastComputerChoice || 'Nenhum');
         setMostChosenElements(mostChosenElements || {});
-      } else {
-        // Caso não haja dados no AsyncStorage, carregar do Firestore
-        await loadRecordFromFirestore(userId);
       }
-    } catch (error) {
-      console.error('Erro ao carregar o recorde:', error);
-    }
-  };
 
-  const loadRecordFromFirestore = async (userId) => {
-    try {
       const docRef = doc(db, 'recordData', userId);
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
@@ -54,58 +44,30 @@ const Recorde = ({ navigation }) => {
         setLastPlayerChoice(data.lastPlayerChoice || 'Nenhum');
         setLastComputerChoice(data.lastComputerChoice || 'Nenhum');
         setMostChosenElements(data.mostChosenElements || {});
-        // Salvar dados no AsyncStorage após carregar do Firestore
-        await saveRecordToAsyncStorage(userId, data);
-      } else {
-        // Se não existir no Firestore, inicialize com valores padrão
-        await initializeDefaultRecord(userId);
       }
     } catch (error) {
-      console.error('Erro ao carregar o recorde do Firestore:', error);
+      console.error('Erro ao carregar o recorde:', error);
     }
   };
 
-  const initializeDefaultRecord = async (userId) => {
-    const defaultData = {
-      maxWins: 0,
-      lastPlayerChoice: 'Nenhum',
-      lastComputerChoice: 'Nenhum',
-      mostChosenElements: {},
-    };
-    await saveRecordToFirestore(userId, defaultData);
-    await saveRecordToAsyncStorage(userId, defaultData);
-  };
-
-  const saveRecordToAsyncStorage = async (userId, recordData) => {
-    try {
-      await AsyncStorage.setItem(`@recordData_${userId}`, JSON.stringify(recordData));
-    } catch (error) {
-      console.error('Erro ao salvar o recorde no AsyncStorage:', error);
-    }
-  };
-
-  const saveRecordToFirestore = async (userId, recordData) => {
+  const saveRecordToFirebase = async () => {
     if (userId) {
       try {
-        await setDoc(doc(db, 'recordData', userId), recordData);
+        await setDoc(doc(db, 'recordData', userId), {
+          maxWins,
+          lastPlayerChoice,
+          lastComputerChoice,
+          mostChosenElements
+        });
       } catch (error) {
-        console.error('Erro ao salvar o recorde no Firestore:', error);
+        console.error('Erro ao salvar o recorde no Firebase:', error);
       }
     }
   };
 
   useEffect(() => {
-    if (userId) {
-      const recordData = {
-        maxWins,
-        lastPlayerChoice,
-        lastComputerChoice,
-        mostChosenElements,
-      };
-      saveRecordToFirestore(userId, recordData);
-      saveRecordToAsyncStorage(userId, recordData);
-    }
-  }, [maxWins, lastPlayerChoice, lastComputerChoice, mostChosenElements, userId]);
+    saveRecordToFirebase();
+  }, [maxWins, lastPlayerChoice, lastComputerChoice, mostChosenElements]);
 
   const navigateBackToGame = () => {
     navigation.navigate('Lobby');

@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
   },
   balloonContainer: {
     position: 'absolute',
-    bottom: '60%',
+    bottom: '50%',
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'white',
@@ -199,7 +199,7 @@ const styles = StyleSheet.create({
   },
   kamuyInfoContainer: {
     position: 'absolute',
-    top: '10%',
+    top: '5%',
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'white',

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-import { auth, storage } from './firebaseconfig'; // ajuste o caminho conforme necessário
-import { getDownloadURL, ref, uploadBytesResumable, deleteObject } from 'firebase/storage';
+import { uploadProfilePicture } from './profileservice'; // ajuste o caminho conforme necessário
+import { auth } from './firebaseconfig'; // ajuste o caminho conforme necessário
 
 export default function Profile() {
   const [user, setUser] = useState(null);
@@ -10,6 +10,15 @@ export default function Profile() {
   const [hasImage, setHasImage] = useState(false);
 
   useEffect(() => {
+    const getPermissions = async () => {
+      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (status !== 'granted') {
+        Alert.alert('Permissão necessária', 'Precisamos de permissões para acessar a galeria de imagens.');
+      }
+    };
+
+    getPermissions();
+    
     const unsubscribe = auth.onAuthStateChanged(setUser);
 
     if (user) {
@@ -21,63 +30,53 @@ export default function Profile() {
 
   const fetchProfilePicture = async () => {
     try {
-      const storageRef = ref(storage, `profile_pictures/${user.uid}.png`);
-      const url = await getDownloadURL(storageRef);
+      const userRef = doc(getFirestore(), 'users', user.uid);
+      const docSnap = await getDoc(userRef);
+      const data = docSnap.data();
+      const url = data?.profilePicture || null;
       setProfilePic(url);
-      setHasImage(true);
+      setHasImage(!!url);
     } catch (error) {
-      console.log('No profile picture found, using default.');
+      console.log('Nenhuma foto de perfil encontrada, usando padrão.');
       setProfilePic(null);
       setHasImage(false);
     }
   };
 
   const handleImagePick = async () => {
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
+    try {
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+      });
 
-    if (!result.canceled) {
-      const { uri } = result.assets[0];
-      uploadImage(uri);
-    }
-  };
-
-  const uploadImage = async (uri) => {
-    const response = await fetch(uri);
-    const blob = await response.blob();
-    const storageRef = ref(storage, `profile_pictures/${user.uid}.png`);
-    const uploadTask = uploadBytesResumable(storageRef, blob);
-
-    uploadTask.on(
-      'state_changed',
-      (snapshot) => {},
-      (error) => {
-        console.error('Upload error:', error);
-      },
-      async () => {
+      if (!result.canceled) {
+        const { uri } = result.assets[0];
         try {
-          const url = await getDownloadURL(uploadTask.snapshot.ref);
+          const url = await uploadProfilePicture(uri);
           setProfilePic(url);
           setHasImage(true);
         } catch (error) {
-          console.error('Error fetching download URL:', error);
+          Alert.alert('Erro', 'Não foi possível fazer o upload da foto.');
         }
       }
-    );
+    } catch (error) {
+      Alert.alert('Erro', 'Não foi possível acessar a galeria de imagens.');
+    }
   };
 
   const handleDeleteImage = async () => {
-    const storageRef = ref(storage, `profile_pictures/${user.uid}.png`);
     try {
+      const storageRef = ref(getStorage(), `profile_pictures/${user.uid}/profile.png`);
       await deleteObject(storageRef);
+      const userRef = doc(getFirestore(), 'users', user.uid);
+      await setDoc(userRef, { profilePicture: null }, { merge: true });
       setProfilePic(null);
       setHasImage(false);
     } catch (error) {
-      console.error('Error deleting image:', error);
+      console.error('Erro ao excluir a imagem:', error);
     }
   };
 
