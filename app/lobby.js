@@ -14,9 +14,10 @@ export default function Lobby({ navigation }) {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         setIsLoggedIn(true);
-        setDialogVisible(true);
+        setDialogVisible(true); // Mostrar o pop-up se o usuário estiver logado
       } else {
         setIsLoggedIn(false);
+        setDialogVisible(false); // Esconder o pop-up se o usuário não estiver logado
       }
     });
 
@@ -77,18 +78,20 @@ export default function Lobby({ navigation }) {
         </BlurView>
       </ImageBackground>
 
-      <PopupDialog
-        visible={dialogVisible}
-        onTouchOutside={() => setDialogVisible(false)}
-        dialogStyle={styles.dialog}
-      >
-        <View style={styles.dialogContainer}>
-          <Text style={styles.dialogTitle}>Bem-vindo de volta!</Text>
-          <TouchableOpacity style={styles.dialogButton} onPress={handleSignOut}>
-            <Text style={styles.dialogButtonText}>Deslogar</Text>
-          </TouchableOpacity>
-        </View>
-      </PopupDialog>
+      {dialogVisible && (
+        <PopupDialog
+          visible={dialogVisible}
+          onTouchOutside={() => setDialogVisible(false)}
+          dialogStyle={styles.dialog}
+        >
+          <View style={styles.dialogContainer}>
+            <Text style={styles.dialogTitle}>Bem-vindo de volta!</Text>
+            <TouchableOpacity style={styles.dialogButton} onPress={handleSignOut}>
+              <Text style={styles.dialogButtonText}>Deslogar</Text>
+            </TouchableOpacity>
+          </View>
+        </PopupDialog>
+      )}
     </>
   );
 }
