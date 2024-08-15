@@ -1,26 +1,31 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import   
+ { getAuth, signInWithEmailAndPassword } from 'firebase/auth';   
+
+import { useRouter } from 'expo-router';
 
 const auth = getAuth();
 
-export default function LoginScreen({ navigation }) {
+export default function LoginScreen() {
+  const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
-      if (user) {
+      if   
+ (user) {
         if (!user.displayName) {
-          navigation.navigate('ChooseUsername'); // Redireciona para escolher o nome de usuário
+          router.push('/username'); // Replace with correct route name
         } else {
-          navigation.navigate('Lobby'); // Navega para a tela inicial ou outra página
+          router.push('/lobby'); // Replace with correct route name
         }
       }
     });
 
     return () => unsubscribe();
-  }, [navigation]);
+  }, [router]);
 
   const handleLogin = async () => {
     try {
@@ -36,7 +41,8 @@ export default function LoginScreen({ navigation }) {
       <Text style={styles.title}>Login</Text>
       <TextInput
         style={styles.input}
-        placeholder="Email"
+        placeholder="Email"   
+
         value={email}
         onChangeText={setEmail}
         autoCapitalize="none"
@@ -47,12 +53,15 @@ export default function LoginScreen({ navigation }) {
         placeholder="Senha"
         value={password}
         onChangeText={setPassword}
-        secureTextEntry
+        secureTextEntry   
+
       />
       <TouchableOpacity style={styles.button} onPress={handleLogin}>
-        <Text style={styles.buttonText}>Entrar</Text>
+        <Text   
+ style={styles.buttonText}>Entrar</Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => navigation.navigate('SignUpScreen')}>
+      <TouchableOpacity   
+ onPress={() => router.push('/signup')}> // Replace with correct route name
         <Text style={styles.linkText}>Não tem uma conta? Crie uma</Text>
       </TouchableOpacity>
     </View>

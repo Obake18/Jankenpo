@@ -64,7 +64,7 @@ const LastElements = ({ lastElements }) => {
 };
 
 const Runas = () => {
-  const navigation = useNavigation();
+  const router = useRouter();
   const [lastElements, setLastElements] = useState({ player: null, computer: null });
   const [playerChoice, setPlayerChoice] = useState(null);
   const [computerChoice, setComputerChoice] = useState(null);
@@ -176,7 +176,9 @@ const Runas = () => {
       setWinStreak(0);
       if (playerLives - 1 === 0) {
         setResult('Game Over');
-        navigation.navigate('GameOver', { resetGame });
+        const handleNavigateToGameOver = () => {
+          router.push('/gameover'); // Navigate to gameover screen
+        };
       } else {
         setPlayerLives(playerLives - 1);
       }
