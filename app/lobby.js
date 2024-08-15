@@ -166,23 +166,9 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: '#FFF',
   },
-  loginButton: {
-    marginTop: 20,
-    backgroundColor: '#8B4513',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 5,
-  },
   loginButtonText: {
     fontSize: 16,
     color: '#FFF',
-  },
-  profileButton: {
-    marginTop: 20,
-    backgroundColor: '#8B4513',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 5,
   },
   profileButtonText: {
     fontSize: 16,

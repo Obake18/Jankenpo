@@ -31,9 +31,6 @@ const Detalhes = ({ route }) => {
           <Text style={styles.combatInfo}>
             {elemento.nome} vence {elemento.vence} e perde para {elemento.perde}.
           </Text>
-
-          {/* Imagem do Kamuy */}
-
         </ScrollView>
       </ImageBackground>
     </>
@@ -93,13 +90,12 @@ const styles = StyleSheet.create({
   },
   kamuyContainer: {
     width: '100%',
-    height:'auto',
     marginTop: 30,
     alignItems: 'center',
   },
   kamuyImage: {
     width: 250,
-    height: 150,
+    height: 350,
     borderRadius: 25,
     borderWidth: 2,
     borderColor: '#fff',

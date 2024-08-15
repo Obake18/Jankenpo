@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { StatusBar, View, ImageBackground, Text, TouchableOpacity, StyleSheet, Image, TouchableWithoutFeedback, PermissionsAndroid, Dimensions, PixelRatio } from 'react-native';
+import { StatusBar, View, ImageBackground, Text, TouchableOpacity, StyleSheet, Image, TouchableWithoutFeedback, Dimensions, PixelRatio } from 'react-native'; // Importar AsyncStorage
 import * as Animatable from 'react-native-animatable';
 import { elementos } from './elementos';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const { width, height } = Dimensions.get('window');
 const scale = width / 320;
@@ -33,12 +34,13 @@ const Tutorial = ({ navigation }) => {
     '...',
     'Boa sorte, Forasteiro! Que as bênçãos dos Kamuy estejam com você.'
   ];
-  
 
   const nextStep = () => {
     if (step < steps.length - 1) {
       setStep(step + 1);
     } else {
+      // Armazena a conclusão do tutorial no AsyncStorage
+      AsyncStorage.setItem('tutorialCompleted', 'true');
       navigation.navigate('Jogo');
     }
   };
@@ -223,19 +225,23 @@ const styles = StyleSheet.create({
     marginVertical: normalize(10),
   },
   kamuyDescription: {
-    fontSize: normalize(14),
+    fontSize: normalize(16),
     textAlign: 'center',
   },
   elementsContainer: {
     flexDirection: 'row',
-    justifyContent: 'center',
     marginTop: normalize(20),
   },
   elementContainer: {
     alignItems: 'center',
-    borderRadius: 10,
-    marginHorizontal: normalize(10),
     padding: normalize(10),
+    borderRadius: 10,
+    margin: normalize(10),
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   elementImage: {
     width: normalize(50),
@@ -243,12 +249,12 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   elementName: {
-    fontSize: normalize(16),
+    fontSize: normalize(14),
     fontWeight: 'bold',
     marginTop: normalize(10),
   },
   elementDescription: {
-    fontSize: normalize(14),
+    fontSize: normalize(12),
     textAlign: 'center',
   },
 });
