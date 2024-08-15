@@ -18,7 +18,7 @@ export default function ChooseUsername({ navigation }) {
     try {
       await updateProfile(user, { displayName: `@${username}` });
       Alert.alert('Sucesso', 'Nome de usuário atualizado com sucesso.');
-      navigation.navigate('Home'); // Navega para a tela inicial ou outra tela após a configuração do nome de usuário
+      navigation.navigate('Lobby'); // Navega para a tela inicial ou outra tela após a configuração do nome de usuário
     } catch (error) {
       console.error('Erro ao atualizar nome de usuário:', error);
       Alert.alert('Erro', 'Não foi possível atualizar o nome de usuário.');

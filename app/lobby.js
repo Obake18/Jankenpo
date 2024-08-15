@@ -73,14 +73,14 @@ export default function Lobby({ navigation }) {
 
             {isLoggedIn ? (
               <TouchableOpacity
-                style={styles.profileButton}
+                style={styles.card}
                 onPress={() => navigation.navigate('ProfileScreen')}
               >
                 <Text style={styles.profileButtonText}>Perfil</Text>
               </TouchableOpacity>
             ) : (
               <TouchableOpacity
-                style={styles.loginButton}
+                style={styles.card}
                 onPress={() => navigation.navigate('LoginScreen')}
               >
                 <Text style={styles.loginButtonText}>Login</Text>

@@ -14,7 +14,7 @@ export default function LoginScreen({ navigation }) {
         if (!user.displayName) {
           navigation.navigate('ChooseUsername'); // Redireciona para escolher o nome de usuário
         } else {
-          navigation.navigate('Home'); // Navega para a tela inicial ou outra página
+          navigation.navigate('Lobby'); // Navega para a tela inicial ou outra página
         }
       }
     });

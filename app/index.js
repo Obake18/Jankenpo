@@ -11,6 +11,7 @@ import MultPlayer from './multplayer';
 import LoginScreen from './logins.js';
 import ChooseUsername from './username.js';
 import ProfileScreen from './profile.js';
+import SignUpScreen from './signup.js';
 
 const Stack = createStackNavigator();
 
@@ -28,6 +29,7 @@ export default function App() {
       <Stack.Screen name="LoginScreen" component={LoginScreen} /> 
       <Stack.Screen name="ChooseUsername" component={ChooseUsername} />
       <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
+      <Stack.Screen name="SignUpScreen" component={SignUpScreen} /> 
     </Stack.Navigator>
   );    
 }
