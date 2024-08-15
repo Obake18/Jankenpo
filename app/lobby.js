@@ -9,15 +9,18 @@ const auth = getAuth();
 export default function Lobby({ navigation }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [dialogVisible, setDialogVisible] = useState(false);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         setIsLoggedIn(true);
-        setDialogVisible(true); // Mostrar o pop-up se o usuário estiver logado
+        setUser(user); // Atualiza o usuário
+        setDialogVisible(true);
       } else {
         setIsLoggedIn(false);
-        setDialogVisible(false); // Esconder o pop-up se o usuário não estiver logado
+        setUser(null);
+        setDialogVisible(false);
       }
     });
 
@@ -68,12 +71,21 @@ export default function Lobby({ navigation }) {
               <Text style={styles.cardText}>Info.</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity
-              style={styles.loginButton}
-              onPress={() => navigation.navigate('LoginScreen')}
-            >
-              <Text style={styles.loginButtonText}>Login</Text>
-            </TouchableOpacity>
+            {isLoggedIn ? (
+              <TouchableOpacity
+                style={styles.profileButton}
+                onPress={() => navigation.navigate('ProfileScreen')}
+              >
+                <Text style={styles.profileButtonText}>Perfil</Text>
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity
+                style={styles.loginButton}
+                onPress={() => navigation.navigate('LoginScreen')}
+              >
+                <Text style={styles.loginButtonText}>Login</Text>
+              </TouchableOpacity>
+            )}
           </View>
         </BlurView>
       </ImageBackground>
@@ -146,6 +158,17 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   loginButtonText: {
+    fontSize: 16,
+    color: '#FFF',
+  },
+  profileButton: {
+    marginTop: 20,
+    backgroundColor: '#8B4513',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+  },
+  profileButtonText: {
     fontSize: 16,
     color: '#FFF',
   },

@@ -1,123 +1,205 @@
-
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet, Button } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import * as ImagePicker from 'expo-image-picker';
+import { ImageBackground, View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { BlurView } from 'expo-blur';
+import { getAuth, onAuthStateChanged, signOut, deleteUser } from 'firebase/auth';
+import PopupDialog from 'react-native-popup-dialog';
 
-const Profile = () => {
-  const [name, setName] = useState('');
-  const [photoUri, setPhotoUri] = useState('');
+const auth = getAuth();
+
+export default function Profile({ navigation }) {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [user, setUser] = useState(null);
+  const [dialogVisible, setDialogVisible] = useState(false);
 
   useEffect(() => {
-    const loadProfile = async () => {
-      try {
-        const storedName = await AsyncStorage.getItem('profileName');
-        const storedPhoto = await AsyncStorage.getItem('profilePhoto');
-        if (storedName) setName(storedName);
-        if (storedPhoto) setPhotoUri(storedPhoto);
-      } catch (error) {
-        console.error('Failed to load profile', error);
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setIsLoggedIn(true);
+        setUser(user);
+      } else {
+        setIsLoggedIn(false);
+        setUser(null);
       }
-    };
-    loadProfile();
+    });
+
+    return () => unsubscribe();
   }, []);
 
-  const handleNameChange = async (newName) => {
+  const handleSignOut = async () => {
     try {
-      await AsyncStorage.setItem('profileName', newName);
-      setName(newName);
+      await signOut(auth);
+      Alert.alert('Desconectado', 'Você foi desconectado com sucesso.');
+      navigation.navigate('LoginScreen'); // Navega para a tela de login após o logout
     } catch (error) {
-      console.error('Failed to save name', error);
+      console.error('Erro ao deslogar:', error);
     }
   };
 
-  const handlePhotoPick = async () => {
-    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (status !== 'granted') {
-      alert('Oh! Precisamos que você nos permita ver sua foto. . .');
-      return;
-    }
-
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
-
-    if (!result.canceled) {
-      try {
-        await AsyncStorage.setItem('profilePhoto', result.uri);
-        setPhotoUri(result.uri);
-      } catch (error) {
-        console.error('Failed to save photo', error);
+  const handleDeleteAccount = async () => {
+    try {
+      if (user) {
+        await deleteUser(user);
+        Alert.alert('Conta Deletada', 'Sua conta foi deletada com sucesso.');
+        navigation.navigate('LoginScreen'); // Navega para a tela de login após deletar a conta
       }
+    } catch (error) {
+      console.error('Erro ao deletar conta:', error);
+      Alert.alert('Erro', 'Não foi possível deletar a conta.');
     }
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Profile</Text>
-      <TouchableOpacity onPress={handlePhotoPick} style={styles.photoContainer}>
-        {photoUri ? (
-          <Image source={{ uri: photoUri }} style={styles.photo} />
-        ) : (
-          <Text>Select a Photo</Text>
-        )}
-      </TouchableOpacity>
-      <TextInput
-        style={styles.input}
-        placeholder="Seu nome de xamã é. . ."
-        value={name}
-        onChangeText={handleNameChange}
-      />
-      <Button title="Save" onPress={() => handleNameChange(name)} />
-      <Text style={styles.info}>Name: {name}</Text>
-      <Text style={styles.info}>Photo URI: {photoUri}</Text>
-    </View>
+    <ImageBackground source={require('../assets/imagens/pergaminho.png')} style={styles.background}>
+      <BlurView intensity={10} style={styles.absolute}>
+        <View style={styles.container}>
+          <Text style={styles.title}>Perfil</Text>
+
+          {isLoggedIn ? (
+            <View style={styles.profileContainer}>
+              <Text style={styles.profileTitle}>Olá, {user ? user.displayName || 'Usuário' : 'Usuário'}!</Text>
+              <Text style={styles.profileEmail}>{user ? user.email : 'Não disponível'}</Text>
+              <TouchableOpacity
+                style={styles.logoutButton}
+                onPress={handleSignOut}
+              >
+                <Text style={styles.logoutButtonText}>Logout</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.deleteButton}
+                onPress={() => setDialogVisible(true)}
+              >
+                <Text style={styles.deleteButtonText}>Deletar Conta</Text>
+              </TouchableOpacity>
+            </View>
+          ) : (
+            <TouchableOpacity
+              style={styles.loginButton}
+              onPress={() => navigation.navigate('LoginScreen')}
+            >
+              <Text style={styles.loginButtonText}>Login</Text>
+            </TouchableOpacity>
+          )}
+        </View>
+      </BlurView>
+
+      {dialogVisible && (
+        <PopupDialog
+          visible={dialogVisible}
+          onTouchOutside={() => setDialogVisible(false)}
+          dialogStyle={styles.dialog}
+        >
+          <View style={styles.dialogContainer}>
+            <Text style={styles.dialogTitle}>Você tem certeza?</Text>
+            <Text style={styles.dialogText}>Deseja realmente deletar sua conta?</Text>
+            <TouchableOpacity style={styles.dialogButton} onPress={handleDeleteAccount}>
+              <Text style={styles.dialogButtonText}>Sim, deletar</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.dialogButton} onPress={() => setDialogVisible(false)}>
+              <Text style={styles.dialogButtonText}>Cancelar</Text>
+            </TouchableOpacity>
+          </View>
+        </PopupDialog>
+      )}
+    </ImageBackground>
   );
-};
+}
 
 const styles = StyleSheet.create({
+  background: {
+    flex: 1,
+    resizeMode: 'cover',
+    justifyContent: 'center',
+  },
+  absolute: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+  },
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#f5f5f5',
     padding: 20,
   },
   title: {
-    fontSize: 24,
+    fontSize: 28,
     fontWeight: 'bold',
-    marginBottom: 20,
+    marginBottom: 40,
+    color: '#000',
   },
-  photoContainer: {
-    width: 120,
-    height: 120,
-    justifyContent: 'center',
+  profileContainer: {
     alignItems: 'center',
-    borderWidth: 1,
-    borderColor: '#ddd',
-    borderRadius: 60,
-    marginBottom: 20,
-  },
-  photo: {
-    width: 120,
-    height: 120,
-    borderRadius: 60,
-  },
-  input: {
-    width: '100%',
-    padding: 10,
-    borderWidth: 1,
-    borderColor: '#ddd',
-    borderRadius: 5,
-    marginBottom: 20,
-  },
-  info: {
     marginTop: 20,
+  },
+  profileTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  profileEmail: {
+    fontSize: 16,
+    marginBottom: 20,
+  },
+  loginButton: {
+    marginTop: 20,
+    backgroundColor: '#8B4513',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+  },
+  loginButtonText: {
+    fontSize: 16,
+    color: '#FFF',
+  },
+  logoutButton: {
+    backgroundColor: '#8B4513',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+    marginVertical: 10,
+  },
+  logoutButtonText: {
+    color: '#FFF',
+    fontSize: 16,
+  },
+  deleteButton: {
+    backgroundColor: '#D9534F',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+    marginVertical: 10,
+  },
+  deleteButtonText: {
+    color: '#FFF',
+    fontSize: 16,
+  },
+  dialog: {
+    borderRadius: 10,
+    padding: 20,
+  },
+  dialogContainer: {
+    alignItems: 'center',
+  },
+  dialogTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  dialogText: {
+    fontSize: 16,
+    marginBottom: 20,
+  },
+  dialogButton: {
+    backgroundColor: '#8B4513',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+    marginVertical: 5,
+  },
+  dialogButtonText: {
+    color: '#FFF',
     fontSize: 16,
   },
 });
-
-export default Profile;
