@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ImageBackground, View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { BlurView } from 'expo-blur';
 import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import PopupDialog from 'react-native-popup-dialog';
 
 const auth = getAuth();
@@ -10,12 +11,13 @@ export default function Lobby({ navigation }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [dialogVisible, setDialogVisible] = useState(false);
   const [user, setUser] = useState(null);
+  const [tutorialCompleted, setTutorialCompleted] = useState(false);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         setIsLoggedIn(true);
-        setUser(user); // Atualiza o usuário
+        setUser(user);
         setDialogVisible(true);
       } else {
         setIsLoggedIn(false);
@@ -23,6 +25,19 @@ export default function Lobby({ navigation }) {
         setDialogVisible(false);
       }
     });
+
+    const checkTutorialStatus = async () => {
+      try {
+        const status = await AsyncStorage.getItem('@tutorialCompleted');
+        if (status === 'true') {
+          setTutorialCompleted(true);
+        }
+      } catch (error) {
+        console.error('Erro ao verificar o status do tutorial:', error);
+      }
+    };
+
+    checkTutorialStatus();
 
     return () => unsubscribe();
   }, []);
@@ -51,8 +66,9 @@ export default function Lobby({ navigation }) {
             </TouchableOpacity>
 
             <TouchableOpacity
-              style={styles.card}
-              onPress={() => navigation.navigate('Jogo')}
+              style={[styles.card, !tutorialCompleted && { backgroundColor: '#ccc' }]}
+              onPress={() => tutorialCompleted ? navigation.navigate('Jogo') : Alert.alert('Tutorial Incompleto', 'Por favor, complete o tutorial primeiro.')}
+              disabled={!tutorialCompleted}
             >
               <Text style={styles.cardText}>Continuar Jogo</Text>
             </TouchableOpacity>

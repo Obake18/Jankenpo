@@ -13,6 +13,9 @@ const Detalhes = ({ route }) => {
           <View style={[styles.runa, { backgroundColor: elemento.corBase }]}>
             <Image source={elemento.image} style={styles.image} />
           </View>
+          <View style={styles.kamuyContainer}>
+            <Image source={elemento.kamuyImage} style={styles.kamuyImage} />
+          </View>
           <Text style={styles.title}>{elemento.nome}</Text>
           <Text style={styles.kanji}>{elemento.kanji}</Text>
 
@@ -30,9 +33,7 @@ const Detalhes = ({ route }) => {
           </Text>
 
           {/* Imagem do Kamuy */}
-          <View style={styles.kamuyContainer}>
-            <Image source={elemento.kamuyImage} style={styles.kamuyImage} />
-          </View>
+
         </ScrollView>
       </ImageBackground>
     </>
@@ -91,13 +92,15 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   kamuyContainer: {
+    width: '100%',
+    height:'auto',
     marginTop: 30,
     alignItems: 'center',
   },
   kamuyImage: {
-    width: 150,
+    width: 250,
     height: 150,
-    borderRadius: 75,
+    borderRadius: 25,
     borderWidth: 2,
     borderColor: '#fff',
   },
