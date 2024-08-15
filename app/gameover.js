@@ -25,7 +25,7 @@ const GameOver = ({ navigation, route }) => {
       <ImageBackground source={require('../assets/imagens/pergaminho.png')} style={styles.background}>
         <View style={styles.container}>
           <Text style={styles.title}>Game Over!</Text>
-          <Text style={styles.message}>As runas não estavam ao seu lado desta vez...</Text>
+          <Text style={styles.message}>Os Kamuy não estavam ao seu lado desta vez...</Text>
           <TouchableOpacity style={styles.button} onPress={reloadGame}>
             <Text style={styles.buttonText}>Tentar Novamente!</Text>
           </TouchableOpacity>
@@ -41,7 +41,7 @@ const GameOver = ({ navigation, route }) => {
 const styles = StyleSheet.create({
   background: {
     flex: 1,
-    resizeMode: 'cover', // Cobrir toda a área
+    resizeMode: 'cover', 
     justifyContent: 'center',
   },
   container: {
