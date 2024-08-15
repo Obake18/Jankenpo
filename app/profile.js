@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-import { auth, storage } from './firebaseConfig'; // ajuste o caminho conforme necessário
+import { auth, storage } from './firebaseconfig'; // ajuste o caminho conforme necessário
 import { getDownloadURL, ref, uploadBytesResumable, deleteObject } from 'firebase/storage';
 
 export default function Profile() {
