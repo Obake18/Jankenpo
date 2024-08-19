@@ -3,8 +3,10 @@ import { StatusBar, ImageBackground, View, Text, StyleSheet, TouchableOpacity } 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { db, auth } from './firebaseconfig'; // Ajuste o caminho conforme necessário
 import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { useRouter } from 'expo-router'; // Importando useRouter
 
-const Recorde = ({ navigation }) => {
+const Recorde = () => {
+  const router = useRouter(); // Inicializando o useRouter
   const [maxWins, setMaxWins] = useState(0);
   const [lastPlayerChoice, setLastPlayerChoice] = useState('Nenhum');
   const [lastComputerChoice, setLastComputerChoice] = useState('Nenhum');
@@ -81,7 +83,7 @@ const Recorde = ({ navigation }) => {
   }, [maxWins, lastPlayerChoice, lastComputerChoice, mostChosenElements]);
 
   const navigateBackToGame = () => {
-    navigation.navigate('Lobby');
+    router.push('/lobby'); // Atualizado para usar router.push
   };
 
   return (

@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Image, View, Text, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
-import { resetGame } from './gameover';
-import { elementos } from './elementos';
-import { useNavigation } from '@react-navigation/native';
+import { useRouter } from 'expo-router';
 import Carousel from 'react-native-snap-carousel';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { elementos } from './elementos';
 
 const { width: screenWidth } = Dimensions.get('window');
 
@@ -176,9 +175,9 @@ const Runas = () => {
       setWinStreak(0);
       if (playerLives - 1 === 0) {
         setResult('Game Over');
-        const handleNavigateToGameOver = () => {
-          router.push('/gameover'); // Navigate to gameover screen
-        };
+        setTimeout(() => {
+          router.push('/gameover'); // Navegar para a tela de gameover
+        }, 2000); // Adicionar um delay para mostrar a mensagem 'Game Over'
       } else {
         setPlayerLives(playerLives - 1);
       }
@@ -194,7 +193,6 @@ const Runas = () => {
       setResult(null);
     }, 2000);
   };
-  
 
   const renderItem = ({ item }) => (
     <TouchableOpacity
@@ -316,7 +314,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   elementContainer: {
-    
     flexDirection: 'row',
     alignItems: 'center',
     marginVertical: 5,

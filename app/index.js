@@ -15,7 +15,7 @@ import PopupDialog from "react-native-popup-dialog";
 
 const auth = getAuth();
 
-export default function Lobby({ navigation }) {
+export default function Lobby() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [dialogVisible, setDialogVisible] = useState(false);
   const [user, setUser] = useState(null);
@@ -27,20 +27,16 @@ export default function Lobby({ navigation }) {
       if (user) {
         setIsLoggedIn(true);
         setUser(user);
-        setDialogVisible(true);
       } else {
         setIsLoggedIn(false);
         setUser(null);
-        setDialogVisible(false);
       }
     });
 
     const checkTutorialStatus = async () => {
       try {
         const status = await AsyncStorage.getItem("@tutorialCompleted");
-        if (status === "true") {
-          setTutorialCompleted(true);
-        }
+        setTutorialCompleted(status === "true");
       } catch (error) {
         console.error("Erro ao verificar o status do tutorial:", error);
       }
@@ -61,6 +57,14 @@ export default function Lobby({ navigation }) {
     }
   };
 
+  const navigateToScreen = (screen) => {
+    if (screen === 'game' && !tutorialCompleted) {
+      Alert.alert('Acesso Negado', 'Você precisa completar o tutorial antes de acessar o jogo.');
+    } else {
+      router.push(screen);
+    }
+  };
+
   return (
     <>
       <ImageBackground
@@ -68,23 +72,50 @@ export default function Lobby({ navigation }) {
         style={styles.background}
       >
         <BlurView intensity={10} style={styles.absolute}>
+          <View style={styles.header}>
+            <TouchableOpacity 
+              style={styles.menuButton} 
+              onPress={() => router.push('logins')}
+            >
+              <Text style={styles.menuText}>
+                {isLoggedIn ? 'Perfil' : 'Login'}
+              </Text>
+            </TouchableOpacity>
+          </View>
+
           <View style={styles.container}>
             <ImageBackground 
               source={require("../assets/imagens/jankenpon.png")} 
               style={styles.logo} 
             />
 
-            {isLoggedIn ? (
-              <TouchableOpacity style={styles.card}>
-                <Text style={styles.profileButtonText}>Perfil</Text>
-              </TouchableOpacity>
-            ) : (
-              <Link href="logins" asChild>
-                <TouchableOpacity style={styles.card}>
-                  <Text style={styles.loginButtonText}>Login</Text>
-                </TouchableOpacity>
-              </Link>
-            )}
+            <TouchableOpacity 
+              style={styles.card} 
+              onPress={() => navigateToScreen('game')}
+            >
+              <Text style={styles.cardText}>Jogo</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity 
+              style={styles.card} 
+              onPress={() => router.push('recorde')}
+            >
+              <Text style={styles.cardText}>Recordes</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity 
+              style={styles.card} 
+              onPress={() => router.push('tutoriais')}
+            >
+              <Text style={styles.cardText}>Tutoriais</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity 
+              style={styles.card} 
+              onPress={() => router.push('sobre')}
+            >
+              <Text style={styles.cardText}>Sobre</Text>
+            </TouchableOpacity>
           </View>
         </BlurView>
       </ImageBackground>
@@ -123,11 +154,33 @@ const styles = StyleSheet.create({
     bottom: 0,
     right: 0,
   },
+  header: {
+    position: 'absolute',
+    top: 30,
+    right: 20,
+    zIndex: 1,
+  },
+  menuButton: {
+    backgroundColor: "#8B4513",
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+  },
+  menuText: {
+    color: "#FFF",
+    fontSize: 16,
+  },
   container: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
     padding: 20,
+  },
+  logo: {
+    height: 45,
+    width: 250,
+    resizeMode: "contain",
+    marginBottom: 50,
   },
   card: {
     backgroundColor: "#8B4513",
@@ -142,19 +195,9 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 3,
   },
-  loginButtonText: {
-    fontSize: 16,
+  cardText: {
+    fontSize: 18,
     color: "#FFF",
-  },
-  profileButtonText: {
-    fontSize: 16,
-    color: "#FFF",
-  },
-  logo: {
-    height: 45,
-    width: 250,
-    resizeMode: "contain",
-    marginBottom: 200,
   },
   dialog: {
     borderRadius: 10,

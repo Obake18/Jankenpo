@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { StatusBar, View, ImageBackground, Text, TouchableOpacity, StyleSheet, Image, TouchableWithoutFeedback, Dimensions, PixelRatio } from 'react-native'; // Importar AsyncStorage
+import { StatusBar, View, ImageBackground, Text, TouchableOpacity, StyleSheet, Image, TouchableWithoutFeedback, Dimensions, PixelRatio } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import { elementos } from './elementos';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useRouter } from 'expo-router';
 
 const { width, height } = Dimensions.get('window');
 const scale = width / 320;
@@ -12,8 +13,9 @@ function normalize(size) {
   return Math.round(PixelRatio.roundToNearestPixel(newSize));
 }
 
-const Tutorial = ({ navigation }) => {
+const Tutorial = () => {
   const [step, setStep] = useState(0);
+  const router = useRouter();
 
   const steps = [
     '(Clique aqui)',
@@ -35,13 +37,13 @@ const Tutorial = ({ navigation }) => {
     'Boa sorte, Forasteiro! Que as bênçãos dos Kamuy estejam com você.'
   ];
 
-  const nextStep = () => {
+  const nextStep = async () => {
     if (step < steps.length - 1) {
       setStep(step + 1);
     } else {
       // Armazena a conclusão do tutorial no AsyncStorage
-      AsyncStorage.setItem('tutorialCompleted', 'true');
-      navigation.navigate('Jogo');
+      await AsyncStorage.setItem('tutorialCompleted', 'true');
+      router.push('/jogo'); // Navega para a tela do jogo
     }
   };
 
@@ -62,6 +64,16 @@ const Tutorial = ({ navigation }) => {
 
   useEffect(() => {
     requestFilePermission();
+  }, []);
+
+  useEffect(() => {
+    const checkTutorialCompletion = async () => {
+      const tutorialCompleted = await AsyncStorage.getItem('tutorialCompleted');
+      if (tutorialCompleted === 'true') {
+      }
+    };
+
+    checkTutorialCompletion();
   }, []);
 
   const getKamuyForStep = () => {
@@ -119,7 +131,7 @@ const Tutorial = ({ navigation }) => {
               </TouchableOpacity>
             )}
             {step > 6 && (
-              <TouchableOpacity style={[styles.skipButton, { bottom: step > 0 ? 85 : 20 }]} onPress={() => navigation.navigate('Jogo')}>
+              <TouchableOpacity style={[styles.skipButton, { bottom: step > 0 ? 85 : 20 }]} onPress={() => router.push('/Jogo')}>
                 <Text style={styles.skipButtonText}>Pular Tutorial</Text>
               </TouchableOpacity>
             )}

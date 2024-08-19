@@ -40,7 +40,7 @@ export default function LoginScreen() {
       <ImageBackground source={require('../assets/imagens/pergaminho.png')} style={styles.background}>
         <SafeAreaView style={styles.safeArea}>
           <ScrollView contentContainerStyle={styles.scrollContainer}>
-            <ImageBackground source={require('../assets/imagens/pergaminho-menu.png')} style={styles.scrollImage}>
+            <ImageBackground source={require('../assets/imagens/pergaminho-menu.jpeg')} style={styles.scrollImage}>
               <Text style={styles.title}>Login</Text>
               <TextInput
                 style={styles.input}
