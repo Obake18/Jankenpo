@@ -69,7 +69,10 @@ export default function Lobby({ navigation }) {
       >
         <BlurView intensity={10} style={styles.absolute}>
           <View style={styles.container}>
-            <Text style={styles.title}>Bem-vindo ao Jankenpon!</Text>
+            <ImageBackground 
+              source={require("../assets/imagens/jankenpon.png")} 
+              style={styles.logo} 
+            />
 
             {isLoggedIn ? (
               <TouchableOpacity style={styles.card}>
@@ -126,12 +129,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 20,
   },
-  title: {
-    fontSize: 28,
-    fontWeight: "bold",
-    marginBottom: 40,
-    color: "#000",
-  },
   card: {
     backgroundColor: "#8B4513",
     paddingVertical: 15,
@@ -145,10 +142,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 3,
   },
-  cardText: {
-    fontSize: 18,
-    color: "#FFF",
-  },
   loginButtonText: {
     fontSize: 16,
     color: "#FFF",
@@ -156,6 +149,12 @@ const styles = StyleSheet.create({
   profileButtonText: {
     fontSize: 16,
     color: "#FFF",
+  },
+  logo: {
+    height: 45,
+    width: 250,
+    resizeMode: "contain",
+    marginBottom: 200,
   },
   dialog: {
     borderRadius: 10,
