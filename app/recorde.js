@@ -27,6 +27,7 @@ const Recorde = ({ navigation }) => {
 
   const loadRecord = async (userId) => {
     try {
+      // Carregar dados do AsyncStorage
       const recordData = await AsyncStorage.getItem('@recordData');
       if (recordData) {
         const { maxWins, lastPlayerChoice, lastComputerChoice, mostChosenElements } = JSON.parse(recordData);
@@ -36,6 +37,7 @@ const Recorde = ({ navigation }) => {
         setMostChosenElements(mostChosenElements || {});
       }
 
+      // Carregar dados do Firebase
       const docRef = doc(db, 'recordData', userId);
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
@@ -50,23 +52,32 @@ const Recorde = ({ navigation }) => {
     }
   };
 
-  const saveRecordToFirebase = async () => {
+  const saveRecord = async () => {
     if (userId) {
       try {
+        // Salvar dados no Firebase
         await setDoc(doc(db, 'recordData', userId), {
           maxWins,
           lastPlayerChoice,
           lastComputerChoice,
           mostChosenElements
         });
+
+        // Salvar dados no AsyncStorage
+        await AsyncStorage.setItem('@recordData', JSON.stringify({
+          maxWins,
+          lastPlayerChoice,
+          lastComputerChoice,
+          mostChosenElements
+        }));
       } catch (error) {
-        console.error('Erro ao salvar o recorde no Firebase:', error);
+        console.error('Erro ao salvar o recorde:', error);
       }
     }
   };
 
   useEffect(() => {
-    saveRecordToFirebase();
+    saveRecord();
   }, [maxWins, lastPlayerChoice, lastComputerChoice, mostChosenElements]);
 
   const navigateBackToGame = () => {
