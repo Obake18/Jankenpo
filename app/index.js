@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useRouter, Link } from "expo-router";
+import { useRouter } from "expo-router";
 import {
   ImageBackground,
   View,
@@ -36,6 +36,7 @@ export default function Lobby() {
     const checkTutorialStatus = async () => {
       try {
         const status = await AsyncStorage.getItem("@tutorialCompleted");
+        console.log("Status do tutorial ao iniciar:", status); // Adicione este log
         setTutorialCompleted(status === "true");
       } catch (error) {
         console.error("Erro ao verificar o status do tutorial:", error);

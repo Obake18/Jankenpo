@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { StatusBar, View, ImageBackground, Text, TouchableOpacity, StyleSheet, Image, TouchableWithoutFeedback, Dimensions, PixelRatio } from 'react-native';
+import { StatusBar, View, ImageBackground, Text, TouchableOpacity, StyleSheet, Image, TouchableWithoutFeedback, Dimensions, PixelRatio, PermissionsAndroid } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import { elementos } from './elementos';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
 
-const { width, height } = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 const scale = width / 320;
 
 function normalize(size) {
@@ -15,6 +15,7 @@ function normalize(size) {
 
 const Tutorial = () => {
   const [step, setStep] = useState(0);
+  const [tutorialCompleted, setTutorialCompleted] = useState(false);
   const router = useRouter();
 
   const steps = [
@@ -37,15 +38,25 @@ const Tutorial = () => {
     'Boa sorte, Forasteiro! Que as bênçãos dos Kamuy estejam com você.'
   ];
 
+  useEffect(() => {
+    const checkTutorialCompletion = async () => {
+      const completed = await AsyncStorage.getItem('tutorialCompleted');
+      setTutorialCompleted(completed === 'true');
+    };
+
+    checkTutorialCompletion();
+  }, []);
+
   const nextStep = async () => {
     if (step < steps.length - 1) {
       setStep(step + 1);
     } else {
       // Armazena a conclusão do tutorial no AsyncStorage
-      await AsyncStorage.setItem('tutorialCompleted', 'true');
+      await AsyncStorage.setItem("@tutorialCompleted", 'true'); // Corrigido para usar o mesmo formato
       router.push('/jogo'); // Navega para a tela do jogo
     }
   };
+  
 
   const requestFilePermission = async () => {
     try {
@@ -64,16 +75,6 @@ const Tutorial = () => {
 
   useEffect(() => {
     requestFilePermission();
-  }, []);
-
-  useEffect(() => {
-    const checkTutorialCompletion = async () => {
-      const tutorialCompleted = await AsyncStorage.getItem('tutorialCompleted');
-      if (tutorialCompleted === 'true') {
-      }
-    };
-
-    checkTutorialCompletion();
   }, []);
 
   const getKamuyForStep = () => {
@@ -131,7 +132,7 @@ const Tutorial = () => {
               </TouchableOpacity>
             )}
             {step > 6 && (
-              <TouchableOpacity style={[styles.skipButton, { bottom: step > 0 ? 85 : 20 }]} onPress={() => router.push('/Jogo')}>
+              <TouchableOpacity style={[styles.skipButton, { bottom: step > 0 ? 85 : 20 }]} onPress={() => router.push('/jogo')}>
                 <Text style={styles.skipButtonText}>Pular Tutorial</Text>
               </TouchableOpacity>
             )}
