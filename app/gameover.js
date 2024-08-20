@@ -1,17 +1,30 @@
-import React from 'react';
-import { StatusBar, ImageBackground, View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useEffect } from 'react';
+import { BackHandler, ImageBackground, View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
 
 const GameOver = ({ route }) => {
   const router = useRouter();
-  // Proteja o acesso aos parâmetros
   const resetGame = route?.params?.resetGame;
+
+  useEffect(() => {
+    const handleBackPress = () => {
+      router.push('/'); // Navegar para a tela inicial
+      return true; // Indica que você tratou o evento
+    };
+
+    BackHandler.addEventListener('hardwareBackPress', handleBackPress);
+
+    // Limpar o listener quando o componente for desmontado
+    return () => {
+      BackHandler.removeEventListener('hardwareBackPress', handleBackPress);
+    };
+  }, [router]);
 
   const reloadGame = () => {
     if (resetGame) {
       resetGame();
     }
-    router.push('/'); // Navegar para a tela de Lobby
+    router.push('/'); // Navegar para a tela inicial
   };
 
   const goToRecords = () => {
@@ -68,6 +81,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 10,
+    marginBottom: 10,
   },
   buttonText: {
     color: '#FFF',

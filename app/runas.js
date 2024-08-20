@@ -56,13 +56,13 @@ const Runas = () => {
   const [phase, setPhase] = useState(1);
   const [activeIndex, setActiveIndex] = useState(0);
   const [winStreak, setWinStreak] = useState(0);
-
   const [record, setRecord] = useState({
     maxWins: 0,
     lastPlayerChoice: 'Nenhum',
     lastComputerChoice: 'Nenhum',
     mostChosenElements: {},
   });
+  const [gameOver, setGameOver] = useState(false);
 
   const saveRecord = async (data) => {
     try {
@@ -128,14 +128,18 @@ const Runas = () => {
   };
 
   const playGame = (elemento) => {
+    if (gameOver) {
+      return; // Não execute a lógica do jogo se o jogo está em "Game Over"
+    }
+
     const computer = randomComputerChoice();
     setPlayerChoice(elemento);
     setComputerChoice(computer);
     setActiveIndex(Object.keys(elementos).indexOf(elemento));
-  
+
     updateRecord(elemento, computer);
     setLastElements({ player: elemento, computer });
-  
+
     if (!computer) {
       setResult('Erro ao selecionar a escolha do computador.');
       return;
@@ -158,6 +162,7 @@ const Runas = () => {
       setWinStreak(0);
       if (playerLives - 1 === 0) {
         setResult('Game Over');
+        setGameOver(true); // Atualize o estado de gameOver
         setTimeout(() => {
           router.push('/gameover');
         }, 2000);
@@ -167,9 +172,9 @@ const Runas = () => {
     } else {
       setResult('Reação desconhecida! Próxima rodada!!');
     }
-  
+
     setRound(prevRound => prevRound + 1);
-  
+
     setTimeout(() => {
       setPlayerChoice(null);
       setComputerChoice(null);
@@ -181,7 +186,7 @@ const Runas = () => {
     <TouchableOpacity
       style={styles.runaContainer}
       onPress={() => playGame(item)}
-      disabled={playerChoice !== null}
+      disabled={playerChoice !== null || gameOver} // Desabilite o botão se o jogo estiver em "Game Over"
     >
       <Runa elemento={item} selecionado={item === playerChoice} />
     </TouchableOpacity>
