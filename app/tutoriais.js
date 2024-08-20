@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { StatusBar, View, ImageBackground, Text, TouchableOpacity, StyleSheet, Image, TouchableWithoutFeedback, Dimensions, PixelRatio, PermissionsAndroid } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import { elementos } from './elementos';
@@ -17,8 +17,8 @@ function normalize(size) {
 const Tutorial = () => {
   const [step, setStep] = useState(0);
   const [tutorialCompleted, setTutorialCompleted] = useState(false);
-  const [sound, setSound] = useState(null);
   const router = useRouter();
+  const soundRef = useRef(null);
 
   const steps = [
     '(Clique aqui)',
@@ -49,6 +49,28 @@ const Tutorial = () => {
     checkTutorialCompletion();
   }, []);
 
+  useEffect(() => {
+    let sound;
+
+    async function playMusic() {
+      const { sound: newSound } = await Audio.Sound.createAsync(
+        require('../assets/music/tutorial-music.mp3')
+      );
+      soundRef.current = newSound;
+      await soundRef.current.playAsync();
+    }
+
+    playMusic();
+
+    return () => {
+      if (soundRef.current) {
+        soundRef.current.stopAsync()
+          .then(() => soundRef.current.unloadAsync())
+          .catch((error) => console.error("Error stopping or unloading sound:", error));
+      }
+    };
+  }, []);
+
   const nextStep = async () => {
     if (step < steps.length - 1) {
       setStep(step + 1);
@@ -58,7 +80,7 @@ const Tutorial = () => {
       router.push('/jogo'); // Navega para a tela do jogo
     }
   };
-  
+
   const requestFilePermission = async () => {
     try {
       const granted = await PermissionsAndroid.request(
@@ -111,25 +133,6 @@ const Tutorial = () => {
   };
 
   const showCharacter = step === 2 || step === 3 || step === 4 || step === 5 || step === 6 || step === 12 || step === 13 || step === 14 || step === 15 || step === 16 || step === 17;
-
-  useEffect(() => {
-    async function playMusic() {
-      const { sound } = await Audio.Sound.createAsync(
-         require('../assets/music/tutorial-musica.mp3')
-      );
-      setSound(sound);
-      await sound.playAsync(); 
-    }
-
-    playMusic();
-
-    return () => {
-      if (sound) {
-        sound.stopAsync();
-        sound.unloadAsync();
-      }
-    };
-  }, []);
 
   return (
     <>
@@ -248,31 +251,33 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   kamuyImage: {
-    width: normalize(80),
-    height: normalize(80),
+    width: '100%',
+    height: normalize(150),
     resizeMode: 'contain',
   },
   kamuyName: {
     fontSize: normalize(18),
-    textAlign: 'center',
-    marginTop: normalize(10),
+    fontWeight: 'bold',
+    marginVertical: normalize(10),
   },
   kamuyDescription: {
-    fontSize: normalize(14),
+    fontSize: normalize(16),
     textAlign: 'center',
-    marginTop: normalize(5),
   },
   elementsContainer: {
     flexDirection: 'row',
-    justifyContent: 'center',
-    marginTop: normalize(10),
+    marginTop: normalize(20),
   },
   elementContainer: {
     alignItems: 'center',
-    justifyContent: 'center',
     padding: normalize(10),
     borderRadius: 10,
-    marginHorizontal: normalize(5),
+    margin: normalize(10),
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   elementImage: {
     width: normalize(50),
@@ -280,14 +285,15 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   elementName: {
-    fontSize: normalize(16),
-    textAlign: 'center',
-    marginTop: normalize(5),
+    color: 'white',
+    fontSize: normalize(14),
+    fontWeight: 'bold',
+    marginTop: normalize(10),
   },
   elementDescription: {
     fontSize: normalize(12),
     textAlign: 'center',
-    marginTop: normalize(3),
+    color: 'white', 
   },
 });
 
