@@ -88,7 +88,7 @@ const Recorde = () => {
 
   return (
     <>
-      <StatusBar barStyle="light-content" backgroundColor="#000000" />
+
       <ImageBackground source={require('../assets/imagens/pergaminho.png')} style={styles.background}>
         <View style={styles.container}>
           <Text style={styles.title}>Recordes</Text>

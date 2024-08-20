@@ -1,5 +1,5 @@
 import React from 'react';
-import { StatusBar, ImageBackground, View, TouchableOpacity, StyleSheet, Image, Dimensions, Linking, Text } from 'react-native';
+import { StatusBar, ImageBackground, View, TouchableOpacity, StyleSheet, Image, Dimensions, Text } from 'react-native';
 import { elementos } from './elementos';
 import { useRouter } from 'expo-router';
 
@@ -10,7 +10,7 @@ const Sobre = () => {
   const router = useRouter();
 
   const getPentagonCoordinates = () => {
-    const radius = (width * 0.35);
+    const radius = width * 0.35;
     const angle = (2 * Math.PI) / 5;
     return Array.from({ length: 5 }, (_, i) => {
       const x = radius * Math.cos(i * angle) + width / 2 - pentagonSize / 2.5;
@@ -21,13 +21,17 @@ const Sobre = () => {
 
   const pentagonCoordinates = getPentagonCoordinates();
 
-  const openGitHubProfile = () => {
-    Linking.openURL('https://github.com/Obake18');
+  const handlePress = (elemento) => {
+    // Passando o elemento como uma string JSON na URL
+    router.push({
+      pathname: '/detalhes',
+      params: { elemento: JSON.stringify(elemento) },
+    });
   };
 
   return (
     <>
-      <StatusBar barStyle="light-content" backgroundColor="#000000" />
+
       <ImageBackground source={require('../assets/imagens/pergaminho.png')} style={styles.background}>
         <View style={styles.container}>
           {Object.keys(elementos).map((key, index) => {
@@ -43,17 +47,14 @@ const Sobre = () => {
               <TouchableOpacity
                 key={key}
                 style={[styles.runa, { backgroundColor: elemento.corBase, left: x, top: y }]}
-                onPress={() => {
-                  console.log('Navegando para detalhes com elemento:', elemento); // Debug
-                  router.push('/detalhes', { elemento });
-                }}
+                onPress={() => handlePress(elemento)}
               >
                 <Image source={elemento.image} style={styles.image} />
               </TouchableOpacity>
             );
           })}
 
-          <TouchableOpacity style={styles.githubButton} onPress={openGitHubProfile}>
+          <TouchableOpacity style={styles.githubButton} onPress={() => Linking.openURL('https://github.com/Obake18')}>
             <Text style={styles.githubText}>Sobre o autor</Text>
           </TouchableOpacity>
         </View>

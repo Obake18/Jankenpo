@@ -1,15 +1,13 @@
 import React from 'react';
 import { StatusBar, ImageBackground, View, Text, Image, StyleSheet, ScrollView } from 'react-native';
-import { useRouter } from 'expo-router';
+import { useLocalSearchParams } from 'expo-router';
 
 const Detalhes = () => {
-  const router = useRouter();
-  const { elemento } = router.query; 
+  const { elemento } = useLocalSearchParams(); // Use useLocalSearchParams para acessar o parâmetro da rota
 
-  console.log('Elemento:', elemento); 
+  const parsedElemento = elemento ? JSON.parse(elemento) : null; // Converte a string JSON de volta para um objeto
 
-
-  if (!elemento) {
+  if (!parsedElemento) {
     return (
       <View style={styles.container}>
         <Text>Detalhes não disponíveis.</Text>
@@ -19,29 +17,31 @@ const Detalhes = () => {
 
   return (
     <>
-      <StatusBar barStyle="dark-content" backgroundColor="#000000" />
+
       <ImageBackground source={require('../assets/imagens/pergaminho.png')} style={styles.background}>
         <ScrollView contentContainerStyle={styles.scrollContainer}>
-          <View style={[styles.runa, { backgroundColor: elemento.corBase }]}>
-            <Image source={elemento.image} style={styles.image} />
+          <View style={styles.contentContainer}>
+            <View style={[styles.runa, { backgroundColor: parsedElemento.corBase }]}>
+              <Image source={parsedElemento.image} style={styles.image} />
+            </View>
+            <View style={styles.kamuyContainer}>
+              <Image source={parsedElemento.kamuyImage} style={styles.kamuyImage} />
+            </View>
           </View>
-          <View style={styles.kamuyContainer}>
-            <Image source={elemento.kamuyImage} style={styles.kamuyImage} />
-          </View>
-          <Text style={styles.title}>{elemento.nome}</Text>
-          <Text style={styles.kanji}>{elemento.kanji}</Text>
+          <Text style={styles.title}>{parsedElemento.nome}</Text>
+          <Text style={styles.kanji}>{parsedElemento.kanji}</Text>
 
           <Text style={styles.sectionTitle}>História</Text>
-          <Text style={styles.description}>{elemento.descricao.historia}</Text>
+          <Text style={styles.description}>{parsedElemento.descricao.historia}</Text>
 
           <Text style={styles.sectionTitle}>Representação</Text>
-          <Text style={styles.description}>{elemento.descricao.representacao}</Text>
+          <Text style={styles.description}>{parsedElemento.descricao.representacao}</Text>
 
           <Text style={styles.sectionTitle}>Fraquezas e Forças</Text>
-          <Text style={styles.description}>{elemento.descricao.fraquezasForcas}</Text>
+          <Text style={styles.description}>{parsedElemento.descricao.fraquezasForcas}</Text>
 
           <Text style={styles.combatInfo}>
-            {elemento.nome} vence {elemento.vence} e perde para {elemento.perde}.
+            {parsedElemento.nome} vence {parsedElemento.vence} e perde para {parsedElemento.perde}.
           </Text>
         </ScrollView>
       </ImageBackground>
@@ -61,18 +61,26 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 20,
   },
+  contentContainer: {
+    top : 10,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'flex-end', // Alinha os itens na parte inferior
+    marginBottom: 20,
+  },
   runa: {
-    width: 200,
-    height: 200,
+    bottom : 60,
+    width: 150,
+    height: 150,
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 3,
     borderRadius: 100,
-    marginBottom: 20,
+    marginRight: 10, // Adiciona um espaço entre a runa e o kamuy
   },
   image: {
-    width: 190,
-    height: 190,
+    width: 120,
+    height: 120,
   },
   title: {
     fontSize: 24,
@@ -101,13 +109,14 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   kamuyContainer: {
-    width: '100%',
-    marginTop: 30,
+    width: 250,
+    height: 350,
+    justifyContent: 'center',
     alignItems: 'center',
   },
   kamuyImage: {
-    width: 250,
-    height: 350,
+    width: '100%',
+    height: '100%',
     borderRadius: 25,
     borderWidth: 2,
     borderColor: '#fff',

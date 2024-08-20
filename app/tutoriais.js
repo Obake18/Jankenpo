@@ -113,7 +113,7 @@ const Tutorial = () => {
 
   return (
     <>
-      <StatusBar barStyle="light-content" backgroundColor="#000000" />
+
       <ImageBackground source={require('../assets/imagens/pergaminho.png')} style={styles.background}>
         <TouchableWithoutFeedback onPress={nextStep}>
           <View style={styles.container}>
