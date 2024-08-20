@@ -83,6 +83,7 @@ const styles = StyleSheet.create({
     height: 120,
   },
   title: {
+    fontFamily: "Shojumaru_400Regular",
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 10,
@@ -92,12 +93,13 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   sectionTitle: {
+    fontFamily: "Shojumaru_400Regular",
     fontSize: 20,
-    fontWeight: 'bold',
     marginBottom: 10,
     marginTop: 20,
   },
   description: {
+    
     fontSize: 18,
     textAlign: 'center',
     marginBottom: 20,

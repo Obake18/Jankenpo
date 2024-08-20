@@ -10,6 +10,7 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@expo-google-fonts/shojumaru": "^0.2.3",
     "@react-native-async-storage/async-storage": "^1.24.0",
     "@react-native-community/blur": "^4.4.0",
     "@react-native-firebase/app": "^20.4.0",
@@ -20,6 +21,7 @@
     "@react-navigation/stack": "^6.3.29",
     "expo": "^51.0.18",
     "expo-app-loading": "^2.1.1",
+    "expo-av": "~14.0.6",
     "expo-blur": "~13.0.2",
     "expo-constants": "~16.0.2",
     "expo-file-system": "~17.0.1",
@@ -44,8 +46,7 @@
     "react-native-snap-carousel": "^3.9.1",
     "socket.io": "^4.7.5",
     "socket.io-client": "^4.7.5",
-    "ws": "^8.18.0",
-    "expo-av": "~14.0.6"
+    "ws": "^8.18.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"

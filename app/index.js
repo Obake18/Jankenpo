@@ -167,6 +167,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   menuText: {
+    fontFamily: "Shojumaru_400Regular",
     color: "#FFF",
     fontSize: 16,
   },
@@ -196,6 +197,7 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
   },
   cardText: {
+    fontFamily: "Shojumaru_400Regular",
     fontSize: 18,
     color: "#FFF",
   },

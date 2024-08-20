@@ -1,10 +1,23 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { StatusBar, View, ImageBackground, Text, TouchableOpacity, StyleSheet, Image, TouchableWithoutFeedback, Dimensions, PixelRatio, PermissionsAndroid } from 'react-native';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import {
+  StatusBar,
+  View,
+  ImageBackground,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Image,
+  TouchableWithoutFeedback,
+  Dimensions,
+  PixelRatio,
+  PermissionsAndroid
+} from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import { elementos } from './elementos';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
 import { Audio } from 'expo-av';
+import { useFocusEffect } from '@react-navigation/native';
 
 const { width } = Dimensions.get('window');
 const scale = width / 320;
@@ -64,20 +77,29 @@ const Tutorial = () => {
 
     return () => {
       if (soundRef.current) {
-        soundRef.current.stopAsync()
-          .then(() => soundRef.current.unloadAsync())
-          .catch((error) => console.error("Error stopping or unloading sound:", error));
+        soundRef.current.stopAsync().catch(error => console.error("Error stopping sound:", error));
+        soundRef.current.unloadAsync().catch(error => console.error("Error unloading sound:", error));
       }
     };
   }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      return () => {
+        if (soundRef.current) {
+          soundRef.current.stopAsync().catch(error => console.error("Error stopping sound:", error));
+          soundRef.current.unloadAsync().catch(error => console.error("Error unloading sound:", error));
+        }
+      };
+    }, [])
+  );
 
   const nextStep = async () => {
     if (step < steps.length - 1) {
       setStep(step + 1);
     } else {
-      // Armazena a conclusão do tutorial no AsyncStorage
-      await AsyncStorage.setItem("@tutorialCompleted", 'true'); // Corrigido para usar o mesmo formato
-      router.push('/jogo'); // Navega para a tela do jogo
+      await AsyncStorage.setItem('tutorialCompleted', 'true');
+      router.push('/jogo');
     }
   };
 
@@ -120,7 +142,7 @@ const Tutorial = () => {
       <View style={styles.kamuyInfoContainer}>
         <Image source={kamuyImage} style={styles.kamuyImage} />
         <Text style={styles.kamuyName}>{nome}</Text>
-        <Text style={styles.kamuyDescription}>{elementos[element].kamuy}</Text>
+        <Text style={styles.kamuyDescription}>{descricao.fraquezasForcas}</Text>
         <View style={styles.elementsContainer}>
           <View style={[styles.elementContainer, { backgroundColor: elementos[element].corBase }]}>
             <Image source={image} style={styles.elementImage} />
@@ -135,34 +157,31 @@ const Tutorial = () => {
   const showCharacter = step === 2 || step === 3 || step === 4 || step === 5 || step === 6 || step === 12 || step === 13 || step === 14 || step === 15 || step === 16 || step === 17;
 
   return (
-    <>
-
-      <ImageBackground source={require('../assets/imagens/pergaminho.png')} style={styles.background}>
-        <TouchableWithoutFeedback onPress={nextStep}>
-          <View style={styles.container}>
-            {showCharacter && (
-              <View style={styles.characterContainer}>
-                <Image source={require('../assets/imagens/Shanti.png')} style={styles.character} />
-              </View>
-            )}
-            <Animatable.View animation="fadeIn" duration={800} style={styles.balloonContainer}>
-              <Text style={styles.balloon}>{steps[step]}</Text>
-            </Animatable.View>
-            {step > 6 && renderKamuyInfo(getKamuyForStep())}
-            {step > 0 && (
-              <TouchableOpacity style={[styles.button, { bottom: step === 0 ? 80 : 20 }]} onPress={() => setStep(step - 1)}>
-                <Text style={styles.buttonText}>Anterior</Text>
-              </TouchableOpacity>
-            )}
-            {step > 6 && (
-              <TouchableOpacity style={[styles.skipButton, { bottom: step > 0 ? 85 : 20 }]} onPress={() => router.push('/jogo')}>
-                <Text style={styles.skipButtonText}>Pular Tutorial</Text>
-              </TouchableOpacity>
-            )}
-          </View>
-        </TouchableWithoutFeedback>
-      </ImageBackground>
-    </>
+    <ImageBackground source={require('../assets/imagens/pergaminho.png')} style={styles.background}>
+      <TouchableWithoutFeedback onPress={nextStep}>
+        <View style={styles.container}>
+          {showCharacter && (
+            <View style={styles.characterContainer}>
+              <Image source={require('../assets/imagens/Shanti.png')} style={styles.character} />
+            </View>
+          )}
+          <Animatable.View animation="fadeIn" duration={800} style={styles.balloonContainer}>
+            <Text style={styles.balloon}>{steps[step]}</Text>
+          </Animatable.View>
+          {step > 6 && renderKamuyInfo(getKamuyForStep())}
+          {step > 0 && (
+            <TouchableOpacity style={[styles.button, { bottom: step === 0 ? 80 : 20 }]} onPress={() => setStep(step - 1)}>
+              <Text style={styles.buttonText}>Anterior</Text>
+            </TouchableOpacity>
+          )}
+          {step > 6 && (
+            <TouchableOpacity style={[styles.skipButton, { bottom: step > 0 ? 85 : 20 }]} onPress={() => router.push('/jogo')}>
+              <Text style={styles.skipButtonText}>Pular Tutorial</Text>
+            </TouchableOpacity>
+          )}
+        </View>
+      </TouchableWithoutFeedback>
+    </ImageBackground>
   );
 };
 
