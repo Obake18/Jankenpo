@@ -262,6 +262,7 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   elementName: {
+    color: 'white',
     fontSize: normalize(14),
     fontWeight: 'bold',
     marginTop: normalize(10),
@@ -269,6 +270,7 @@ const styles = StyleSheet.create({
   elementDescription: {
     fontSize: normalize(12),
     textAlign: 'center',
+    color: 'white', 
   },
 });
 

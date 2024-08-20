@@ -36,34 +36,35 @@ export default function LoginScreen() {
 
   return (
     <>
-      <StatusBar barStyle="light-content" backgroundColor="#000000" />
       <ImageBackground source={require('../assets/imagens/pergaminho.png')} style={styles.background}>
         <SafeAreaView style={styles.safeArea}>
           <ScrollView contentContainerStyle={styles.scrollContainer}>
             <ImageBackground source={require('../assets/imagens/pergaminho-menu.png')} style={styles.scrollImage}>
               <View style={styles.formContainer}>
                 <Text style={styles.title}>Login</Text>
-                <TextInput
-                  style={styles.input}
-                  placeholder="Email"
-                  value={email}
-                  onChangeText={setEmail}
-                  autoCapitalize="none"
-                  keyboardType="email-address"
-                />
-                <TextInput
-                  style={styles.input}
-                  placeholder="Senha"
-                  value={password}
-                  onChangeText={setPassword}
-                  secureTextEntry
-                />
-                <TouchableOpacity style={styles.button} onPress={handleLogin}>
-                  <Text style={styles.buttonText}>Entrar</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => router.push('/signup')}>
-                  <Text style={styles.linkText}>Não tem uma conta? Crie uma</Text>
-                </TouchableOpacity>
+                <View style={styles.formContent}>
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Email"
+                    value={email}
+                    onChangeText={setEmail}
+                    autoCapitalize="none"
+                    keyboardType="email-address"
+                  />
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Senha"
+                    value={password}
+                    onChangeText={setPassword}
+                    secureTextEntry
+                  />
+                  <TouchableOpacity style={styles.button} onPress={handleLogin}>
+                    <Text style={styles.buttonText}>Entrar</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={() => router.push('/signup')}>
+                    <Text style={styles.linkText}>Não tem uma conta? Crie uma</Text>
+                  </TouchableOpacity>
+                </View>
               </View>
             </ImageBackground>
           </ScrollView>
@@ -96,8 +97,19 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   formContainer: {
-    width: '50%',
+    width: '50%', // Ajustado para melhor visibilidade
     alignItems: 'center',
+    backgroundColor: 'white', // Fundo branco para destaque
+    borderRadius: 10,
+    padding: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 5, // Adiciona uma sombra sutil
+  },
+  formContent: {
+    width: '100%',
   },
   title: {
     fontSize: 24,

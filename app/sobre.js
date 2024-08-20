@@ -14,7 +14,7 @@ const Sobre = () => {
     const angle = (2 * Math.PI) / 5;
     return Array.from({ length: 5 }, (_, i) => {
       const x = radius * Math.cos(i * angle) + width / 2 - pentagonSize / 2.5;
-      const y = radius * Math.sin(i * angle) + height / 2 - pentagonSize / 1;
+      const y = radius * Math.sin(i * angle) + height / 3 - pentagonSize / 1;
       return { x, y };
     });
   };
@@ -33,6 +33,10 @@ const Sobre = () => {
     <>
 
       <ImageBackground source={require('../assets/imagens/pergaminho.png')} style={styles.background}>
+      <View style= {styles.logoContainer}>
+        <Image
+          source={require('../assets/imagens/texto-sobre.png')} style={styles.logo}/>
+      </View>
         <View style={styles.container}>
           {Object.keys(elementos).map((key, index) => {
             const elemento = elementos[key];
@@ -105,6 +109,17 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
     letterSpacing: 1,
   },
+  logo: {
+    height: 250, // Aumente a altura conforme necessário
+    width: 350,  // Aumente a largura conforme necessário
+    resizeMode: "contain",
+  },
+  logoContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+
+  },
 });
+
 
 export default Sobre;

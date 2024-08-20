@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-import { uploadProfilePicture } from './profileservice'; // ajuste o caminho conforme necessário
+import * as FileSystem from 'expo-file-system';
 import { auth } from './firebaseconfig'; // ajuste o caminho conforme necessário
 
 export default function Profile() {
@@ -30,12 +30,15 @@ export default function Profile() {
 
   const fetchProfilePicture = async () => {
     try {
-      const userRef = doc(getFirestore(), 'users', user.uid);
-      const docSnap = await getDoc(userRef);
-      const data = docSnap.data();
-      const url = data?.profilePicture || null;
-      setProfilePic(url);
-      setHasImage(!!url);
+      const fileUri = `${FileSystem.documentDirectory}profilePicture_${user.uid}.png`;
+      const fileExists = await FileSystem.getInfoAsync(fileUri);
+      if (fileExists.exists) {
+        setProfilePic(fileUri);
+        setHasImage(true);
+      } else {
+        setProfilePic(null);
+        setHasImage(false);
+      }
     } catch (error) {
       console.log('Nenhuma foto de perfil encontrada, usando padrão.');
       setProfilePic(null);
@@ -55,11 +58,15 @@ export default function Profile() {
       if (!result.canceled) {
         const { uri } = result.assets[0];
         try {
-          const url = await uploadProfilePicture(uri);
-          setProfilePic(url);
+          const fileUri = `${FileSystem.documentDirectory}profilePicture_${user.uid}.png`;
+          await FileSystem.copyAsync({
+            from: uri,
+            to: fileUri,
+          });
+          setProfilePic(fileUri);
           setHasImage(true);
         } catch (error) {
-          Alert.alert('Erro', 'Não foi possível fazer o upload da foto.');
+          Alert.alert('Erro', 'Não foi possível salvar a foto localmente.');
         }
       }
     } catch (error) {
@@ -69,10 +76,8 @@ export default function Profile() {
 
   const handleDeleteImage = async () => {
     try {
-      const storageRef = ref(getStorage(), `profile_pictures/${user.uid}/profile.png`);
-      await deleteObject(storageRef);
-      const userRef = doc(getFirestore(), 'users', user.uid);
-      await setDoc(userRef, { profilePicture: null }, { merge: true });
+      const fileUri = `${FileSystem.documentDirectory}profilePicture_${user.uid}.png`;
+      await FileSystem.deleteAsync(fileUri);
       setProfilePic(null);
       setHasImage(false);
     } catch (error) {
