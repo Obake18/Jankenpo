@@ -25,39 +25,22 @@ const Runa = ({ elemento, selecionado }) => {
 
 const LastElements = ({ lastElements }) => {
   const { player, computer } = lastElements;
-  console.log('Últimos elementos recebidos:', lastElements);
-  console.log('Imagem do jogador:', elementos[player]?.image);
-  console.log('Imagem do computador:', elementos[computer]?.image);
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Últimos Elementos Jogados:</Text>
-      {player || computer ? (
-        <>
-          {computer && (
-            <View style={styles.elementContainer}>
-              {elementos[computer]?.image ? (
-                <Image source={elementos[computer]?.image} style={styles.image} />
-              ) : (
-                <Text>Imagem não disponível</Text>
-              )}
-              <Text style={styles.elementText}>{elementos[computer]?.nome}</Text>
-            </View>
-          )}
-          {player && (
-            <View style={styles.elementContainer}>
-              {elementos[player]?.image ? (
-                <Image source={elementos[player]?.image} style={styles.image} />
-              ) : (
-                <Text>Imagem não disponível</Text>
-              )}
-              <Text style={styles.elementText}>{elementos[player]?.nome}</Text>
-            </View>
-          )}
-        </>
-      ) : (
-        <Text>Nenhum elemento jogado ainda.</Text>
-      )}
+    <View style={styles.lastElementsContainer}>
+      <Text style={styles.lastElementsTitle}>Últimas Jogadas</Text>
+      <View style={styles.lastElementsList}>
+        {computer && (
+          <View style={[styles.smallElement, { backgroundColor: elementos[computer].corBase }]}>
+            <Image source={elementos[computer].image} style={styles.smallImage} />
+          </View>
+        )}
+        {player && (
+          <View style={[styles.smallElement, { backgroundColor: elementos[player].corBase }]}>
+            <Image source={elementos[player].image} style={styles.smallImage} />
+          </View>
+        )}
+      </View>
     </View>
   );
 };
@@ -151,7 +134,7 @@ const Runas = () => {
     setActiveIndex(Object.keys(elementos).indexOf(elemento));
   
     updateRecord(elemento, computer);
-    setLastElements({ player: elemento, computer }); // Atualizar o estado dos últimos elementos
+    setLastElements({ player: elemento, computer });
   
     if (!computer) {
       setResult('Erro ao selecionar a escolha do computador.');
@@ -176,8 +159,8 @@ const Runas = () => {
       if (playerLives - 1 === 0) {
         setResult('Game Over');
         setTimeout(() => {
-          router.push('/gameover'); // Navegar para a tela de gameover
-        }, 2000); // Adicionar um delay para mostrar a mensagem 'Game Over'
+          router.push('/gameover');
+        }, 2000);
       } else {
         setPlayerLives(playerLives - 1);
       }
@@ -220,9 +203,6 @@ const Runas = () => {
         <Text style={styles.resultText}>{result}</Text>
         <Text style={styles.title}>Vidas: {'❤️'.repeat(playerLives)}</Text>
         <Text style={styles.title}>Fase: {phase}</Text>
-        <View style={styles.container}>
-          <LastElements lastElements={lastElements} />
-        </View>
       </View>
 
       <View style={styles.runasContainer}>
@@ -240,6 +220,8 @@ const Runas = () => {
           inactiveSlideOpacity={0.96}
         />
       </View>
+
+      <LastElements lastElements={lastElements} />
     </View>
   );
 };
@@ -310,18 +292,34 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   lastElementsContainer: {
-    width: '60%',
+    position: 'absolute',
+    right: 20,
+    top: 20,
+    alignItems: 'flex-start',
+  },
+  lastElementsTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  lastElementsList: {
+    right: -25,
+    top : 650,
+    flexDirection: 'column',
     alignItems: 'center',
   },
-  elementContainer: {
-    flexDirection: 'row',
+  smallElement: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    justifyContent: 'center',
     alignItems: 'center',
     marginVertical: 5,
   },
-  elementText: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginHorizontal: 0,
+  smallImage: {
+    width: '80%',
+    height: '80%',
+    resizeMode: 'contain',
   },
   title: {
     fontSize: 18,

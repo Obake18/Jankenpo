@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StatusBar, ImageBackground, View, Text, TextInput, TouchableOpacity, StyleSheet, Dimensions, SafeAreaView, ScrollView } from 'react-native';
+import { StatusBar, ImageBackground, View, Text, TextInput, TouchableOpacity, StyleSheet, Dimensions, SafeAreaView, ScrollView, Alert } from 'react-native';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { useRouter } from 'expo-router';
 
@@ -40,29 +40,31 @@ export default function LoginScreen() {
       <ImageBackground source={require('../assets/imagens/pergaminho.png')} style={styles.background}>
         <SafeAreaView style={styles.safeArea}>
           <ScrollView contentContainerStyle={styles.scrollContainer}>
-            <ImageBackground source={require('../assets/imagens/pergaminho-menu.jpeg')} style={styles.scrollImage}>
-              <Text style={styles.title}>Login</Text>
-              <TextInput
-                style={styles.input}
-                placeholder="Email"
-                value={email}
-                onChangeText={setEmail}
-                autoCapitalize="none"
-                keyboardType="email-address"
-              />
-              <TextInput
-                style={styles.input}
-                placeholder="Senha"
-                value={password}
-                onChangeText={setPassword}
-                secureTextEntry
-              />
-              <TouchableOpacity style={styles.button} onPress={handleLogin}>
-                <Text style={styles.buttonText}>Entrar</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => router.push('/signup')}>
-                <Text style={styles.linkText}>Não tem uma conta? Crie uma</Text>
-              </TouchableOpacity>
+            <ImageBackground source={require('../assets/imagens/pergaminho-menu.png')} style={styles.scrollImage}>
+              <View style={styles.formContainer}>
+                <Text style={styles.title}>Login</Text>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Email"
+                  value={email}
+                  onChangeText={setEmail}
+                  autoCapitalize="none"
+                  keyboardType="email-address"
+                />
+                <TextInput
+                  style={styles.input}
+                  placeholder="Senha"
+                  value={password}
+                  onChangeText={setPassword}
+                  secureTextEntry
+                />
+                <TouchableOpacity style={styles.button} onPress={handleLogin}>
+                  <Text style={styles.buttonText}>Entrar</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => router.push('/signup')}>
+                  <Text style={styles.linkText}>Não tem uma conta? Crie uma</Text>
+                </TouchableOpacity>
+              </View>
             </ImageBackground>
           </ScrollView>
         </SafeAreaView>
@@ -86,12 +88,16 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   scrollImage: {
-    width: width * 0.8, // 80% da largura da tela
-    aspectRatio: 1, // Mantém a proporção da imagem
-    padding: 20,
+    height: '100%',
+    width: width * 1.2, // Ajuste a largura da imagem de acordo com a necessidade
     resizeMode: 'contain',
     alignItems: 'center',
     justifyContent: 'center',
+    padding: 20,
+  },
+  formContainer: {
+    width: '50%',
+    alignItems: 'center',
   },
   title: {
     fontSize: 24,
@@ -109,7 +115,7 @@ const styles = StyleSheet.create({
     color: '#8B4513',
   },
   button: {
-    backgroundColor: '#4B0082',
+    backgroundColor: '#b94c02cf',
     paddingVertical: 10,
     paddingHorizontal: 25,
     borderRadius: 10,
@@ -122,9 +128,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   linkText: {
-    color: '#ADD8E6',
+    color: '#522500e1',
     marginTop: 20,
     fontSize: 16,
   },
 });
-
