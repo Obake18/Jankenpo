@@ -4,6 +4,7 @@ import * as Animatable from 'react-native-animatable';
 import { elementos } from './elementos';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
+import { Audio } from 'expo-av';
 
 const { width } = Dimensions.get('window');
 const scale = width / 320;
@@ -16,6 +17,7 @@ function normalize(size) {
 const Tutorial = () => {
   const [step, setStep] = useState(0);
   const [tutorialCompleted, setTutorialCompleted] = useState(false);
+  const [sound, setSound] = useState(null);
   const router = useRouter();
 
   const steps = [
@@ -57,7 +59,6 @@ const Tutorial = () => {
     }
   };
   
-
   const requestFilePermission = async () => {
     try {
       const granted = await PermissionsAndroid.request(
@@ -110,6 +111,25 @@ const Tutorial = () => {
   };
 
   const showCharacter = step === 2 || step === 3 || step === 4 || step === 5 || step === 6 || step === 12 || step === 13 || step === 14 || step === 15 || step === 16 || step === 17;
+
+  useEffect(() => {
+    async function playMusic() {
+      const { sound } = await Audio.Sound.createAsync(
+         require('../assets/music/tutorial-musica.mp3')
+      );
+      setSound(sound);
+      await sound.playAsync(); 
+    }
+
+    playMusic();
+
+    return () => {
+      if (sound) {
+        sound.stopAsync();
+        sound.unloadAsync();
+      }
+    };
+  }, []);
 
   return (
     <>
@@ -228,33 +248,31 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   kamuyImage: {
-    width: '100%',
-    height: normalize(150),
+    width: normalize(80),
+    height: normalize(80),
     resizeMode: 'contain',
   },
   kamuyName: {
     fontSize: normalize(18),
-    fontWeight: 'bold',
-    marginVertical: normalize(10),
+    textAlign: 'center',
+    marginTop: normalize(10),
   },
   kamuyDescription: {
-    fontSize: normalize(16),
+    fontSize: normalize(14),
     textAlign: 'center',
+    marginTop: normalize(5),
   },
   elementsContainer: {
     flexDirection: 'row',
-    marginTop: normalize(20),
+    justifyContent: 'center',
+    marginTop: normalize(10),
   },
   elementContainer: {
     alignItems: 'center',
+    justifyContent: 'center',
     padding: normalize(10),
     borderRadius: 10,
-    margin: normalize(10),
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
+    marginHorizontal: normalize(5),
   },
   elementImage: {
     width: normalize(50),
@@ -262,15 +280,14 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   elementName: {
-    color: 'white',
-    fontSize: normalize(14),
-    fontWeight: 'bold',
-    marginTop: normalize(10),
+    fontSize: normalize(16),
+    textAlign: 'center',
+    marginTop: normalize(5),
   },
   elementDescription: {
     fontSize: normalize(12),
     textAlign: 'center',
-    color: 'white', 
+    marginTop: normalize(3),
   },
 });
 
