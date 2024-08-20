@@ -1,9 +1,21 @@
-// detalhes.js
 import React from 'react';
 import { StatusBar, ImageBackground, View, Text, Image, StyleSheet, ScrollView } from 'react-native';
+import { useRouter } from 'expo-router';
 
-const Detalhes = ({ route }) => {
-  const { elemento } = route.params;
+const Detalhes = () => {
+  const router = useRouter();
+  const { elemento } = router.query; 
+
+  console.log('Elemento:', elemento); 
+
+
+  if (!elemento) {
+    return (
+      <View style={styles.container}>
+        <Text>Detalhes não disponíveis.</Text>
+      </View>
+    );
+  }
 
   return (
     <>
@@ -40,7 +52,7 @@ const Detalhes = ({ route }) => {
 const styles = StyleSheet.create({
   background: {
     flex: 1,
-    resizeMode: 'cover', // Cobrir toda a área
+    resizeMode: 'cover',
     justifyContent: 'center',
   },
   scrollContainer: {

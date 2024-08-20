@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useRouter } from "expo-router";
+import { useRouter, Link } from "expo-router";
 import {
   ImageBackground,
   View,
@@ -36,7 +36,6 @@ export default function Lobby() {
     const checkTutorialStatus = async () => {
       try {
         const status = await AsyncStorage.getItem("@tutorialCompleted");
-        console.log("Status do tutorial ao iniciar:", status); // Adicione este log
         setTutorialCompleted(status === "true");
       } catch (error) {
         console.error("Erro ao verificar o status do tutorial:", error);
@@ -92,7 +91,14 @@ export default function Lobby() {
 
             <TouchableOpacity 
               style={styles.card} 
-              onPress={() => navigateToScreen('game')}
+              onPress={() => router.push('tutoriais')}
+            >
+              <Text style={styles.cardText}>Tutoriais</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity 
+              style={styles.card} 
+              onPress={() => navigateToScreen('jogo')}
             >
               <Text style={styles.cardText}>Jogo</Text>
             </TouchableOpacity>
@@ -102,13 +108,6 @@ export default function Lobby() {
               onPress={() => router.push('recorde')}
             >
               <Text style={styles.cardText}>Recordes</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity 
-              style={styles.card} 
-              onPress={() => router.push('tutoriais')}
-            >
-              <Text style={styles.cardText}>Tutoriais</Text>
             </TouchableOpacity>
 
             <TouchableOpacity 
