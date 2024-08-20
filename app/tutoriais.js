@@ -244,6 +244,7 @@ const styles = StyleSheet.create({
     fontSize: normalize(14),
   },
   skipButton: {
+    
     backgroundColor: '#8B4513',
     padding: normalize(10),
     borderRadius: 5,
@@ -276,7 +277,7 @@ const styles = StyleSheet.create({
   },
   kamuyName: {
     fontSize: normalize(18),
-    fontWeight: 'bold',
+    fontFamily: "Shojumaru_400Regular",
     marginVertical: normalize(10),
   },
   kamuyDescription: {
@@ -304,9 +305,9 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   elementName: {
+    fontFamily: "Shojumaru_400Regular",
     color: 'white',
     fontSize: normalize(14),
-    fontWeight: 'bold',
     marginTop: normalize(10),
   },
   elementDescription: {
