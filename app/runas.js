@@ -69,7 +69,7 @@ const Runas = () => {
   const [computerChoice, setComputerChoice] = useState(null);
   const [result, setResult] = useState(null);
   const [round, setRound] = useState(1);
-  const [playerLives, setPlayerLives] = useState(5);
+  const [playerLives, setPlayerLives] = useState(1);
   const [phase, setPhase] = useState(1);
   const [activeIndex, setActiveIndex] = useState(0);
   const [winStreak, setWinStreak] = useState(0);
