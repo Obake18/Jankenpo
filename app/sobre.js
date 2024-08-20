@@ -1,5 +1,5 @@
 import React from 'react';
-import { StatusBar, ImageBackground, View, TouchableOpacity, StyleSheet, Image, Dimensions, Text } from 'react-native';
+import { StatusBar, ImageBackground, Linking, View, TouchableOpacity, StyleSheet, Image, Dimensions, Text } from 'react-native';
 import { elementos } from './elementos';
 import { useRouter } from 'expo-router';
 

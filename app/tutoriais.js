@@ -272,7 +272,7 @@ const styles = StyleSheet.create({
   },
   kamuyImage: {
     width: '100%',
-    height: normalize(150),
+    height: normalize(210),
     resizeMode: 'contain',
   },
   kamuyName: {
