@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useRouter, Link } from "expo-router";
+import { useRouter } from "expo-router";
 import {
   ImageBackground,
   View,
@@ -89,33 +89,40 @@ export default function Lobby() {
               style={styles.logo} 
             />
 
-            <TouchableOpacity 
-              style={styles.card} 
-              onPress={() => router.push('tutoriais')}
+            <ImageBackground 
+              source={require("../assets/imagens/pergaminho-menu.png")} 
+              style={styles.scrollImage}
             >
-              <Text style={styles.cardText}>Tutoriais</Text>
-            </TouchableOpacity>
+              <View style={styles.cardsContainer}>
+                <TouchableOpacity 
+                  style={styles.card} 
+                  onPress={() => router.push('tutoriais')}
+                >
+                  <Text style={styles.cardText}>Tutoriais</Text>
+                </TouchableOpacity>
 
-            <TouchableOpacity 
-              style={styles.card} 
-              onPress={() => navigateToScreen('jogo')}
-            >
-              <Text style={styles.cardText}>Jogo</Text>
-            </TouchableOpacity>
+                <TouchableOpacity 
+                  style={styles.card} 
+                  onPress={() => navigateToScreen('jogo')}
+                >
+                  <Text style={styles.cardText}>Jogo</Text>
+                </TouchableOpacity>
 
-            <TouchableOpacity 
-              style={styles.card} 
-              onPress={() => router.push('recorde')}
-            >
-              <Text style={styles.cardText}>Recordes</Text>
-            </TouchableOpacity>
+                <TouchableOpacity 
+                  style={styles.card} 
+                  onPress={() => router.push('recorde')}
+                >
+                  <Text style={styles.cardText}>Recordes</Text>
+                </TouchableOpacity>
 
-            <TouchableOpacity 
-              style={styles.card} 
-              onPress={() => router.push('sobre')}
-            >
-              <Text style={styles.cardText}>Sobre</Text>
-            </TouchableOpacity>
+                <TouchableOpacity 
+                  style={styles.card} 
+                  onPress={() => router.push('sobre')}
+                >
+                  <Text style={styles.cardText}>Sobre</Text>
+                </TouchableOpacity>
+              </View>
+            </ImageBackground>
           </View>
         </BlurView>
       </ImageBackground>
@@ -161,7 +168,7 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   menuButton: {
-    backgroundColor: "#8B4513",
+    backgroundColor: "rgba(139, 69, 19, 0.8)",
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 5,
@@ -183,8 +190,22 @@ const styles = StyleSheet.create({
     resizeMode: "contain",
     marginBottom: 50,
   },
+  scrollImage: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'contain',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+    backgroundColor: 'rgba(255, 255, 255, 0.7)', // Fundo branco semi-transparente
+    borderRadius: 10, // Adiciona borda arredondada se necessário
+  },
+  cardsContainer: {
+    width: '100%',
+    alignItems: 'center',
+  },
   card: {
-    backgroundColor: "#8B4513",
+    backgroundColor: "#FFF", // Fundo branco para destaque
     paddingVertical: 15,
     paddingHorizontal: 25,
     borderRadius: 10,
@@ -193,13 +214,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 5, // Adiciona uma sombra sutil
   },
   cardText: {
     fontFamily: "Shojumaru_400Regular",
     fontSize: 18,
-    color: "#FFF",
+    color: "#8B4513", // Cor do texto
   },
   dialog: {
     borderRadius: 10,
@@ -214,7 +236,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   dialogButton: {
-    backgroundColor: "#8B4513",
+    backgroundColor: "rgba(139, 69, 19, 0.8)",
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 5,
