@@ -93,12 +93,12 @@ export default function Lobby() {
 
             <ImageBackground 
               source={require("../assets/imagens/pergaminho-menu.png")} 
-              style={[styles.scrollImage, { height: height * 1.2 }]} // Ajustando a altura com base nas dimensões da tela
+              style={[styles.scrollImage, { height: height * 1.2 }]} 
               imageStyle={styles.scrollImageInner}
             >
               <View style={styles.cardsContainer}>
                 <TouchableOpacity 
-                  style={[styles.card, { width: width * 0.5 }]} // Ajustando a largura com base nas dimensões da tela
+                  style={[styles.card, { width: width * 0.5 }]} 
                   onPress={() => router.push('tutoriais')}
                 >
                   <Text style={styles.cardText}>Tutoriais</Text>
@@ -156,7 +156,7 @@ const styles = StyleSheet.create({
     flex: 1,
     resizeMode: "cover",
     justifyContent: "center",
-    alignItems: "center", // Centraliza horizontalmente
+    alignItems: "center", 
   },
   absolute: {
     position: "absolute",
@@ -186,19 +186,21 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     flex: 1,
     justifyContent: "center",
-    alignItems: "center", // Centraliza horizontalmente
+    alignItems: "center", 
     padding: 20,
   },
   logo: {
     padding: 20,
-    height: 55, // Aumentando a altura para garantir que a logo seja exibida corretamente
-    width: '75%', // Aumentando a largura para uma melhor visualização da logo
+    height: height * 0.09, 
+    width: width * 0.8, 
     resizeMode: "contain",
-    marginBottom: -270, // Espaço entre a logo e o pergaminho-menu
+    marginBottom: -270,
+    justifyContent: "center",
+    alignItems: "center",
   },
   scrollImage: {
-    marginBottom: -350, 
-    width: width * 1.2, // Ajuste a largura da imagem de acordo com a necessidade
+    marginBottom: -270,
+    width: width * 1.2, 
     resizeMode: 'contain',
     alignItems: 'center',
     justifyContent: 'center',
@@ -209,8 +211,8 @@ const styles = StyleSheet.create({
   },
   cardsContainer: {
     flex: 1,
-    justifyContent: 'center', // Centraliza verticalmente
-    alignItems: 'center', // Centraliza horizontalmente
+    justifyContent: 'center', 
+    alignItems: 'center', 
     padding: 10,
   },
   card: {
@@ -219,7 +221,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 25,
     borderRadius: 10,
     marginVertical: 10,
-    alignItems: "center", // Centraliza o texto dentro do card
+    alignItems: "center", 
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
