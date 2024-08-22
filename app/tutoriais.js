@@ -124,11 +124,11 @@ const Tutorial = () => {
 
   const getKamuyForStep = () => {
     switch (step) {
-      case 7: return 'Katon';
-      case 8: return 'Fuuton';
-      case 9: return 'Raiton';
-      case 10: return 'Doton';
-      case 11: return 'Suiton';
+      case 7: return 'Fogo';
+      case 8: return 'Vento';
+      case 9: return 'Trovão';
+      case 10: return 'Terra';
+      case 11: return 'Agua';
       default: return null;
     }
   };

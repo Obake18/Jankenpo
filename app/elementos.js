@@ -1,10 +1,10 @@
 export const elementos = {
-  Katon: {
+  Fogo: {
     image: require('../assets/icons/fogo.png'),
     kanji: '火',
     nome: 'Fogo',
-    vence: 'Fuuton',
-    perde: 'Suiton',
+    vence: 'Vento',
+    perde: 'Agua',
     corBase: '#Bf0000',
     kamuy : 'Kamuy Huci, nos deu o  poder do Fogo',
     descricao: {
@@ -14,12 +14,12 @@ export const elementos = {
     },
     kamuyImage: require('../assets/icons/kamuy/kamuy_Huci.png'),
   },
-  Fuuton: {
+  Vento: {
     image: require('../assets/icons/vento.png'),
     kanji: '風',
     nome: 'Vento',
-    vence: 'Raiton',
-    perde: 'Doton',
+    vence: 'Trovão',
+    perde: 'Terra',
     corBase: '#588083',
     kamuy: 'Kamuy Fujin, nos deu o poder do Vento',
     descricao: {
@@ -29,12 +29,12 @@ export const elementos = {
     },
     kamuyImage: require('../assets/icons/kamuy/kamuy_fujin.png'),
   },
-  Raiton: {
+  Trovão: {
     image: require('../assets/icons/trovão.png'),
     kanji: '雷',
     nome: 'Trovão',
-    vence: 'Doton',
-    perde: 'Fuuton',
+    vence: 'Terra',
+    perde: 'Vento',
     corBase: '#B28009',
     kamuy: 'Kanna Kamuy, nos deu o poder do Trovão',
 
@@ -45,12 +45,12 @@ export const elementos = {
     },
     kamuyImage: require('../assets/icons/kamuy/kamuy_thunder.png'),
   },
-  Doton: {
+  Terra: {
     image: require('../assets/icons/terra.png'),
     kanji: '土',
     nome: 'Terra',
-    vence: 'Suiton',
-    perde: 'Katon',
+    vence: 'Agua',
+    perde: 'Fogo',
     corBase: '#873e23',
     kamuy: 'Kamuy Omoikane, nos deu o poder da Terra',
     descricao: {
@@ -60,12 +60,12 @@ export const elementos = {
     },
     kamuyImage: require('../assets/icons/kamuy/kamuy_omoikane.png'),
   },
-  Suiton: {
+  Agua: {
     image: require('../assets/icons/agua.png'),
     kanji: '水',
     nome: 'Água',
-    vence: 'Katon',
-    perde: 'Raiton',
+    vence: 'Fogo',
+    perde: 'Trovão',
     corBase: '#3377FF',
     kamuy: 'Kamuy Toyo, nos deu o poder da Água',
     descricao: {

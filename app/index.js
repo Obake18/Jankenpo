@@ -191,7 +191,7 @@ const styles = StyleSheet.create({
   },
   logo: {
     padding: 20,
-    height: height * 0.09, 
+    height: height * 0.07, 
     width: width * 0.8, 
     resizeMode: "contain",
     marginBottom: -270,
