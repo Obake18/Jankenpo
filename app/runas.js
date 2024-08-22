@@ -5,7 +5,7 @@ import Carousel from 'react-native-snap-carousel';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { elementos } from './elementos';
 
-const { width: screenWidth } = Dimensions.get('window');
+const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
 const Runa = ({ elemento, selecionado }) => {
   const elementoObj = elementos[elemento];
@@ -198,7 +198,7 @@ const Runas = () => {
       <Image source={require('../assets/imagens/mara.png')} style={styles.robo} />
       <View style={styles.topSection}>
         {computerChoice && (
-          <View style={[styles.runa, { backgroundColor: elementos[computerChoice].corBase, position: 'absolute', top: '70%', left: '50%', transform: [{ translateX: -50 }, { translateY: -50 }] }]}>
+          <View style={[styles.runa, { backgroundColor: elementos[computerChoice].corBase, position: 'absolute', top: '40%', left: '50%', transform: [{ translateX: -screenWidth * 0.08 }, { translateY: -screenWidth * 0.08 }] }]}>
             <Image source={elementos[computerChoice].image} style={styles.image} />
           </View>
         )}
@@ -214,8 +214,8 @@ const Runas = () => {
         <Carousel
           data={Object.keys(elementos)}
           renderItem={renderItem}
-          sliderWidth={screenWidth / 0.9}
-          itemWidth={screenWidth / 3.7}
+          sliderWidth={screenWidth}
+          itemWidth={screenWidth / 3.2}
           activeSlideAlignment={'center'}
           firstItem={2}
           loop={true}
@@ -251,7 +251,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 20,
+    paddingHorizontal: screenWidth * 0.05,
+    paddingVertical: screenHeight * 0.02,
   },
   topSection: {
     flex: 1,
@@ -260,14 +261,18 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   mesa: {
-    marginTop: '40%',
+    marginTop: '30%',
     position: 'absolute',
     objectFit: 'contain',
+    width: screenWidth * 0.8,
+    height: screenHeight * 0.3,
   },
   robo: {
-    marginTop: '15%',
+    marginTop: '10%',
     objectFit: 'contain',
     position: 'absolute',
+    width: screenWidth * 0.5,
+    height: screenHeight * 0.3,
   },
   middleSection: {
     flex: 1,
@@ -280,12 +285,12 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   runa: {
-    width: 120,
-    height: 120,
+    width: screenWidth * 0.3,
+    height: screenWidth * 0.3,
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 3,
-    borderRadius: 70,
+    borderRadius: screenWidth * 0.15,
   },
   image: {
     width: '90%',
@@ -298,9 +303,9 @@ const styles = StyleSheet.create({
   },
   lastElementsContainer: {
     position: 'absolute',
-    right: 20,
-    top: 20,
-    alignItems: 'flex-start',
+    right: screenWidth * 0.1,
+    top: screenHeight * 0.55,
+    alignItems: 'flex-end',
   },
   lastElementsTitle: {
     fontSize: 18,
@@ -308,15 +313,13 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   lastElementsList: {
-    right: -25,
-    top : 650,
     flexDirection: 'column',
     alignItems: 'center',
   },
   smallElement: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
+    width: screenWidth * 0.13,
+    height: screenWidth * 0.13,
+    borderRadius: screenWidth * 0.065,
     justifyContent: 'center',
     alignItems: 'center',
     marginVertical: 5,
