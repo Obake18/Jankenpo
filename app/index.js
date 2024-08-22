@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   Alert,
+  Dimensions,
 } from "react-native";
 import { BlurView } from "expo-blur";
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
@@ -14,6 +15,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import PopupDialog from "react-native-popup-dialog";
 
 const auth = getAuth();
+const { width, height } = Dimensions.get("window");
 
 export default function Lobby() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -91,32 +93,33 @@ export default function Lobby() {
 
             <ImageBackground 
               source={require("../assets/imagens/pergaminho-menu.png")} 
-              style={styles.scrollImage}
+              style={[styles.scrollImage, { height: height * 1.2 }]}
+              imageStyle={styles.scrollImageInner}
             >
               <View style={styles.cardsContainer}>
                 <TouchableOpacity 
-                  style={styles.card} 
+                  style={[styles.card, { width: width * 0.5 }]} 
                   onPress={() => router.push('tutoriais')}
                 >
                   <Text style={styles.cardText}>Tutoriais</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity 
-                  style={styles.card} 
+                  style={[styles.card, { width: width * 0.5 }]} 
                   onPress={() => navigateToScreen('jogo')}
                 >
                   <Text style={styles.cardText}>Jogo</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity 
-                  style={styles.card} 
+                  style={[styles.card, { width: width * 0.5 }]} 
                   onPress={() => router.push('recorde')}
                 >
                   <Text style={styles.cardText}>Recordes</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity 
-                  style={styles.card} 
+                  style={[styles.card, { width: width * 0.5 }]} 
                   onPress={() => router.push('sobre')}
                 >
                   <Text style={styles.cardText}>Sobre</Text>
@@ -153,6 +156,7 @@ const styles = StyleSheet.create({
     flex: 1,
     resizeMode: "cover",
     justifyContent: "center",
+    alignItems: "center",
   },
   absolute: {
     position: "absolute",
@@ -179,49 +183,50 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   container: {
+    flexDirection: "column",
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    padding: 20,
   },
   logo: {
+    alignSelf: "center",
     height: 45,
-    width: 250,
+    width: '60%',
     resizeMode: "contain",
-    marginBottom: 50,
+    top: 80,
   },
   scrollImage: {
-    width: '100%',
-    height: '100%',
-    resizeMode: 'contain',
-    justifyContent: 'center',
+    width: width * 1.2,
     alignItems: 'center',
+    justifyContent: 'center',
     padding: 20,
-    backgroundColor: 'rgba(255, 255, 255, 0.7)', // Fundo branco semi-transparente
-    borderRadius: 10, // Adiciona borda arredondada se necessário
+  },
+  scrollImageInner: {
+    resizeMode: 'contain',
   },
   cardsContainer: {
-    width: '100%',
+    flex: 1,
+    justifyContent: 'center',
     alignItems: 'center',
+    padding: 10,
   },
   card: {
-    backgroundColor: "#FFF", // Fundo branco para destaque
+    backgroundColor: "#FFF", 
     paddingVertical: 15,
     paddingHorizontal: 25,
     borderRadius: 10,
     marginVertical: 10,
-    width: "80%",
     alignItems: "center",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
     shadowRadius: 4,
-    elevation: 5, // Adiciona uma sombra sutil
+    elevation: 5,
   },
   cardText: {
     fontFamily: "Shojumaru_400Regular",
     fontSize: 18,
-    color: "#8B4513", // Cor do texto
+    color: "#8B4513", 
   },
   dialog: {
     borderRadius: 10,
