@@ -198,7 +198,13 @@ const Runas = () => {
       <Image source={require('../assets/imagens/mara.png')} style={styles.robo} />
       <View style={styles.topSection}>
         {computerChoice && (
-          <View style={[styles.runa, { backgroundColor: elementos[computerChoice].corBase, position: 'absolute', top: '40%', left: '50%', transform: [{ translateX: -screenWidth * 0.08 }, { translateY: -screenWidth * 0.08 }] }]}>
+          <View style={[styles.runa, { 
+            backgroundColor: elementos[computerChoice].corBase, 
+            position: 'absolute', 
+            top: '45%', 
+            left: '45%', 
+            transform: [{ translateX: -screenWidth * 0.1 }, { translateY: -screenWidth * 0.1 }] 
+          }]}>
             <Image source={elementos[computerChoice].image} style={styles.image} />
           </View>
         )}
@@ -256,23 +262,21 @@ const styles = StyleSheet.create({
   },
   topSection: {
     flex: 1,
-    justifyContent: 'flex-end',
+    justifyContent: 'center',
     alignItems: 'center',
     width: '100%',
   },
   mesa: {
-    marginTop: '30%',
     position: 'absolute',
-    objectFit: 'contain',
     width: screenWidth * 0.8,
     height: screenHeight * 0.3,
+    resizeMode: 'contain',
   },
   robo: {
-    marginTop: '10%',
-    objectFit: 'contain',
     position: 'absolute',
     width: screenWidth * 0.5,
     height: screenHeight * 0.3,
+    resizeMode: 'contain',
   },
   middleSection: {
     flex: 1,
