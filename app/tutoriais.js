@@ -100,7 +100,7 @@ const Tutorial = () => {
       setStep(step + 1);
     } else {
       await AsyncStorage.setItem('tutorialCompleted', 'true');
-      router.push('/jogo');
+      router.replace('/jogo');
     }
   };
 
@@ -143,6 +143,7 @@ const Tutorial = () => {
       <View style={styles.kamuyInfoContainer}>
         <Image source={kamuyImage} style={styles.kamuyImage} />
         <Text style={styles.kamuyName}>{nome}</Text>
+        
         <Text style={styles.kamuyDescription}>{descricao.kamuy}</Text>
         <View style={styles.elementsContainer}>
           <View style={[styles.elementContainer, { backgroundColor: elementos[element].corBase }]}>
