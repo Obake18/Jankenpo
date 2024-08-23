@@ -114,13 +114,13 @@ const styles = StyleSheet.create({
   },
   kamuyContainer: {
     width: width * 0.6,
-    height: height * 0.59,
+    height: height * 0.55,
     justifyContent: 'center',
     alignItems: 'center',
   },
   kamuyImage: {
     width: '100%',
-    height: '100%',
+    height: '90%',
     borderRadius: 25,
     borderWidth: 2,
     borderColor: '#fff',

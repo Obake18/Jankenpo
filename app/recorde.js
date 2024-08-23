@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StatusBar, ImageBackground, View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
+import { StatusBar, ImageBackground, View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { db, auth } from './firebaseconfig'; // Ajuste o caminho conforme necessário
 import { doc, getDoc, setDoc } from 'firebase/firestore';
@@ -18,11 +18,8 @@ const Recorde = () => {
       const user = auth.currentUser;
       if (user) {
         setUserId(user.uid);
-        await loadRecord(user.uid);
-      } else {
-        // Carregar dados do AsyncStorage se o usuário não estiver logado
-        await loadRecord(null);
       }
+      await loadRecord(user ? user.uid : null);
     };
 
     loadUser();
@@ -82,6 +79,7 @@ const Recorde = () => {
   };
 
   useEffect(() => {
+    // Salvar no AsyncStorage e no Firebase sempre que um dos valores for alterado
     saveRecord();
   }, [maxWins, lastPlayerChoice, lastComputerChoice, mostChosenElements]);
 

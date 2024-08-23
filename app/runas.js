@@ -56,8 +56,9 @@ const Runas = () => {
   const [phase, setPhase] = useState(1);
   const [activeIndex, setActiveIndex] = useState(0);
   const [winStreak, setWinStreak] = useState(0);
+  const [maxWins, setMaxWins] = useState(0);
+  const [maxRounds, setMaxRounds] = useState(0);
   const [record, setRecord] = useState({
-    maxWins: 0,
     lastPlayerChoice: 'Nenhum',
     lastComputerChoice: 'Nenhum',
     mostChosenElements: {},
@@ -76,7 +77,6 @@ const Runas = () => {
     try {
       const recordData = await AsyncStorage.getItem('@recordData');
       return recordData ? JSON.parse(recordData) : {
-        maxWins: 0,
         lastPlayerChoice: 'Nenhum',
         lastComputerChoice: 'Nenhum',
         mostChosenElements: {},
@@ -84,7 +84,6 @@ const Runas = () => {
     } catch (error) {
       console.error('Erro ao carregar o recorde:', error);
       return {
-        maxWins: 0,
         lastPlayerChoice: 'Nenhum',
         lastComputerChoice: 'Nenhum',
         mostChosenElements: {},
@@ -106,11 +105,14 @@ const Runas = () => {
       newMostChosenElements[playerElement] = (newMostChosenElements[playerElement] || 0) + 1;
       newMostChosenElements[computerElement] = (newMostChosenElements[computerElement] || 0) + 1;
 
-      const newMaxWins = winStreak > prevRecord.maxWins ? winStreak : prevRecord.maxWins;
+      // Atualizar as métricas
+      const newMaxWins = Math.max(winStreak, maxWins);
+      const newMaxRounds = Math.max(round, maxRounds);
 
       const newRecord = {
         ...prevRecord,
         maxWins: newMaxWins,
+        maxRounds: newMaxRounds,
         lastPlayerChoice: playerElement,
         lastComputerChoice: computerElement,
         mostChosenElements: newMostChosenElements,
@@ -149,28 +151,28 @@ const Runas = () => {
       setWinStreak(0);
     } else if (elementos[elemento].vence === computer || elementos[computer].perde === elemento) {
       setResult('Você ganhou!');
-      setWinStreak(winStreak + 1);
+      setWinStreak(prevStreak => prevStreak + 1);
       if (winStreak + 1 >= 2) {
-        setPlayerLives(playerLives + 1);
+        setPlayerLives(prevLives => prevLives + 1);
         setWinStreak(0);
       }
       if (round % 7 === 0) {
-        setPhase(phase + 1);
+        setPhase(prevPhase => prevPhase + 1);
       }
     } else if (elementos[computer].vence === elemento || elementos[elemento].perde === computer) {
       setResult('Você perdeu!');
       setWinStreak(0);
       if (playerLives - 1 === 0) {
         setResult('Game Over');
-        setGameOver(true); // Atualize o estado de gameOver
+        setGameOver(true);
         setTimeout(() => {
           router.push('/gameover');
         }, 2000);
       } else {
-        setPlayerLives(playerLives - 1);
+        setPlayerLives(prevLives => prevLives - 1);
       }
     } else {
-      setResult('Reação desconhecida! Próxima rodada!!');
+      setResult('Reação desconhecida!');
     }
 
     setRound(prevRound => prevRound + 1);
@@ -201,7 +203,7 @@ const Runas = () => {
           <View style={[styles.runa, { 
             backgroundColor: elementos[computerChoice].corBase, 
             position: 'absolute', 
-            top: '45%', 
+            top: '85%', 
             left: '45%', 
             transform: [{ translateX: -screenWidth * 0.1 }, { translateY: -screenWidth * 0.1 }] 
           }]}>
@@ -211,7 +213,9 @@ const Runas = () => {
       </View>
       <View style={styles.middleSection}>
         <Text style={styles.title}>Rodada {round}</Text>
-        <Text style={styles.resultText}>{result}</Text>
+        <View style={styles.resultsContainer}>
+          <Text style={styles.resultText}>{result}</Text>
+        </View>
         <Text style={styles.title}>Vidas: {'❤️'.repeat(playerLives)}</Text>
         <Text style={styles.title}>Fase: {phase}</Text>
       </View>
@@ -296,13 +300,21 @@ const styles = StyleSheet.create({
     borderWidth: 3,
     borderRadius: screenWidth * 0.15,
   },
+  resultsContainer: {
+    flex: 1,
+    flexDirection: 'column',
+    alignItems: 'center',
+    width: '100%',
+    justifyContent: 'center',
+    marginBottom: 20,
+  },
   image: {
     width: '90%',
     height: '90%',
     resizeMode: 'contain',
   },
   resultText: {
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: 'bold',
   },
   lastElementsContainer: {

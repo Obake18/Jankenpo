@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import {
-  StatusBar,
   View,
   ImageBackground,
   Text,
@@ -10,7 +9,8 @@ import {
   TouchableWithoutFeedback,
   Dimensions,
   PixelRatio,
-  PermissionsAndroid
+  PermissionsAndroid,
+  BackHandler
 } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import { elementos } from './elementos';
@@ -19,7 +19,7 @@ import { useRouter } from 'expo-router';
 import { Audio } from 'expo-av';
 import { useFocusEffect } from '@react-navigation/native';
 
-const { width, height } = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 const scale = width / 320;
 
 function normalize(size) {
@@ -30,6 +30,7 @@ function normalize(size) {
 const Tutorial = () => {
   const [step, setStep] = useState(0);
   const [tutorialCompleted, setTutorialCompleted] = useState(false);
+  const [kamuyVisible, setKamuyVisible] = useState(false);
   const router = useRouter();
   const soundRef = useRef(null);
 
@@ -154,6 +155,26 @@ const Tutorial = () => {
     );
   };
 
+  useEffect(() => {
+    setKamuyVisible(step > 6 && (step >= 7 && step <= 11));
+  }, [step]);
+
+  useEffect(() => {
+    const handleBackPress = () => {
+      if (step > 0) {
+        setStep(step - 1);
+        return true; // Intercepta o comportamento padrão
+      }
+      return false; // Permite o comportamento padrão (sair da tela)
+    };
+
+    BackHandler.addEventListener('hardwareBackPress', handleBackPress);
+
+    return () => {
+      BackHandler.removeEventListener('hardwareBackPress', handleBackPress);
+    };
+  }, [step]);
+
   const showCharacter = step === 2 || step === 3 || step === 4 || step === 5 || step === 6 || step === 12 || step === 13 || step === 14 || step === 15 || step === 16 || step === 17;
 
   return (
@@ -169,14 +190,18 @@ const Tutorial = () => {
             <Text style={styles.balloon}>{steps[step]}</Text>
           </Animatable.View>
           {step > 6 && renderKamuyInfo(getKamuyForStep())}
-          {step > 0 && (
-            <TouchableOpacity style={[styles.button, { bottom: normalize(step === 0 ? 80 : 20) }]} onPress={() => setStep(step - 1)}>
-              <Text style={styles.buttonText}>Anterior</Text>
-            </TouchableOpacity>
-          )}
           {step > 6 && (
-            <TouchableOpacity style={[styles.skipButton, { bottom: normalize(step > 0 ? 85 : 20) }]} onPress={() => router.push('/jogo')}>
-              <Text style={styles.skipButtonText}>Pular Tutorial</Text>
+            <TouchableOpacity
+              style={[
+                styles.skipButton,
+                {
+                  bottom: normalize(20),
+                  right: normalize(20),
+                }
+              ]}
+              onPress={() => router.push('/jogo')}
+            >
+              <Text style={styles.skipButtonText}>Pular</Text>
             </TouchableOpacity>
           )}
         </View>
@@ -189,19 +214,18 @@ const styles = StyleSheet.create({
   background: {
     flex: 1,
     resizeMode: 'cover',
-    justifyContent: 'center',
   },
   container: {
     flex: 1,
+    justifyContent: 'center',
     alignItems: 'center',
-    justifyContent: 'flex-end',
   },
   characterContainer: {
     position: 'absolute',
-    bottom: normalize(0),
-    left: normalize(20),
-    width: normalize(180),
-    height: normalize(180),
+    bottom: normalize(10),
+    left: normalize(10),
+    width: normalize(150),
+    height: normalize(150),
   },
   character: {
     width: '100%',
@@ -211,8 +235,6 @@ const styles = StyleSheet.create({
   balloonContainer: {
     position: 'absolute',
     bottom: '30%',
-    alignItems: 'center',
-    justifyContent: 'center',
     backgroundColor: 'white',
     borderRadius: normalize(20),
     padding: normalize(15),
@@ -222,30 +244,20 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   balloon: {
     fontSize: normalize(16),
     textAlign: 'center',
-  },
-  button: {
-    backgroundColor: '#8B4513',
-    padding: normalize(10),
-    borderRadius: normalize(5),
-    position: 'absolute',
-    right: normalize(20),
-    bottom: normalize(20),
-  },
-  buttonText: {
-    color: 'white',
-    fontSize: normalize(14),
   },
   skipButton: {
     backgroundColor: '#8B4513',
     padding: normalize(10),
     borderRadius: normalize(5),
     position: 'absolute',
-    right: normalize(20),
     bottom: normalize(20),
+    right: normalize(20),
   },
   skipButtonText: {
     color: 'white',
@@ -258,8 +270,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: 'white',
     borderRadius: normalize(20),
-    padding: normalize(15),
-    maxWidth: '80%',
+    padding: normalize(10),
+    maxWidth: '85%',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
@@ -268,7 +280,7 @@ const styles = StyleSheet.create({
   },
   kamuyImage: {
     width: '100%',
-    height: normalize(200),
+    height: normalize(180),
     resizeMode: 'contain',
   },
   kamuyName: {
@@ -283,7 +295,7 @@ const styles = StyleSheet.create({
   },
   elementsContainer: {
     flexDirection: 'row',
-    marginTop: normalize(15),
+    marginTop: normalize(10),
   },
   elementContainer: {
     alignItems: 'center',
@@ -310,7 +322,7 @@ const styles = StyleSheet.create({
   elementDescription: {
     fontSize: normalize(12),
     textAlign: 'center',
-    color: 'white', 
+    color: 'white',
   },
 });
 
