@@ -19,7 +19,7 @@ import { useRouter } from 'expo-router';
 import { Audio } from 'expo-av';
 import { useFocusEffect } from '@react-navigation/native';
 
-const { width } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 const scale = width / 320;
 
 function normalize(size) {
@@ -142,7 +142,7 @@ const Tutorial = () => {
       <View style={styles.kamuyInfoContainer}>
         <Image source={kamuyImage} style={styles.kamuyImage} />
         <Text style={styles.kamuyName}>{nome}</Text>
-        <Text style={styles.kamuyDescription}>{elementos[element].kamuy}</Text>
+        <Text style={styles.kamuyDescription}>{descricao.kamuy}</Text>
         <View style={styles.elementsContainer}>
           <View style={[styles.elementContainer, { backgroundColor: elementos[element].corBase }]}>
             <Image source={image} style={styles.elementImage} />
@@ -170,12 +170,12 @@ const Tutorial = () => {
           </Animatable.View>
           {step > 6 && renderKamuyInfo(getKamuyForStep())}
           {step > 0 && (
-            <TouchableOpacity style={[styles.button, { bottom: step === 0 ? 80 : 20 }]} onPress={() => setStep(step - 1)}>
+            <TouchableOpacity style={[styles.button, { bottom: normalize(step === 0 ? 80 : 20) }]} onPress={() => setStep(step - 1)}>
               <Text style={styles.buttonText}>Anterior</Text>
             </TouchableOpacity>
           )}
           {step > 6 && (
-            <TouchableOpacity style={[styles.skipButton, { bottom: step > 0 ? 85 : 20 }]} onPress={() => router.push('/jogo')}>
+            <TouchableOpacity style={[styles.skipButton, { bottom: normalize(step > 0 ? 85 : 20) }]} onPress={() => router.push('/jogo')}>
               <Text style={styles.skipButtonText}>Pular Tutorial</Text>
             </TouchableOpacity>
           )}
@@ -198,7 +198,7 @@ const styles = StyleSheet.create({
   },
   characterContainer: {
     position: 'absolute',
-    bottom: -normalize(1),
+    bottom: normalize(0),
     left: normalize(20),
     width: normalize(180),
     height: normalize(180),
@@ -210,12 +210,12 @@ const styles = StyleSheet.create({
   },
   balloonContainer: {
     position: 'absolute',
-    bottom: '50%',
+    bottom: '30%',
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'white',
-    borderRadius: 20,
-    padding: normalize(25),
+    borderRadius: normalize(20),
+    padding: normalize(15),
     maxWidth: '80%',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
@@ -227,29 +227,25 @@ const styles = StyleSheet.create({
     fontSize: normalize(16),
     textAlign: 'center',
   },
-  graphic: {
-    width: '100%',
-    height: normalize(150),
-    resizeMode: 'contain',
-  },
   button: {
     backgroundColor: '#8B4513',
     padding: normalize(10),
-    borderRadius: 5,
+    borderRadius: normalize(5),
     position: 'absolute',
     right: normalize(20),
+    bottom: normalize(20),
   },
   buttonText: {
     color: 'white',
     fontSize: normalize(14),
   },
   skipButton: {
-    
     backgroundColor: '#8B4513',
     padding: normalize(10),
-    borderRadius: 5,
+    borderRadius: normalize(5),
     position: 'absolute',
     right: normalize(20),
+    bottom: normalize(20),
   },
   skipButtonText: {
     color: 'white',
@@ -257,12 +253,12 @@ const styles = StyleSheet.create({
   },
   kamuyInfoContainer: {
     position: 'absolute',
-    top: '5%',
+    top: '10%',
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'white',
-    borderRadius: 20,
-    padding: normalize(20),
+    borderRadius: normalize(20),
+    padding: normalize(15),
     maxWidth: '80%',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
@@ -272,7 +268,7 @@ const styles = StyleSheet.create({
   },
   kamuyImage: {
     width: '100%',
-    height: normalize(210),
+    height: normalize(200),
     resizeMode: 'contain',
   },
   kamuyName: {
@@ -282,18 +278,18 @@ const styles = StyleSheet.create({
   },
   kamuyDescription: {
     fontFamily: "Shojumaru_400Regular",
-    fontSize: normalize(10),
+    fontSize: normalize(12),
     textAlign: 'center',
   },
   elementsContainer: {
     flexDirection: 'row',
-    marginTop: normalize(20),
+    marginTop: normalize(15),
   },
   elementContainer: {
     alignItems: 'center',
     padding: normalize(10),
-    borderRadius: 10,
-    margin: normalize(10),
+    borderRadius: normalize(10),
+    margin: normalize(5),
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
