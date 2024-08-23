@@ -203,7 +203,7 @@ const Runas = () => {
           <View style={[styles.runa, { 
             backgroundColor: elementos[computerChoice].corBase, 
             position: 'absolute', 
-            top: '85%', 
+            top: '65%', 
             left: '45%', 
             transform: [{ translateX: -screenWidth * 0.1 }, { translateY: -screenWidth * 0.1 }] 
           }]}>
@@ -225,14 +225,14 @@ const Runas = () => {
           data={Object.keys(elementos)}
           renderItem={renderItem}
           sliderWidth={screenWidth}
-          itemWidth={screenWidth / 3.2}
+          itemWidth={screenWidth / 3.65}
           activeSlideAlignment={'center'}
           firstItem={2}
           loop={true}
           loopClonesPerSide={9}
           onSnapToItem={(index) => setActiveIndex(index)}
-          inactiveSlideScale={0.76}
-          inactiveSlideOpacity={0.96}
+          inactiveSlideScale={0.60}
+          inactiveSlideOpacity={0.95}
         />
       </View>
 

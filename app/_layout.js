@@ -3,6 +3,7 @@ import { Stack } from 'expo-router';
 import { Shojumaru_400Regular, useFonts } from '@expo-google-fonts/shojumaru';
 import * as SplashScreen from 'expo-splash-screen';
 import { View } from 'react-native';
+import Toast from 'react-native-toast-message';
 
 // Previne o auto-hide da tela de splash
 SplashScreen.preventAutoHideAsync();
@@ -28,6 +29,7 @@ export default function RootLayout() {
       <Stack>
         <Stack.Screen name="index" options={{ headerShown: false }} />
         <Stack.Screen name="tutoriais" options={{ headerShown: false }} />
+        <Toast ref={(ref) => Toast.setRef(ref)} />
         <Stack.Screen name="jogo" options={{ headerShown: false }} />
         <Stack.Screen name="logins" options={{ headerShown: false }} />
         <Stack.Screen name="signup" options={{ headerShown: false }} />

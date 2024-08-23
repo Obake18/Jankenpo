@@ -18,6 +18,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
 import { Audio } from 'expo-av';
 import { useFocusEffect } from '@react-navigation/native';
+import Toast from 'react-native-toast-message'; // Importar Toast
 
 const { width } = Dimensions.get('window');
 const scale = width / 320;
@@ -58,6 +59,20 @@ const Tutorial = () => {
     const checkTutorialCompletion = async () => {
       const completed = await AsyncStorage.getItem('tutorialCompleted');
       setTutorialCompleted(completed === 'true');
+
+      // Exibir o Toast com estilo personalizado
+      Toast.show({
+        type: 'info',
+        position: 'bottom',
+        text1: 'Dica',
+        text2: 'Para voltar passos, basta clicar no botão de voltar.',
+        visibilityTime: 4000,
+        autoHide: true,
+        bottomOffset: 50,
+        style: styles.toast, // Aplicar estilo personalizado
+        text1Style: styles.toastText1, // Estilo para o título do Toast
+        text2Style: styles.toastText2 // Estilo para a mensagem do Toast
+      });
     };
 
     checkTutorialCompletion();
@@ -143,7 +158,6 @@ const Tutorial = () => {
       <View style={styles.kamuyInfoContainer}>
         <Image source={kamuyImage} style={styles.kamuyImage} />
         <Text style={styles.kamuyName}>{nome}</Text>
-        
         <Text style={styles.kamuyDescription}>{descricao.kamuy}</Text>
         <View style={styles.elementsContainer}>
           <View style={[styles.elementContainer, { backgroundColor: elementos[element].corBase }]}>
@@ -200,13 +214,14 @@ const Tutorial = () => {
                   right: normalize(20),
                 }
               ]}
-              onPress={() => router.push('/jogo')}
+              onPress={() => router.replace('/jogo')}
             >
               <Text style={styles.skipButtonText}>Pular</Text>
             </TouchableOpacity>
           )}
         </View>
       </TouchableWithoutFeedback>
+      <Toast ref={(ref) => Toast.setRef(ref)} />
     </ImageBackground>
   );
 };
@@ -223,7 +238,7 @@ const styles = StyleSheet.create({
   },
   characterContainer: {
     position: 'absolute',
-    bottom: normalize(10),
+    bottom: normalize(0),
     left: normalize(10),
     width: normalize(150),
     height: normalize(150),
@@ -324,6 +339,19 @@ const styles = StyleSheet.create({
     fontSize: normalize(12),
     textAlign: 'center',
     color: 'white',
+  },
+  toast: {
+    backgroundColor: '#333', // Cor de fundo do Toast
+    borderRadius: normalize(10), // Borda arredondada
+    padding: normalize(20), // Espaçamento interno
+  },
+  toastText1: {
+    fontSize: normalize(18), // Tamanho da fonte do título
+    color: 'white', // Cor do texto
+  },
+  toastText2: {
+    fontSize: normalize(16), // Tamanho da fonte da mensagem
+    color: 'white', // Cor do texto
   },
 });
 
