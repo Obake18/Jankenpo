@@ -158,6 +158,7 @@ const Tutorial = () => {
       <View style={styles.kamuyInfoContainer}>
         <Image source={kamuyImage} style={styles.kamuyImage} />
         <Text style={styles.kamuyName}>{nome}</Text>
+        <Text style={styles.kamuyDescription}>{elementos[element].kamuy}</Text>
         <Text style={styles.kamuyDescription}>{descricao.kamuy}</Text>
         <View style={styles.elementsContainer}>
           <View style={[styles.elementContainer, { backgroundColor: elementos[element].corBase }]}>
@@ -287,6 +288,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: normalize(20),
     padding: normalize(10),
+    height: '65%',
     maxWidth: '85%',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
@@ -346,12 +348,12 @@ const styles = StyleSheet.create({
     padding: normalize(20), // Espaçamento interno
   },
   toastText1: {
-    fontSize: normalize(18), // Tamanho da fonte do título
-    color: 'white', // Cor do texto
+    fontSize: normalize(15), // Tamanho da fonte do título
+    color: '#000000', // Cor do texto
   },
   toastText2: {
-    fontSize: normalize(16), // Tamanho da fonte da mensagem
-    color: 'white', // Cor do texto
+    fontSize: normalize(10), // Tamanho da fonte da mensagem
+    color: '#000000', // Cor do texto
   },
 });
 
