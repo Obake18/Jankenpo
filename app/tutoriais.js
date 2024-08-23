@@ -289,6 +289,7 @@ const styles = StyleSheet.create({
     borderRadius: normalize(20),
     padding: normalize(10),
     height: '65%',
+    height : '65%',
     maxWidth: '85%',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
@@ -297,7 +298,7 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   kamuyImage: {
-    width: '100%',
+    width: '120%',
     height: normalize(180),
     resizeMode: 'contain',
   },
