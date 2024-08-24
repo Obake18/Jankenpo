@@ -3,6 +3,14 @@ import { View, StyleSheet, Text, ImageBackground } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import Runas from './runas';
 
+if (__DEV__) {
+  console.log = () => {};
+  console.info = () => {};
+  console.warn = () => {};
+  console.error = () => {};
+  console.debug = () => {};
+}
+
 export default function Jogo() {
   return (
     <ImageBackground source={require('../assets/imagens/pergaminho.png')} style={styles.background}>
