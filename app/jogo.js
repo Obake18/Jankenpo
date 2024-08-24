@@ -4,12 +4,14 @@ import * as Animatable from 'react-native-animatable';
 import Runas from './runas';
 
 if (__DEV__) {
+  // Sobrescreve as funções de log do console para não fazerem nada
   console.log = () => {};
   console.info = () => {};
   console.warn = () => {};
   console.error = () => {};
   console.debug = () => {};
 }
+
 
 export default function Jogo() {
   return (

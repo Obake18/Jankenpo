@@ -1,10 +1,4 @@
-if (__DEV__) {
-  console.log = () => {};
-  console.info = () => {};
-  console.warn = () => {};
-  console.error = () => {};
-  console.debug = () => {};
-}
+
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "expo-router";
