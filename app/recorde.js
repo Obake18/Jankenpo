@@ -8,6 +8,7 @@ import { useRouter } from 'expo-router'; // Importando useRouter
 const Recorde = () => {
   const router = useRouter(); // Inicializando o useRouter
   const [maxWins, setMaxWins] = useState(0);
+  const [maxRounds, setMaxRounds] = useState(0); // Novo estado para maxRounds
   const [lastPlayerChoice, setLastPlayerChoice] = useState('Nenhum');
   const [lastComputerChoice, setLastComputerChoice] = useState('Nenhum');
   const [mostChosenElements, setMostChosenElements] = useState({});
@@ -30,8 +31,9 @@ const Recorde = () => {
       // Carregar dados do AsyncStorage
       const recordData = await AsyncStorage.getItem('@recordData');
       if (recordData) {
-        const { maxWins, lastPlayerChoice, lastComputerChoice, mostChosenElements } = JSON.parse(recordData);
+        const { maxWins, maxRounds, lastPlayerChoice, lastComputerChoice, mostChosenElements } = JSON.parse(recordData);
         setMaxWins(maxWins || 0);
+        setMaxRounds(maxRounds || 0); // Carregar maxRounds
         setLastPlayerChoice(lastPlayerChoice || 'Nenhum');
         setLastComputerChoice(lastComputerChoice || 'Nenhum');
         setMostChosenElements(mostChosenElements || {});
@@ -44,6 +46,7 @@ const Recorde = () => {
         if (docSnap.exists()) {
           const data = docSnap.data();
           setMaxWins(data.maxWins || 0);
+          setMaxRounds(data.maxRounds || 0); // Carregar maxRounds do Firebase
           setLastPlayerChoice(data.lastPlayerChoice || 'Nenhum');
           setLastComputerChoice(data.lastComputerChoice || 'Nenhum');
           setMostChosenElements(data.mostChosenElements || {});
@@ -59,6 +62,7 @@ const Recorde = () => {
       // Salvar dados no AsyncStorage
       await AsyncStorage.setItem('@recordData', JSON.stringify({
         maxWins,
+        maxRounds, // Salvar maxRounds
         lastPlayerChoice,
         lastComputerChoice,
         mostChosenElements
@@ -68,6 +72,7 @@ const Recorde = () => {
       if (userId) {
         await setDoc(doc(db, 'recordData', userId), {
           maxWins,
+          maxRounds, // Salvar maxRounds no Firebase
           lastPlayerChoice,
           lastComputerChoice,
           mostChosenElements
@@ -81,7 +86,7 @@ const Recorde = () => {
   useEffect(() => {
     // Salvar no AsyncStorage e no Firebase sempre que um dos valores for alterado
     saveRecord();
-  }, [maxWins, lastPlayerChoice, lastComputerChoice, mostChosenElements]);
+  }, [maxWins, maxRounds, lastPlayerChoice, lastComputerChoice, mostChosenElements]); // Adicionado maxRounds
 
   const navigateBackToGame = () => {
     router.replace('/'); // Atualizado para usar router.replace
@@ -94,6 +99,10 @@ const Recorde = () => {
         <View style={styles.card}>
           <Text style={styles.recordText}>Maior número de vitórias consecutivas:</Text>
           <Text style={styles.recordValue}>{maxWins}</Text>
+        </View>
+        <View style={styles.card}>
+          <Text style={styles.recordText}>Maior número de rodadas:</Text> {/* Novo card para maxRounds */}
+          <Text style={styles.recordValue}>{maxRounds}</Text>
         </View>
         <View style={styles.card}>
           <Text style={styles.recordText}>Última escolha do jogador:</Text>
@@ -121,6 +130,7 @@ const Recorde = () => {
 };
 
 const styles = StyleSheet.create({
+  // Mesmos estilos que anteriormente
   background: {
     flex: 1,
     resizeMode: 'cover',
