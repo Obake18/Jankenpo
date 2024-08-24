@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StatusBar, ImageBackground, View, Text, TextInput, TouchableOpacity, StyleSheet, Dimensions, SafeAreaView, ScrollView, Alert } from 'react-native';
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
 import { useRouter } from 'expo-router';
 
 const auth = getAuth();
@@ -34,6 +34,20 @@ export default function LoginScreen() {
     }
   };
 
+  const handlePasswordReset = async () => {
+    if (!email) {
+      Alert.alert('Erro', 'Por favor, insira seu e-mail.');
+      return;
+    }
+    try {
+      await sendPasswordResetEmail(auth, email);
+      Alert.alert('Sucesso', 'E-mail de redefinição de senha enviado.');
+    } catch (error) {
+      console.error('Erro ao enviar e-mail de redefinição de senha:', error);
+      Alert.alert('Erro', 'Não foi possível enviar o e-mail de redefinição de senha.');
+    }
+  };
+
   return (
     <>
       <ImageBackground source={require('../assets/imagens/pergaminho.png')} style={styles.background}>
@@ -63,6 +77,9 @@ export default function LoginScreen() {
                   </TouchableOpacity>
                   <TouchableOpacity onPress={() => router.replace('/signup')}>
                     <Text style={styles.linkText}>Não tem uma conta? Crie uma</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={handlePasswordReset}>
+                    <Text style={styles.linkText}>Esqueceu a senha? Redefina aqui</Text>
                   </TouchableOpacity>
                 </View>
               </View>
@@ -143,5 +160,6 @@ const styles = StyleSheet.create({
     color: '#522500e1',
     marginTop: 20,
     fontSize: 16,
+    textAlign: 'center',
   },
 });
