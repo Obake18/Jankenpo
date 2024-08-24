@@ -8,7 +8,7 @@ const GameOver = ({ route }) => {
 
   useEffect(() => {
     const handleBackPress = () => {
-      router.push('/'); // Navegar para a tela inicial
+      router.replace('/'); // Navegar para a tela inicial
       return true; // Indica que você tratou o evento
     };
 
@@ -24,11 +24,11 @@ const GameOver = ({ route }) => {
     if (resetGame) {
       resetGame();
     }
-    router.push('/'); // Navegar para a tela inicial
+    router.replace('/'); // Navegar para a tela inicial
   };
 
   const goToRecords = () => {
-    router.push('/recorde'); // Navegar para a tela de Recordes
+    router.replace('/recorde'); // Navegar para a tela de Recordes
   };
 
   return (

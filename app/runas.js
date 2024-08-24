@@ -166,7 +166,7 @@ const Runas = () => {
         setResult('Game Over');
         setGameOver(true);
         setTimeout(() => {
-          router.push('/gameover');
+          router.replace('/gameover');
         }, 2000);
       } else {
         setPlayerLives(prevLives => prevLives - 1);

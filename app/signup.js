@@ -14,7 +14,7 @@ export default function SignUpScreen() {
   const handleSignUp = async () => {
     try {
       await createUserWithEmailAndPassword(auth, email, password);
-      router.push('/username'); // Navega para a tela de escolha de nome de usuário
+      router.replace('/username'); // Navega para a tela de escolha de nome de usuário
     } catch (error) {
       console.error('Erro ao criar conta:', error);
       Alert.alert('Erro', 'Não foi possível criar a conta.');
@@ -47,7 +47,7 @@ export default function SignUpScreen() {
                 <TouchableOpacity style={styles.button} onPress={handleSignUp}>
                   <Text style={styles.buttonText}>Criar Conta</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => router.push('/logins')}>
+                <TouchableOpacity onPress={() => router.replace('/logins')}>
                   <Text style={styles.linkText}>Já tem uma conta? Faça login</Text>
                 </TouchableOpacity>
               </View>

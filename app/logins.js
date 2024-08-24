@@ -15,9 +15,9 @@ export default function LoginScreen() {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
         if (!user.displayName) {
-          router.push('/username');
+          router.replace('/username');
         } else {
-          router.push('/lobby');
+          router.replace('/lobby');
         }
       }
     });
@@ -61,7 +61,7 @@ export default function LoginScreen() {
                   <TouchableOpacity style={styles.button} onPress={handleLogin}>
                     <Text style={styles.buttonText}>Entrar</Text>
                   </TouchableOpacity>
-                  <TouchableOpacity onPress={() => router.push('/signup')}>
+                  <TouchableOpacity onPress={() => router.replace('/signup')}>
                     <Text style={styles.linkText}>Não tem uma conta? Crie uma</Text>
                   </TouchableOpacity>
                 </View>

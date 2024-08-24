@@ -84,7 +84,7 @@ const Recorde = () => {
   }, [maxWins, lastPlayerChoice, lastComputerChoice, mostChosenElements]);
 
   const navigateBackToGame = () => {
-    router.push('/'); // Atualizado para usar router.push
+    router.replace('/'); // Atualizado para usar router.replace
   };
 
   return (
