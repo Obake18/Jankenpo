@@ -5,6 +5,17 @@ import * as SplashScreen from 'expo-splash-screen';
 import { View } from 'react-native';
 import Toast from 'react-native-toast-message';
 
+
+if (__DEV__) {
+  // Sobrescreve as funções de log do console para não fazerem nada
+  console.log = () => {};
+  console.info = () => {};
+  console.warn = () => {};
+  console.error = () => {};
+  console.debug = () => {};
+}
+
+
 // Previne o auto-hide da tela de splash
 SplashScreen.preventAutoHideAsync();
 

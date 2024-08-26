@@ -28,6 +28,16 @@ function normalize(size) {
   return Math.round(PixelRatio.roundToNearestPixel(newSize));
 }
 
+if (__DEV__) {
+  // Sobrescreve as funções de log do console para não fazerem nada
+  console.log = () => {};
+  console.info = () => {};
+  console.warn = () => {};
+  console.error = () => {};
+  console.debug = () => {};
+}
+
+
 
 const Tutorial = () => {
   const [step, setStep] = useState(0);
